@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt')
+const crypto = require('crypto')
 const mongoose = require('mongoose') // Erase if already required
 
 // Declare the Schema of the Mongo model
@@ -71,9 +72,20 @@ userSchema.pre('save', async function (next) {
     // check password có bị thay đổi không, nếu thay đổi thì mới hash
     if (!this.isModified('password')) return next()
     const salt = bcrypt.genSaltSync(10)
-    this.password = bcrypt.hashSync(this.password, salt)
+    this.password = await bcrypt.hash(this.password, salt)
 
     next()
 })
+userSchema.methods = {
+    comparePassword: async function (password) {
+        return await bcrypt.compare(password, this.password)
+    },
+    createPasswordResetToken: function () {
+        const resetToken = crypto.randomBytes(32).toString('hex') // create random token
+        this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex') // hash token
+        this.passwordResetExpires = Date.now() + 10 * 60 * 1000
+        return resetToken
+    },
+}
 
 module.exports = mongoose.model('User', userSchema)
