@@ -41,15 +41,15 @@ class UserController {
         } else {
             if (await user.comparePassword(password)) {
                 // Remove password from user object
-                const { role, password, ...userData } = user.toObject()
+                const { role, password, refreshToken, ...userData } = user.toObject()
                 // Generate accessToken
                 const accessToken = generateAccessToken(user._id, role)
                 // Generate refreshToken
-                const refreshToken = generateRefreshtoken(user._id)
+                const newRefreshToken = generateRefreshtoken(user._id)
                 // Save refreshToken to database
-                await User.findByIdAndUpdate(user._id, { refreshToken }, { new: true }) //new: true returns the updated document
+                await User.findByIdAndUpdate(user._id, { newRefreshToken }, { new: true }) //new: true returns the updated document
                 // Save refreshToken to cookie
-                res.cookie('refreshToken', refreshToken, {
+                res.cookie('refreshToken', newRefreshToken, {
                     httpOnly: true,
                     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
                 })
@@ -190,6 +190,56 @@ class UserController {
         return res.status(200).json({
             success: user ? true : false,
             message: user ? 'Password reset successful' : 'Password reset failed',
+        })
+    })
+    getAllUsers = asyncHandler(async (req, res) => {
+        const users = await User.find().select('-password -refreshToken -role')
+        return res.status(200).json({
+            success: users ? true : false,
+            users,
+        })
+    })
+    deleteUser = asyncHandler(async (req, res) => {
+        const { _id } = req.query
+        if (!_id) {
+            return res.status(400).json({
+                success: false,
+                message: 'User id is required',
+            })
+        }
+        const user = await User.findByIdAndDelete(_id)
+        return res.status(200).json({
+            success: user ? true : false,
+            deletedUser: user ? `User with email ${user.email} deleted ` : 'User not found',
+        })
+    })
+    updateUser = asyncHandler(async (req, res) => {
+        const { _id } = req.payload
+
+        if (!_id || Object.keys(req.body).length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Missing inputs',
+            })
+        }
+        const user = await User.findByIdAndUpdate(_id, req.body, { new: true }).select('-password -refreshToken -role')
+        return res.status(200).json({
+            success: user ? true : false,
+            updatedUser: user ? user : 'Something went wrong',
+        })
+    })
+    updateUserByAdmin = asyncHandler(async (req, res) => {
+        const { _id } = req.params
+        if (Object.keys(req.body).length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Missing inputs',
+            })
+        }
+        const user = await User.findByIdAndUpdate(_id, req.body, { new: true }).select('-password -refreshToken -role')
+        return res.status(200).json({
+            success: user ? true : false,
+            updatedUser: user ? user : 'Something went wrong',
         })
     })
 }
