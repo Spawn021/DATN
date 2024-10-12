@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const ProductCategoryController = require('../controllers/ProductCategoryController')
-const { verifyAccessToken, verifyRefreshToken, isAdmin } = require('../middlewares/verifyToken')
+const { verifyAccessToken, isAdmin } = require('../middlewares/verifyToken')
 
 router.post('/create', verifyAccessToken, isAdmin, ProductCategoryController.createProductCategory)
 router.get('/get-all', ProductCategoryController.getAllProductCategory)

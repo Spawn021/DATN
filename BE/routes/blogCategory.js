@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const BlogCategoryController = require('../controllers/BlogCategoryController')
-const { verifyAccessToken, verifyRefreshToken, isAdmin } = require('../middlewares/verifyToken')
+const { verifyAccessToken, isAdmin } = require('../middlewares/verifyToken')
 
 router.post('/create', verifyAccessToken, isAdmin, BlogCategoryController.createBlogCategory)
 router.get('/get-all', BlogCategoryController.getAllBlogCategory)
