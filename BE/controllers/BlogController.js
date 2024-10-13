@@ -132,5 +132,14 @@ class BlogController {
             blog: blog ? blog : 'Blog not found',
         })
     })
+    uploadImageBlog = asyncHandler(async (req, res) => {
+        const { bid } = req.params
+        if (!req.file) return res.status(400).json({ success: false, message: 'No image uploaded' })
+        const response = await Blog.findByIdAndUpdate(bid, { image: req.file.path }, { new: true })
+        return res.status(200).json({
+            success: response ? true : false,
+            uploadImageBlog: response ? response : 'Cannot upload image blog',
+        })
+    })
 }
 module.exports = new BlogController()

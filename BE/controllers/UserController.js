@@ -242,5 +242,45 @@ class UserController {
             updatedUser: user ? user : 'Something went wrong',
         })
     })
+    updateUserAddress = asyncHandler(async (req, res) => {
+        const { _id } = req.payload
+        if (!req.body.address) {
+            return res.status(400).json({
+                success: false,
+                message: 'Missing inputs',
+            })
+        }
+        const user = await User.findByIdAndUpdate(_id, { $push: { address: req.body.address } }, { new: true }).select(
+            '-password -refreshToken -role',
+        )
+        return res.status(200).json({
+            success: user ? true : false,
+            updateUserAddress: user ? user : 'Something went wrong',
+        })
+    })
+    updateCart = asyncHandler(async (req, res) => {
+        const { _id } = req.payload
+        const { pid, quantity, color } = req.body
+        if (!pid || !quantity || !color) {
+            return res.status(400).json({
+                success: false,
+                message: 'Missing inputs',
+            })
+        }
+        const Cart = await User.findById(_id)
+        const productInCart = Cart.cart.find((item) => item.product.toString() === pid && item.color === color)
+
+        if (productInCart) {
+            // Nếu sản phẩm cùng màu đã có, ghi đè số lượng
+            productInCart.quantity = quantity // Ghi đè số lượng
+            await Cart.save()
+            return res.status(200).json({ success: true, Cart })
+        } else {
+            // Nếu sản phẩm chưa có trong giỏ hàng, thêm mới
+            Cart.cart.push({ product: pid, quantity, color })
+            await Cart.save()
+            return res.status(200).json({ success: true, Cart })
+        }
+    })
 }
 module.exports = new UserController()

@@ -132,5 +132,18 @@ class ProductController {
             product: product ? product : 'No product found',
         })
     })
+    uploadImageProduct = asyncHandler(async (req, res) => {
+        const { pid } = req.params
+        if (!req.files) return res.status(400).json({ success: false, message: 'No image uploaded' })
+        const response = await Product.findByIdAndUpdate(
+            pid,
+            { $push: { images: { $each: req.files.map((file) => file.path) } } },
+            { new: true },
+        )
+        return res.status(200).json({
+            success: response ? true : false,
+            uploadImageProduct: response ? response : 'Cannot upload image product',
+        })
+    })
 }
 module.exports = new ProductController()
