@@ -11,7 +11,6 @@ var productCategorySchema = new mongoose.Schema(
       },
       brand: {
          type: Array,
-         required: true,
       },
       slug: {
          type: String,

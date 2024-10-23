@@ -3,7 +3,6 @@ import { apiProdCategories } from '../apis'
 
 export const getProdCategories = createAsyncThunk('prodCate/getProdCategories', async (data, { rejectWithValue }) => {
    const response = await apiProdCategories.getProductCategories()
-   console.log(response)
    if (!response.success) return rejectWithValue(response)
 
    return response

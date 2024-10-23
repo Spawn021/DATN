@@ -6,7 +6,7 @@ const Banner = () => {
          <img
             src='https://digital-world-2.myshopify.com/cdn/shop/files/slideshow3-home2_1920x.jpg?v=1613166679'
             alt='banner'
-            className='h-[360px] w-full object-cover '
+            className='h-[470px] w-full object-cover '
          ></img>
       </div>
    )

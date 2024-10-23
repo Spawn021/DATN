@@ -2,3 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+button.slick-next {
+   background-color: #fff;
+   opacity: 0.5;
+   width: 80px;
+   height: 80px;
+   z-index: 10;
+   margin-right: 35px;
+}
+button.slick-next:hover {
+   background-color: #fff;
+   opacity: 1;
+}
+button.slick-next:hover::before {
+   color: #ee3131;
+}
+button.slick-next::before {
+   color: #8a8a8a;
+   content: '\276F';
+   font-size: 30px;
+}
+button.slick-prev {
+   background-color: #fff;
+   opacity: 0.5;
+   margin-left: 35px;
+   width: 80px;
+   height: 80px;
+   z-index: 10;
+}
+button.slick-prev:hover {
+   background-color: #fff;
+   opacity: 1;
+}
+button.slick-prev:hover::before {
+   color: #ee3131;
+}
+button.slick-prev::before {
+   color: #8a8a8a;
+   content: '\276E';
+   font-size: 30px;
+}

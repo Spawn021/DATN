@@ -8,13 +8,7 @@ router.post('/create', verifyAccessToken, isAdmin, ProductController.createProdu
 router.get('/get-all', ProductController.getProducts)
 router.put('/ratings', verifyAccessToken, ProductController.ratings)
 
-router.put(
-    '/upload-image/:pid',
-    verifyAccessToken,
-    isAdmin,
-    uploader.array('images', 10),
-    ProductController.uploadImageProduct,
-)
+router.put('/upload-image/:pid', verifyAccessToken, isAdmin, uploader.array('images', 10), ProductController.uploadImageProduct)
 router.put('/update/:pid', verifyAccessToken, isAdmin, ProductController.updateProduct)
 router.delete('/delete/:pid', verifyAccessToken, isAdmin, ProductController.deletedProduct)
 router.get('/get/:pid', ProductController.getProduct)

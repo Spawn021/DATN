@@ -15,6 +15,16 @@
       "img": "https://digital-world-2.myshopify.com/cdn/shop/files/laptop_300x.jpg?v=1613166811"
    },
    {
+      "cate": "CAMERA",
+      "brand": [],
+      "img": ""
+   },
+   {
+      "cate": "SPEAKER",
+      "brand": [],
+      "img": ""
+   },
+   {
       "cate": "ACCESSORIES",
       "brand": ["Smartswatches", "Headphone", "Bluetooth", "Keyboard", "Mouse", "Cases"],
       "img": "https://digital-world-2.myshopify.com/cdn/shop/files/headphone_8467ba67-70c7-4977-b57e-8847d56549c6_300x.jpg?v=1613166811"

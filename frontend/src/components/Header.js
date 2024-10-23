@@ -29,14 +29,14 @@ const Header = () => {
                   <span className='text-[11.9px] text-[#505050] text-center'>Online Support 24/7</span>
                </div>
                <div className='flex items-center  pl-5 border-l'>
-                  <FaRegHeart className='fill-main text-[20px]' />
+                  <FaRegHeart className='fill-main text-[20px] hover:cursor-pointer' />
                </div>
                <div className='flex items-center gap-2 pl-5 border-l'>
-                  <FaShoppingCart className='fill-main text-[20px]' />
+                  <FaShoppingCart className='fill-main text-[20px] hover:cursor-pointer' />
                   <span>0 item</span>
                </div>
                <div className='flex items-center pl-5 border-l '>
-                  <FaUserCircle className='fill-main text-[20px]' />
+                  <FaUserCircle className='fill-main text-[20px] hover:cursor-pointer' />
                </div>
             </div>
          </div>
