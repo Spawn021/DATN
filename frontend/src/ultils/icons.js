@@ -5,11 +5,46 @@ import { TfiHeadphone } from 'react-icons/tfi'
 import { IoIosLaptop } from 'react-icons/io'
 import { CiCamera } from 'react-icons/ci'
 import { BsPrinter, BsSpeaker } from 'react-icons/bs'
-import { GiSmartphone, GiTablet } from 'react-icons/gi'
+import { GiSmartphone, GiTablet, GiPositionMarker } from 'react-icons/gi'
 import { PiTelevisionThin } from 'react-icons/pi'
-import { FaShoppingCart, FaRegHeart, FaUserCircle, FaStar, FaStarHalfAlt, FaRegStar, FaRegEye } from 'react-icons/fa'
+import { SiAmericanexpress } from 'react-icons/si'
+import {
+   FaShoppingCart,
+   FaRegHeart,
+   FaUserCircle,
+   FaStar,
+   FaStarHalfAlt,
+   FaRegStar,
+   FaRegEye,
+   FaPhoneAlt,
+   FaFacebook,
+   FaTwitter,
+   FaPinterest,
+   FaGoogle,
+   FaLinkedin,
+   FaFlickr,
+   FaCcVisa,
+   FaCcMastercard,
+   FaCcPaypal,
+   FaCcDiscover,
+   FaCcDinersClub,
+} from 'react-icons/fa'
 
 const icons = {
+   SiAmericanexpress,
+   FaCcVisa,
+   FaCcMastercard,
+   FaCcPaypal,
+   FaCcDiscover,
+   FaCcDinersClub,
+   FaFacebook,
+   FaTwitter,
+   FaPinterest,
+   FaGoogle,
+   FaLinkedin,
+   FaFlickr,
+   GiPositionMarker,
+   FaPhoneAlt,
    TfiHeadphone,
    IoIosLaptop,
    CiCamera,

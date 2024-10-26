@@ -9,7 +9,7 @@ const TabProduct = () => {
    const settings = {
       dots: false,
       infinite: true,
-      // autoplay: true,
+      autoplay: true,
       autoplaySpeed: 2000,
       speed: 500,
       slidesToShow: 3,
@@ -61,17 +61,17 @@ const TabProduct = () => {
                   })}
             </Slider>
          </div>
-         <div className='flex justify-center items-center gap-x-8 '>
-            <div class='relative group w-[423px] h-[140px]'>
-               <img src={banner1} alt='banner' class='w-full h-full object-cover' />
-               <div class='absolute top-0 left-0 w-0 h-0  group-hover:w-full group-hover:h-full group-hover:bg-[#0000001a] transition-all duration-500'></div>
-               <div class='absolute bottom-0 right-0 w-0 h-0  group-hover:w-full group-hover:h-full group-hover:bg-[#0000001a] transition-all duration-500'></div>
+         <div className='flex items-center justify-between'>
+            <div className='relative group w-[435px] h-[140px]'>
+               <img src={banner1} alt='banner' className='w-full h-full object-cover' />
+               <div className='group-hover:cursor-pointer absolute top-0 left-0 w-0 h-0  group-hover:w-full group-hover:h-full group-hover:bg-[#0000001a] transition-all duration-500'></div>
+               <div className='group-hover:cursor-pointer absolute bottom-0 right-0 w-0 h-0  group-hover:w-full group-hover:h-full group-hover:bg-[#0000001a] transition-all duration-500'></div>
             </div>
 
-            <div class='relative group w-[423px] h-[140px]'>
-               <img src={banner2} alt='banner' class='w-full h-full object-cover ' />
-               <div class='absolute top-0 left-0 w-0 h-0  group-hover:w-full group-hover:h-full group-hover:bg-[#0000001a] transition-all duration-500'></div>
-               <div class='absolute bottom-0 right-0 w-0 h-0  group-hover:w-full group-hover:h-full group-hover:bg-[#0000001a] transition-all duration-500'></div>
+            <div className='relative group w-[435px] h-[140px]'>
+               <img src={banner2} alt='banner' className='w-full h-full object-cover ' />
+               <div className='group-hover:cursor-pointer absolute top-0 left-0 w-0 h-0  group-hover:w-full group-hover:h-full group-hover:bg-[#0000001a] transition-all duration-500'></div>
+               <div className='group-hover:cursor-pointer absolute bottom-0 right-0 w-0 h-0  group-hover:w-full group-hover:h-full group-hover:bg-[#0000001a] transition-all duration-500'></div>
             </div>
          </div>
       </div>

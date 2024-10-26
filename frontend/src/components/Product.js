@@ -5,6 +5,9 @@ import newLabel from '../assets/new.png'
 import trendingLabel from '../assets/trending.png'
 import dealLabel from '../assets/deal.png'
 import icons from '../ultils/icons'
+import { Link } from 'react-router-dom'
+import path from '../ultils/path'
+
 const { FaRegEye, IoMenu, FaRegHeart } = icons
 
 const Product = ({ product }) => {
@@ -25,9 +28,9 @@ const Product = ({ product }) => {
    newPrice = Math.round(newPrice / 1000) * 1000
    return (
       <div className='w-full px-[10px] mb-[20px] '>
-         <div
+         <Link
+            to={`/${path.DETAIL_PRODUCT}/${product._id}/${product.title}`}
             onMouseEnter={(e) => {
-               console.log('Mouse entered')
                setIsShowOptions(true)
             }}
             onMouseLeave={(e) => setIsShowOptions(false)}
@@ -48,7 +51,7 @@ const Product = ({ product }) => {
             {label && <img src={label} alt='label' className='absolute top-5 right-5 w-[90px] h-[30px] object-cover' />}
 
             <div className='self-start ml-6 line-clamp-1 mb-[6px] mr-[8px]'>{capitalizeFirstLetter(product.title)}</div>
-            <div className='flex self-start ml-6'>{renderStar(product.totalRating)}</div>
+            <div className='flex self-start ml-6 mb-[6px]'>{renderStar(product.totalRating)}</div>
 
             {product.discountPercentage > 0 ? (
                <div className='self-start ml-6 flex flex-col'>
@@ -61,7 +64,7 @@ const Product = ({ product }) => {
             ) : (
                <div className='self-start ml-6 mb-[35px]'>{`${formatPrice(product.price)} VND`}</div>
             )}
-         </div>
+         </Link>
       </div>
    )
 }

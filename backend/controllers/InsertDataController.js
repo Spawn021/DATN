@@ -25,6 +25,7 @@ const insertC = async (category) => {
    await ProductCategory.create({
       title: category?.cate,
       brand: category?.brand,
+      image: category?.img,
       slug: slugify(category?.cate),
    })
 }

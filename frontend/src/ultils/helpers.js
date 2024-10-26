@@ -2,13 +2,13 @@ import icons from './icons'
 const { FaStar, FaStarHalfAlt, FaRegStar } = icons
 export const capitalizeFirstLetter = (string) => {
    return string
-      .split(' ')
+      ?.split(' ')
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ')
 }
 
 export const formatPrice = (price) => {
-   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+   return price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 export const renderStar = (rating) => {
    const stars = []
