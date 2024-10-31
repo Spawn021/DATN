@@ -14,7 +14,7 @@ const verifyAccessToken = asyncHandler(async (req, res, next) => {
                message: 'Token expired or invalid',
             })
          } else {
-            //console.log(payload)
+            // console.log(payload)
             req.payload = payload
             next()
          }

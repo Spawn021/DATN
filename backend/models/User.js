@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt')
-const crypto = require('crypto')
-const mongoose = require('mongoose') // Erase if already required
+const mongoose = require('mongoose')
 
 // Declare the Schema of the Mongo model
 var userSchema = new mongoose.Schema(
@@ -53,13 +52,16 @@ var userSchema = new mongoose.Schema(
       refreshToken: {
          type: String,
       },
+      // registerToken: {
+      //    type: String,
+      // },
       passwordChangedAt: {
          type: String,
       },
-      passwordResetToken: {
+      passwordResetOTP: {
          type: String,
       },
-      passwordResetExpires: {
+      passwordResetOTPExpires: {
          type: String,
       },
    },
@@ -79,12 +81,5 @@ userSchema.methods = {
    comparePassword: async function (password) {
       return await bcrypt.compare(password, this.password)
    },
-   createPasswordResetToken: function () {
-      const resetToken = crypto.randomBytes(32).toString('hex') // create random token
-      this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex') // hash token
-      this.passwordResetExpires = Date.now() + 10 * 60 * 1000
-      return resetToken
-   },
 }
-
 module.exports = mongoose.model('User', userSchema)

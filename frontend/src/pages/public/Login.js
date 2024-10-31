@@ -5,23 +5,27 @@ import { useDispatch } from 'react-redux'
 import icons from '../../ultils/icons'
 import { InputField, Button } from '../../components'
 import { apiUsers } from '../../redux/apis'
-import { registerUser } from '../../redux/features/userSlice'
+import { login } from '../../redux/features/userSlice'
+import { Link } from 'react-router-dom'
 import path from '../../ultils/path'
 
 export default function Login() {
    const navigate = useNavigate()
    const dispatch = useDispatch()
+   // const location = useLocation()
+   // console.log(location)
    const { FaFacebook, FaTwitter, FaGoogle, FaPinterest } = icons
 
    const [isRegistering, setIsRegistering] = useState(false)
+
    const handleRegisterClick = () => {
       setIsRegistering(true)
-      setPayload({ email: '', password: '', firstname: '', lastname: '' }) // Xóa giá trị khi chuyển sang đăng ký
+      setPayload({ email: '', password: '', firstname: '', lastname: '' })
    }
 
    const handleLoginClick = () => {
       setIsRegistering(false)
-      setPayload({ email: '', password: '', firstname: '', lastname: '' }) // Xóa giá trị khi chuyển sang đăng nhập
+      setPayload({ email: '', password: '', firstname: '', lastname: '' })
    }
 
    const [payload, setPayload] = useState({
@@ -34,6 +38,7 @@ export default function Login() {
       const { firstname, lastname, ...rest } = payload
       if (isRegistering) {
          const response = await apiUsers.register(payload)
+
          if (response.success) {
             Swal.fire('Congratulation!', response.message, 'success').then(() => {
                setIsRegistering(false)
@@ -44,14 +49,15 @@ export default function Login() {
          }
       } else {
          const response = await apiUsers.login(rest)
+
          if (response.success) {
-            dispatch(registerUser({ isLoggedIn: true, userData: response.userData, token: response.accessToken }))
+            dispatch(login({ isLoggedIn: true, userData: response.userData, token: response.accessToken }))
             navigate(`/${path.HOME}`)
          } else {
             Swal.fire('Error!', response.message, 'error')
          }
       }
-   }, [payload, isRegistering]) // if dont add payload to dependency array, it will always log the initial state
+   }, [payload, isRegistering, dispatch, navigate]) // if dont add payload to dependency array, it will always log the initial state
    return (
       <div className='bg-[#c9d6ff] bg-gradient-to-r from-[#e2e2e2] to-[#c9d6ff] flex items-center justify-center min-h-screen'>
          <div className='bg-white rounded-[30px] shadow-lg w-[768px] max-w-full min-h-[480px] flex relative overflow-hidden'>
@@ -146,14 +152,20 @@ export default function Login() {
                      type='password'
                      className='outline-none w-full my-2 '
                   />
-                  <div className='underline hover:cursor-pointer text-[13px] font-normal my-[15px] hover:text-blue-500'>
+                  <Link
+                     to={`/${path.FORGET_PASSWORD}`}
+                     className='underline hover:cursor-pointer text-[13px] font-normal my-[15px] hover:text-blue-500 '
+                  >
                      Forgot Your Password?
-                  </div>
+                  </Link>
                   <Button
                      name='Sign In'
                      handleOnClick={handleSubmit}
                      className='bg-main border text-white uppercase text-[13px] px-[45px] py-[10px] rounded-[8px] mt-[10px] font-semibold hover:bg-[#ee3131cc]'
                   />
+                  <div className=' w-full text-right mt-6 text-[12px] text-blue-500'>
+                     <Link to={`/${path.HOME}`}>Skip Login?</Link>
+                  </div>
                </form>
             </div>
 

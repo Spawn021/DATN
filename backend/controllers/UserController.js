@@ -1,10 +1,17 @@
 const User = require('../models/User')
+const cron = require('node-cron')
 const jwt = require('jsonwebtoken')
 const crypto = require('crypto')
 const asyncHandler = require('express-async-handler')
 const { generateAccessToken, generateRefreshtoken } = require('../middlewares/jwt')
 const sendMail = require('../ultils/sendMail')
 class UserController {
+   constructor() {
+      cron.schedule('*/5 * * * * ', async () => {
+         const now = Date.now()
+         await User.updateMany({ passwordResetOTPExpires: { $lt: now } }, { $unset: { passwordResetOTP: '', passwordResetOTPExpires: '' } })
+      })
+   }
    register = asyncHandler(async (req, res) => {
       const { firstname, lastname, email, password } = req.body
       if (!firstname || !lastname || !email || !password) {
@@ -20,11 +27,35 @@ class UserController {
             message: 'User already exists',
          })
       } else {
-         const newUser = await User.create(req.body) // auto active pre save middleware
-         return res.status(201).json({
+         const token = crypto.randomBytes(20).toString('hex')
+         res.cookie('data-register', { ...req.body, token }, { httpOnly: true, maxAge: 1000 * 60 * 15 }) // 15 minutes
+         const html = `<p>Please click <a href="http://localhost:5000/api/user/active-account/${token}">here</a> to activate your account</p>`
+         const data = {
+            email,
+            html,
+            subject: 'Activate account',
+         }
+         const result = await sendMail(data)
+         return res.status(200).json({
             success: true,
-            newUser,
+            message: 'Activation link sent to email. Please check your email',
+            result,
          })
+      }
+   })
+   activateAccount = asyncHandler(async (req, res) => {
+      const cookie = req.cookies
+      const { token } = req.params
+      if (!cookie['data-register'] || cookie['data-register'].token !== token) {
+         res.clearCookie('data-register')
+         return res.redirect(`${process.env.CLIENT_URL}/active-account/error`)
+      }
+      const newUser = await User.create(cookie['data-register'])
+      res.clearCookie('data-register')
+      if (newUser) {
+         return res.redirect(`${process.env.CLIENT_URL}/active-account/success`)
+      } else {
+         return res.redirect(`${process.env.CLIENT_URL}/active-account/error`)
       }
    })
    login = asyncHandler(async (req, res) => {
@@ -52,6 +83,8 @@ class UserController {
             res.cookie('refreshToken', refreshToken, {
                httpOnly: true,
                maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
+               secure: true, // Bắt buộc nếu dùng SameSite: 'None'
+               sameSite: 'None',
             })
 
             return res.status(200).json({
@@ -70,6 +103,7 @@ class UserController {
    })
    // Get current user
    getCurrent = asyncHandler(async (req, res) => {
+      // console.log(req.payload)
       const { _id } = req.payload
       const user = await User.findById(_id).select('-password -refreshToken -role')
       if (!user) {
@@ -135,7 +169,7 @@ class UserController {
    // Server check token valid and not expired
    // Server update new password
    forgotPassword = asyncHandler(async (req, res) => {
-      const { email } = req.query
+      const { email } = req.body
       if (!email) {
          return res.status(400).json({
             success: false,
@@ -149,48 +183,79 @@ class UserController {
             message: 'User not found',
          })
       }
-      const resetToken = user.createPasswordResetToken()
+      const otp = Math.floor(1000 + Math.random() * 9000)
+      user.passwordResetOTP = otp
+      user.passwordResetOTPExpires = Date.now() + 5 * 60 * 1000 //
       await user.save()
 
-      const html = `<p>Please click <a href="http://localhost:5000/api/user/reset-password/${resetToken}">here</a> to reset your password. This link will expire after 10 minutes </p>`
+      const html = `<p>Your OTP to reset password is <strong>${otp}</strong></p>. <p>OTP will expire in 5 minutes</p>`
       const data = {
          email,
          html,
+         subject: 'Reset password OTP',
       }
       const result = await sendMail(data)
       return res.status(200).json({
          success: true,
-         message: 'Reset password link sent to email',
+         message: 'OTP sent to email',
          result,
       })
    })
-   resetPassword = asyncHandler(async (req, res) => {
-      const { password, token } = req.body
-      if (!password || !token) {
+   verifyOTP = asyncHandler(async (req, res) => {
+      const { email, otp } = req.body
+      console.log(email, otp)
+      if (!email || !otp) {
          return res.status(400).json({
             success: false,
-            message: 'Password and token are required',
+            message: 'Email and OTP are required',
          })
       }
-      const hashedToken = crypto.createHash('sha256').update(token).digest('hex')
-      const user = await User.findOne({
-         passwordResetToken: hashedToken,
-         passwordResetExpires: { $gt: Date.now() },
-      })
+      const user = await User.findOne({ email })
       if (!user) {
          return res.status(400).json({
             success: false,
-            message: 'Token is invalid or expired',
+            message: 'User not found',
+         })
+      }
+      if (user.passwordResetOTP !== otp) {
+         return res.status(400).json({
+            success: false,
+            message: 'Invalid OTP',
+         })
+      }
+      if (user.passwordResetOTPExpires < Date.now()) {
+         return res.status(400).json({
+            success: false,
+            message: 'OTP expired',
+         })
+      }
+      return res.status(200).json({
+         success: true,
+         message: 'OTP verified. OTP is valid. You can now enter a new password',
+      })
+   })
+   resetPassword = asyncHandler(async (req, res) => {
+      const { email, password } = req.body
+      if (!email || !password) {
+         return res.status(400).json({
+            success: false,
+            message: 'Email and password are required',
+         })
+      }
+      const user = await User.findOne({ email })
+      if (!user) {
+         return res.status(400).json({
+            success: false,
+            message: 'User not found',
          })
       }
       user.password = password
-      user.passwordResetToken = undefined
-      user.passwordChangedAt = Date.now()
-      user.passwordResetExpires = undefined
+      user.passwordResetOTP = ''
+      user.passwordResetOTPExpires = ''
       await user.save()
       return res.status(200).json({
-         success: user ? true : false,
-         message: user ? 'Password reset successful' : 'Password reset failed',
+         success: true,
+         message: 'Password reset successful',
       })
    })
    getAllUsers = asyncHandler(async (req, res) => {

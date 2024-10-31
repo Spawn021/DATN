@@ -3,7 +3,7 @@ import React, { memo } from 'react'
 const InputField = ({ value, setValue, nameKey, type, invalidField, setInvalidField, className }) => {
    return (
       <div className='w-full relative'>
-         {value.trim() !== '' && (
+         {value?.trim() !== '' && (
             <label htmlFor={nameKey} className='text-[13px] absolute top-[-3px] font-normal left-[15px] bg-white animate-slide-top-sm '>
                {nameKey.slice(0, 1).toUpperCase() + nameKey.slice(1)}
             </label>

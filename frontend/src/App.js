@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { Login, Home, Public, FAQ, Service, ProductDetail, Products, Blog } from './pages/public'
+import { Login, Home, Public, FAQ, Service, ProductDetail, Products, Blog, ActiveRegister, ForgetPassword } from './pages/public'
 // import { Login, Home, Public } from './pages/public'
 import path from './ultils/path'
 
@@ -16,7 +16,9 @@ function App() {
                <Route path={path.FAQS} element={<FAQ />} />
                <Route path={path.DETAIL_PRODUCT__PID__TITLE} element={<ProductDetail />} />
             </Route>
+            <Route path={path.ACTIVE_REGISTER} element={<ActiveRegister />} />
             <Route path={path.LOGIN} element={<Login />} />
+            <Route path={path.FORGET_PASSWORD} element={<ForgetPassword />} />
          </Routes>
       </div>
    )
