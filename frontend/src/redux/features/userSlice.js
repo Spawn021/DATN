@@ -37,6 +37,7 @@ const userSlice = createSlice({
          state.loading = false
          state.error = null
          state.userData = action.payload.user
+         state.isLoggedIn = true
       })
       builder.addCase(getUserCurrent.rejected, (state, action) => {
          state.loading = false

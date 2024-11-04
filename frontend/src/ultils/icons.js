@@ -11,6 +11,8 @@ import { GiSmartphone, GiTablet, GiPositionMarker } from 'react-icons/gi'
 import { PiTelevisionThin } from 'react-icons/pi'
 import { SiAmericanexpress } from 'react-icons/si'
 import {
+   FaEye,
+   FaEyeSlash,
    FaShoppingCart,
    FaRegHeart,
    FaUserCircle,
@@ -35,6 +37,8 @@ import {
 } from 'react-icons/fa'
 
 const icons = {
+   FaEye,
+   FaEyeSlash,
    MdLockOutline,
    FaMinus,
    FaArrowLeft,

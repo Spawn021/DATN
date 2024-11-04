@@ -203,7 +203,7 @@ class UserController {
    })
    verifyOTP = asyncHandler(async (req, res) => {
       const { email, otp } = req.body
-      console.log(email, otp)
+
       if (!email || !otp) {
          return res.status(400).json({
             success: false,
