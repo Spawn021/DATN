@@ -9,9 +9,8 @@ const ActiveRegister = () => {
    useEffect(() => {
       if (status === 'error') Swal.fire('Error!', 'Active register failed', 'error').then(() => navigate(`/${path.LOGIN}`))
       if (status === 'success') Swal.fire('Congratulation!', 'Register successfully', 'success').then(() => navigate(`/${path.LOGIN}`))
-   }, [])
-   return
-   ;<div></div>
+   }, [navigate, status])
+   return <></>
 }
 
 export default ActiveRegister

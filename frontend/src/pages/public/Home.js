@@ -4,11 +4,11 @@ import banner3 from '../../assets/banner3.png'
 import banner4 from '../../assets/banner4.png'
 import banner5 from '../../assets/banner5.png'
 import banner6 from '../../assets/banner6.png'
-import { useSelector } from 'react-redux'
+// import { useSelector } from 'react-redux'
 
 const Home = () => {
-   const user = useSelector((state) => state.user)
-   // console.log(user)
+   // const user = useSelector((state) => state.user)
+
    return (
       <>
          <div className='w-main flex '>
@@ -21,10 +21,10 @@ const Home = () => {
                <TabProduct />
             </div>
          </div>
-         <div className='mt-9 pl-3'>
+         <div className='w-main mt-9 pl-3'>
             <FeaturedProduct />
          </div>
-         <div className='flex mt-[20px] pl-3 justify-between '>
+         <div className='w-main flex mt-[20px] pl-3 justify-between '>
             <div className='relative group w-[615px] h-[655px]'>
                <img src={banner3} alt='banner3' className='w-full h-full object-cover hover:cursor-pointer'></img>
                <div className='group-hover:cursor-pointer absolute top-0 left-0 w-0 h-0  group-hover:w-full group-hover:h-full group-hover:bg-[#0000001a] transition-all duration-500'></div>
@@ -48,13 +48,13 @@ const Home = () => {
                <div className='group-hover:cursor-pointer absolute bottom-0 right-0 w-0 h-0  group-hover:w-full group-hover:h-full group-hover:bg-[#0000001a] transition-all duration-500'></div>
             </div>
          </div>
-         <div className='mt-9 pl-3'>
+         <div className='w-main mt-9 pl-3'>
             <NewArrival />
          </div>
-         <div className='mt-3 pl-3'>
+         <div className='w-main mt-3 pl-3'>
             <HotCollection />
          </div>
-         <div className='mt-6 pl-3'>
+         <div className='w-main mt-6 pl-3'>
             <BlogPost />
          </div>
 

@@ -23,7 +23,7 @@ const FeaturedProduct = () => {
 
    return (
       <div>
-         <h2 className='text-xl font-semibold text-[#151515] pb-4 border-main border-b-[2px] '>FEATURED PRODUCTS</h2>
+         <h2 className=' text-xl font-semibold text-[#151515] pb-4 border-main border-b-[2px] '>FEATURED PRODUCTS</h2>
          <div className='grid grid-cols-3 gap-5 mt-5'>
             {products?.map((product, index) => (
                <Link

@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-const Button = ({ name, handleOnClick, className, iconBefore, iconAfter, type }) => {
+const Button = ({ name, handleOnClick, className, type }) => {
    return (
       <button
          type={type || 'button'}
@@ -9,9 +9,7 @@ const Button = ({ name, handleOnClick, className, iconBefore, iconAfter, type })
             handleOnClick && handleOnClick()
          }}
       >
-         {iconBefore}
          <span>{name}</span>
-         {iconAfter}
       </button>
    )
 }

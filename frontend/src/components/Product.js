@@ -6,13 +6,12 @@ import trendingLabel from '../assets/trending.png'
 import dealLabel from '../assets/deal.png'
 import icons from '../ultils/icons'
 import { Link } from 'react-router-dom'
-import path from '../ultils/path'
 
 const { FaRegEye, IoMenu, FaRegHeart } = icons
 
 const Product = ({ product }) => {
    const [isShowOptions, setIsShowOptions] = useState(false)
-   const isNew = (new Date() - new Date(product.createdAt)) / (1000 * 60 * 60 * 24) <= 30
+   const isNew = (new Date() - new Date(product.createdAt)) / (1000 * 60 * 60 * 24) <= 32
    const isTrending = product.sold >= 100 && product.numberViews >= 100
    const isDeal = product.discountPercentage > 0
    // Xác định nhãn sẽ hiển thị dựa trên ưu tiên
@@ -29,12 +28,12 @@ const Product = ({ product }) => {
    return (
       <div className='w-full px-[10px] mb-[20px] '>
          <Link
-            to={`/${path.DETAIL_PRODUCT}/${product._id}/${product.title}`}
+            to={`/${product.category.toLowerCase()}/${product._id}/${product.title}`}
             onMouseEnter={(e) => {
                setIsShowOptions(true)
             }}
             onMouseLeave={(e) => setIsShowOptions(false)}
-            className='w-full border flex flex-col items-center relative hover:cursor-pointer'
+            className='w-full border flex flex-col items-center relative hover:cursor-pointer focus:outline-none'
          >
             {isShowOptions && (
                <div className='absolute bottom-[120px] left-0 right-0 flex justify-center gap-2 animate-slide-top'>

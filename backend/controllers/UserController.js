@@ -66,7 +66,7 @@ class UserController {
             message: 'Please fill in all fields',
          })
       }
-      const user = await User.findOne({ email })
+      const user = await User.findOne({ email }) // user is instance of User model
       if (!user) {
          return res.status(400).json({ success: false, message: 'User does not exist' })
       } else {
@@ -134,8 +134,18 @@ class UserController {
             message: 'Invalid refresh token',
          })
       }
-      // Generate new accessToken
+      // Generate new accessToken, refreshToken
       const newAccessToken = generateAccessToken(user._id, user.role)
+      const newRefreshToken = generateRefreshtoken(user._id)
+      // Update refreshToken in db
+      await User.findByIdAndUpdate(user._id, { refreshToken: newRefreshToken }, { new: true })
+
+      res.cookie('refreshToken', newRefreshToken, {
+         httpOnly: true,
+         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
+         secure: true,
+         sameSite: 'None',
+      })
       return res.status(200).json({
          success: true,
          newAccessToken,

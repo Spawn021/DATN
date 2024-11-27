@@ -33,7 +33,7 @@ const NewArrival = () => {
    return (
       <>
          <div className='flex justify-between border-main border-b-[2px] pb-4'>
-            <h2 className='text-xl font-semibold text-[#151515]  '>NEW ARRIVALS</h2>
+            <h2 className='text-xl font-semibold text-[#151515] '>NEW ARRIVALS</h2>
             <div className='flex'>
                <span
                   onClick={() => setActiveTab('smartphone')}

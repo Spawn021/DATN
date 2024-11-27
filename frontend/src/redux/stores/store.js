@@ -8,6 +8,7 @@ const commonPersistConfig = {
    key: 'user',
    storage, // defaults to localStorage for web
 }
+
 const userPersistConfig = {
    ...commonPersistConfig,
    whitelist: ['isLoggedIn', 'token'], // only save in storage

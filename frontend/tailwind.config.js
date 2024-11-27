@@ -2,12 +2,22 @@
 module.exports = {
    content: ['./src/**/*.{html,js}', 'public/index.html'],
    theme: {
+      listStyleType: {
+         square: 'square',
+         roman: 'upper-roman',
+      },
       fontFamily: {
          main: ['Poppins', 'sans-serif'],
       },
       extend: {
+         boxShadow: {
+            variant: '0 0 5px #1a1b188c',
+         },
          width: {
             main: '1220px',
+         },
+         inset: {
+            'calc-100-plus-4': 'calc(100% + 4px)',
          },
          flex: {
             2: '2 2 0%',

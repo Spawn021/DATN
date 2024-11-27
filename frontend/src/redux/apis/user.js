@@ -45,3 +45,17 @@ export const getUserCurrent = () => {
       method: 'GET',
    })
 }
+export const refreshToken = () => {
+   return axios({
+      url: '/user/refresh-token',
+      method: 'POST',
+      withCredentials: true,
+   })
+}
+export const logout = () => {
+   return axios({
+      url: '/user/logout',
+      method: 'POST',
+      withCredentials: true,
+   })
+}

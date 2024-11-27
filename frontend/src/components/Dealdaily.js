@@ -12,6 +12,7 @@ const Dealdaily = () => {
 
    const getDealDaily = async () => {
       const response = await apiProducts.getProducts({ limit: 1, page: Math.floor(Math.random() * 5), totalRating: 5 })
+
       if (response.success) setDealDaily(response.products[0])
    }
    // Calculate the time remaining until the next day at 00:00:00

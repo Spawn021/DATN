@@ -61,7 +61,7 @@ export default function Login() {
       onSubmit: async (values) => {
          const response = await apiUsers.login(values)
          if (response.success) {
-            dispatch(login({ isLoggedIn: true, userData: response.userData, token: response.accessToken }))
+            dispatch(login({ isLoggedIn: true, userData: response.userData, token: response.accessToken })) // save user data to redux
             navigate(`/${path.HOME}`)
          } else {
             Swal.fire('Error!', response.message, 'error')
@@ -196,7 +196,7 @@ export default function Login() {
                         value={formikLogin.values.email}
                         handleChange={formikLogin.handleChange}
                         error={formikLogin.touched.email && formikLogin.errors.email}
-                        className='outline-none w-full my-2 '
+                        className='outline-none w-full mt-2 '
                      />
                      <div onClick={togglePasswordLoginVisibility} className='cursor-pointer w-full flex justify-end'>
                         {showPasswordLogin ? <FaEye /> : <FaEyeSlash />}

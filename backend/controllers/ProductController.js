@@ -73,6 +73,12 @@ class ProductController {
       if (queries?.title) {
          formattedQuery.title = { $regex: queries.title, $options: 'i' } // i: case insensitive
       }
+      if (queries?.category) {
+         formattedQuery.category = { $regex: queries.category, $options: 'i' }
+      }
+      if (queries?.color) {
+         formattedQuery.color = { $regex: queries.color, $options: 'i' }
+      }
       // console.log(formattedQuery)
       let queryCommand = Product.find(formattedQuery)
 

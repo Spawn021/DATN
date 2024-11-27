@@ -3,7 +3,7 @@ import { LuBadgeCheck } from 'react-icons/lu'
 import { MdEmail, MdLockOutline } from 'react-icons/md'
 import { IoMenu } from 'react-icons/io5'
 import { TfiHeadphone } from 'react-icons/tfi'
-import { IoIosLaptop } from 'react-icons/io'
+import { IoIosLaptop, IoIosArrowForward } from 'react-icons/io'
 import { IoKeyOutline } from 'react-icons/io5'
 import { CiCamera } from 'react-icons/ci'
 import { BsPrinter, BsSpeaker } from 'react-icons/bs'
@@ -34,9 +34,24 @@ import {
    FaCcDinersClub,
    FaMinus,
    FaArrowLeft,
+   FaShieldAlt,
+   FaTruck,
+   FaGift,
+   FaReply,
+   FaTty,
+   FaCaretUp,
+   FaChevronDown,
 } from 'react-icons/fa'
 
 const icons = {
+   FaChevronDown,
+   FaCaretUp,
+   FaTty,
+   FaReply,
+   FaTruck,
+   FaGift,
+   FaShieldAlt,
+   IoIosArrowForward,
    FaEye,
    FaEyeSlash,
    MdLockOutline,

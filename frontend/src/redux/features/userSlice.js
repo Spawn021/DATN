@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiUsers } from '../apis'
-
 export const getUserCurrent = createAsyncThunk('user/getUserCurrent', async (data, { rejectWithValue }) => {
    const response = await apiUsers.getUserCurrent()
    if (!response.success) return rejectWithValue(response)
@@ -19,7 +18,7 @@ const userSlice = createSlice({
    },
    reducers: {
       login: (state, action) => {
-         //  console.log(action.payload)
+         // console.log(action.payload)
          state.isLoggedIn = action.payload.isLoggedIn
          state.token = action.payload.token
       },
@@ -36,7 +35,8 @@ const userSlice = createSlice({
       builder.addCase(getUserCurrent.fulfilled, (state, action) => {
          state.loading = false
          state.error = null
-         state.userData = action.payload.user
+         // console.log(action.payload)
+         state.userData = action.payload.user // user is data from response of api getCurrent in UserController
          state.isLoggedIn = true
       })
       builder.addCase(getUserCurrent.rejected, (state, action) => {

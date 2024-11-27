@@ -16,6 +16,7 @@ const InputField = ({ value, handleChange, handleBlur, error, nameKey, type, cla
             name={nameKey}
             onChange={handleChange}
             className={`rounded-[8px] py-[10px] px-[15px] text-[13px] border ${className} `}
+            // autoComplete={type === 'password' ? 'new-password' : 'off'}
          />
          {error && <span className='text-red-500 text-xs '>{error}</span>}
       </div>

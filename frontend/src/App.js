@@ -3,10 +3,12 @@ import { Route, Routes } from 'react-router-dom'
 import { Login, Home, Public, FAQ, Service, ProductDetail, Products, Blog, ActiveRegister, ForgetPassword } from './pages/public'
 // import { Login, Home, Public } from './pages/public'
 import path from './ultils/path'
+import { ScrollToTopHandler } from './components'
 
 function App() {
    return (
       <div className='min-h-screen'>
+         <ScrollToTopHandler />
          <Routes>
             <Route path={path.PUBLIC} element={<Public />}>
                <Route path={path.HOME} element={<Home />} />
@@ -14,7 +16,7 @@ function App() {
                <Route path={path.PRODUCTS} element={<Products />} />
                <Route path={path.OUR_SERVICES} element={<Service />} />
                <Route path={path.FAQS} element={<FAQ />} />
-               <Route path={path.DETAIL_PRODUCT__PID__TITLE} element={<ProductDetail />} />
+               <Route path={path.DETAIL_PRODUCT__CATEGORY__PID__TITLE} element={<ProductDetail />} />
             </Route>
             <Route path={path.ACTIVE_REGISTER} element={<ActiveRegister />} />
             <Route path={path.LOGIN} element={<Login />} />
