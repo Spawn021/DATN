@@ -15,6 +15,7 @@ const userSlice = createSlice({
       token: null,
       loading: false,
       error: null,
+      message: '',
    },
    reducers: {
       login: (state, action) => {
@@ -26,6 +27,9 @@ const userSlice = createSlice({
          state.isLoggedIn = false
          state.token = null
       },
+      clearMessage: (state) => {
+         state.message = ''
+      }
    },
    extraReducers: (builder) => {
       builder.addCase(getUserCurrent.pending, (state) => {
@@ -42,9 +46,13 @@ const userSlice = createSlice({
       builder.addCase(getUserCurrent.rejected, (state, action) => {
          state.loading = false
          state.error = action.error.message
+         state.isLoggedIn = false
+         state.token = null
+         state.userData = null
+         state.message = 'Login session expired. Please login again!'
       })
    },
 })
-export const { login, logout } = userSlice.actions
+export const { login, logout, clearMessage } = userSlice.actions
 
 export default userSlice.reducer

@@ -3,11 +3,15 @@ import { Route, Routes } from 'react-router-dom'
 import { Login, Home, Public, FAQ, Service, ProductDetail, Products, Blog, ActiveRegister, ForgetPassword } from './pages/public'
 // import { Login, Home, Public } from './pages/public'
 import path from './ultils/path'
-import { ScrollToTopHandler } from './components'
+import { ScrollToTopHandler, Modal } from './components'
+import { useSelector } from 'react-redux'
 
 function App() {
+   const { isShowModal, modalContent } = useSelector((state) => state.modal)
+
    return (
-      <div className='min-h-screen'>
+      <div className='min-h-screen relative'>
+         {isShowModal && <Modal>{modalContent}</Modal>}
          <ScrollToTopHandler />
          <Routes>
             <Route path={path.PUBLIC} element={<Public />}>

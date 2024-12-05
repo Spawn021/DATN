@@ -28,3 +28,6 @@ export const formatTime = (time) => {
    const seconds = String(time % 60).padStart(2, '0')
    return `${minutes}:${seconds}`
 }
+export const generatePaginationArray = (start, end) => {
+   return Array.from({ length: end - start + 1 }, (_, i) => start + i)
+}

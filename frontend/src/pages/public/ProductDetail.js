@@ -23,6 +23,7 @@ const ProductDetail = () => {
    const [product, setProduct] = useState(null)
    const [quantity, setQuantity] = useState(1)
    const [relativeProducts, setRelativeProducts] = useState()
+   const [update, setUpdate] = useState(false)
 
    const getProductData = useCallback(async () => {
       const response = await apiProducts.getProduct(pid)
@@ -30,9 +31,9 @@ const ProductDetail = () => {
          setProduct(response.product)
       }
    }, [pid])
+
    const getProductsData = useCallback(async () => {
       const response = await apiProducts.getProducts({ category: category, limit: 8 })
-      console.log(response)
       if (response.success) {
          setRelativeProducts(response.products)
       }
@@ -43,7 +44,10 @@ const ProductDetail = () => {
          getProductData()
          getProductsData()
       }
-   }, [pid, getProductData, getProductsData])
+   }, [pid, getProductData, getProductsData, update])
+   const rerender = useCallback(() => {
+      setUpdate((prev) => !prev)
+   }, [update])
    const handleQuantity = useCallback(
       (number) => {
          if (number === '') {
@@ -132,7 +136,7 @@ const ProductDetail = () => {
             </div>
          </div>
          <div className='w-main m-auto bg-white mt-10 px-[10px] '>
-            <ProductInformation />
+            <ProductInformation totalRating={product?.totalRating} ratings={product?.ratings} nameProduct={product?.title} pid={product?._id} rerender={rerender} />
          </div>
          <div className='w-main m-auto bg-white mt-10 px-[10px] '>
             <h2 className=' text-xl font-semibold text-[#151515] pb-4 border-main border-b-[2px] uppercase'>Other Customers also buy</h2>

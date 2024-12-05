@@ -3,6 +3,7 @@ import storage from 'redux-persist/lib/storage'
 import { persistStore, persistReducer } from 'redux-persist'
 import prodCategoryReducer from '../features/prodCategorySlice'
 import userReducer from '../features/userSlice'
+import modalReducer from '../features/modalSlice'
 
 const commonPersistConfig = {
    key: 'user',
@@ -17,11 +18,14 @@ export const store = configureStore({
    reducer: {
       prodCategory: prodCategoryReducer,
       user: persistReducer(userPersistConfig, userReducer),
+      modal: modalReducer,
    },
    middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
          serializableCheck: {
             ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+            ignoredPaths: ['modal.modalContent'],
+            ignoredActionPaths: ['payload.modalContent'],
          },
       }),
 })

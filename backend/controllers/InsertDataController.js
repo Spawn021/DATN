@@ -18,7 +18,7 @@ const insertP = async (product) => {
       images: product?.images,
       thumbnail: product?.thumbnail,
       color: product?.variants?.find((el) => el.label === 'Color')?.variants[0],
-      totalRating: Math.round(Math.random() * 5 * 10) / 10,
+      totalRating: 0,
    })
 }
 const insertC = async (category) => {

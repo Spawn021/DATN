@@ -1,6 +1,8 @@
+const { query } = require('express')
 const Product = require('../models/Product')
 const asyncHandler = require('express-async-handler')
 const slugify = require('slugify')
+const { default: path } = require('../../frontend/src/ultils/path')
 
 class ProductController {
    createProduct = asyncHandler(async (req, res) => {
@@ -49,7 +51,13 @@ class ProductController {
    })
    getProduct = asyncHandler(async (req, res) => {
       const { pid } = req.params
-      const product = await Product.findByIdAndUpdate(pid, { $inc: { numberViews: 1 } }, { new: true })
+      const product = await Product.findByIdAndUpdate(pid, { $inc: { numberViews: 1 } }, { new: true }).populate({
+         path: 'ratings',
+         populate: {
+            path: 'postedBy',
+            select: 'firstname lastname avatar'
+         }
+      })
       return res.status(200).json({
          success: product ? true : false,
          product: product ? product : 'No product found',
@@ -69,6 +77,7 @@ class ProductController {
       queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (match) => `$${match}`) // Add $ to operators
       const formattedQuery = JSON.parse(queryStr) // Convert string back to object
 
+      let colorQueryObject = {}
       // Filter products
       if (queries?.title) {
          formattedQuery.title = { $regex: queries.title, $options: 'i' } // i: case insensitive
@@ -76,12 +85,17 @@ class ProductController {
       if (queries?.category) {
          formattedQuery.category = { $regex: queries.category, $options: 'i' }
       }
-      if (queries?.color) {
-         formattedQuery.color = { $regex: queries.color, $options: 'i' }
-      }
-      // console.log(formattedQuery)
-      let queryCommand = Product.find(formattedQuery)
 
+      if (queries?.color) {
+         delete formattedQuery.color
+         const colors = queries.color.split(',')
+         const colorQuery = colors.map((color) => ({ color: { $regex: color, $options: 'i' } }))
+         colorQueryObject = { $or: colorQuery }
+      }
+      const q = { ...colorQueryObject, ...formattedQuery }
+      // console.log(formattedQuery)
+      let queryCommand = Product.find(q)
+      // console.log(queryCommand)
       // Sort products
       if (req.query.sort) {
          const sortBy = req.query.sort.split(',').join(' ') //
@@ -109,12 +123,12 @@ class ProductController {
       // Execute query
       try {
          const products = await queryCommand
-         const counts = await Product.find(formattedQuery).countDocuments()
+         const counts = await Product.find(q).countDocuments()
 
          return res.status(200).json({
             counts,
             success: products.length > 0 ? true : false,
-            products: products.length > 0 ? products : 'No products found',
+            products: products.length > 0 ? products : 'No product found',
          })
       } catch (err) {
          return res.status(400).json({
@@ -125,7 +139,7 @@ class ProductController {
    })
    ratings = asyncHandler(async (req, res) => {
       const { _id } = req.payload // User id
-      const { star, comment, pid } = req.body
+      const { star, comment, pid, updatedAt } = req.body
       if (!star || !pid) {
          return res.status(400).json({
             success: false,
@@ -138,8 +152,9 @@ class ProductController {
       if (existingRating) {
          existingRating.star = star
          existingRating.comment = comment
+         existingRating.updatedAt = updatedAt
       } else {
-         product.ratings.push({ star, comment, postedBy: _id })
+         product.ratings.push({ star, comment, postedBy: _id, updatedAt })
       }
       const totalRating = product.ratings.reduce((acc, item) => acc + +item.star, 0)
 
