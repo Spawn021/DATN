@@ -116,15 +116,14 @@ class ProductController {
       // skip: number of results to skip before starting to return results
 
       const page = parseInt(req.query.page, 10) || 1
-      const limit = parseInt(req.query.limit, 10) || parseInt(process.env.LIMIT_PRODUCT, 10)
+      const limit = parseInt(req.query.limit, 10) || parseInt(process.env.LIMIT, 10)
       const skip = (page - 1) * limit
+      const counts = await Product.find(q).countDocuments()
       queryCommand = queryCommand.skip(skip).limit(limit)
 
       // Execute query
       try {
          const products = await queryCommand
-         const counts = await Product.find(q).countDocuments()
-
          return res.status(200).json({
             counts,
             success: products.length > 0 ? true : false,

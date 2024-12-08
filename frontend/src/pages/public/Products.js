@@ -30,11 +30,7 @@ const Products = () => {
    }
 
    useEffect(() => {
-      let param = [...params.entries()]
-      let queries = {}
-      param.forEach((item) => {
-         queries[item[0]] = item[1]
-      })
+      let queries = Object.fromEntries(params.entries())
       if (queries.from) {
          queries.price = { gte: queries.from }
          delete queries.from
@@ -111,7 +107,7 @@ const Products = () => {
             </div>
          </div>
          {products?.products?.length > 0 && <div className='w-main mx-auto px-[10px]'>
-            <Pagination totalCount={products?.counts} />
+            <Pagination totalCount={products?.counts} pageSize={process.env.REACT_APP_PRODUCT_LIMIT} />
          </div>}
 
 

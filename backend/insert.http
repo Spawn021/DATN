@@ -2,3 +2,5 @@
 POST http://localhost:5000/api/insert-data
 ###
 POST http://localhost:5000/api/insert-data/category
+###
+POST http://localhost:5000/api/user/mock

@@ -26,6 +26,8 @@ const userSlice = createSlice({
       logout: (state) => {
          state.isLoggedIn = false
          state.token = null
+         state.userData = null
+
       },
       clearMessage: (state) => {
          state.message = ''
@@ -39,7 +41,6 @@ const userSlice = createSlice({
       builder.addCase(getUserCurrent.fulfilled, (state, action) => {
          state.loading = false
          state.error = null
-         // console.log(action.payload)
          state.userData = action.payload.user // user is data from response of api getCurrent in UserController
          state.isLoggedIn = true
       })

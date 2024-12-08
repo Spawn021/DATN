@@ -2,9 +2,10 @@ import { useMemo } from 'react'
 import { generatePaginationArray } from '../ultils/helpers'
 
 
-const usePagination = (totalProductCount, currentPage, siblingCount = 1) => {
+const usePagination = (totalProductCount, currentPage, siblingCount = 1, pageSize) => {
+
     const paginationArray = useMemo(() => {
-        const productsPerPage = process.env.REACT_APP_PRODUCT_LIMIT || 10
+        const productsPerPage = pageSize
         const paginationCount = Math.ceil(totalProductCount / productsPerPage)
         const totalPageNumbers = siblingCount + 5
         if (paginationCount <= totalPageNumbers) {
@@ -28,7 +29,7 @@ const usePagination = (totalProductCount, currentPage, siblingCount = 1) => {
         }
 
 
-    }, [totalProductCount, currentPage, siblingCount])
+    }, [totalProductCount, currentPage, siblingCount, pageSize])
 
     return paginationArray
 }

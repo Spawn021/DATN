@@ -4,6 +4,7 @@ const UserController = require('../controllers/UserController')
 const { verifyAccessToken, verifyRefreshToken, isAdmin } = require('../middlewares/verifyToken')
 
 router.post('/register', UserController.register) // POST /register
+router.post('/mock', UserController.createUsers)
 router.get('/active-account/:token', UserController.activateAccount) // POST /activate-account
 router.post('/login', UserController.login) // POST /login
 router.get('/get-current', verifyAccessToken, UserController.getCurrent)

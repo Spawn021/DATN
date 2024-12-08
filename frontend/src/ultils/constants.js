@@ -1,6 +1,6 @@
 import path from './path'
 import icons from './icons'
-const { FaTty, FaReply, FaTruck, FaGift, FaShieldAlt } = icons
+const { FaTty, FaReply, FaTruck, FaGift, FaShieldAlt, RxDashboard, FaUserGroup, FaProductHunt, FaFileInvoiceDollar } = icons
 export const navigation = [
    {
       id: 1,
@@ -121,3 +121,46 @@ export const voteOptions = [
    { id: 4, value: 'Very Good' },
    { id: 5, value: 'Excellent' },
 ]
+export const adminSidebar = [
+   {
+      id: 1,
+      type: 'single',
+      value: 'Dashboard',
+      path: `/${path.ADMIN}/${path.DASHBOARD}`,
+      icon: <RxDashboard />,
+   },
+   {
+      id: 2,
+      type: 'single',
+      value: 'Users',
+      path: `/${path.ADMIN}/${path.MANAGE_USERS}`,
+      icon: <FaUserGroup />,
+   },
+   {
+      id: 3,
+      type: 'parent',
+      value: 'Products',
+      icon: <FaProductHunt />,
+      children: [
+         {
+            value: 'Manage Products',
+            path: `/${path.ADMIN}/${path.MANAGE_PRODUCTS}`,
+         },
+         {
+            value: 'Create Product',
+            path: `/${path.ADMIN}/${path.CREATE_PRODUCT}`,
+         }
+      ],
+   },
+   {
+      id: 4,
+      type: 'single',
+      value: 'Orders',
+      path: `/${path.ADMIN}/${path.MANAGE_ORDERS}`,
+      icon: <FaFileInvoiceDollar />,
+   },
+]
+export const roles = {
+   user: 'User',
+   admin: 'Admin',
+};

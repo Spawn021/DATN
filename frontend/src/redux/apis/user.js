@@ -59,3 +59,10 @@ export const logout = () => {
       withCredentials: true,
    })
 }
+export const getAllUsers = (queries) => {
+   return axios({
+      url: '/user',
+      method: 'GET',
+      params: queries,
+   })
+}

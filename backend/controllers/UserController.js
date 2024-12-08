@@ -5,6 +5,7 @@ const crypto = require('crypto')
 const asyncHandler = require('express-async-handler')
 const { generateAccessToken, generateRefreshtoken } = require('../middlewares/jwt')
 const sendMail = require('../ultils/sendMail')
+const { users } = require('../ultils/constants')
 class UserController {
    constructor() {
       cron.schedule('*/5 * * * * ', async () => {
@@ -105,7 +106,7 @@ class UserController {
    getCurrent = asyncHandler(async (req, res) => {
       // console.log(req.payload)
       const { _id } = req.payload
-      const user = await User.findById(_id).select('-password -refreshToken -role')
+      const user = await User.findById(_id).select('-password -refreshToken')
       if (!user) {
          return res.status(404).json({
             success: false,
@@ -269,11 +270,67 @@ class UserController {
       })
    })
    getAllUsers = asyncHandler(async (req, res) => {
-      const users = await User.find().select('-password -refreshToken -role')
-      return res.status(200).json({
-         success: users ? true : false,
-         users,
-      })
+      const queries = { ...req.query } // Copy queries
+      // Split special fields from queries
+      const removeFields = ['sort', 'fields', 'page', 'limit']
+      removeFields.forEach((field) => delete queries[field])
+      // Format queries for syntax of MongoDB operators correctly
+      let queryStr = JSON.stringify(queries) // Convert queries to string
+      queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (match) => `$${match}`) // Add $ to operators
+      const formattedQuery = JSON.parse(queryStr) // Convert string back to object
+
+      // if (queries?.name) {
+      //    formattedQuery.name = { $regex: queries.name, $options: 'i' } // i: case insensitive
+      // }
+      if (req.query.q) {
+         formattedQuery.$or = [
+            { firstname: { $regex: req.query.q, $options: 'i' } },
+            { lastname: { $regex: req.query.q, $options: 'i' } },
+            { email: { $regex: req.query.q, $options: 'i' } }
+         ]
+         delete formattedQuery.q
+      }
+      let queryCommand = User.find(formattedQuery)
+
+      if (req.query.sort) {
+         const sortBy = req.query.sort.split(',').join(' ') //
+         queryCommand = queryCommand.sort(sortBy)
+      } else {
+         queryCommand = queryCommand.sort('-createdAt')
+      }
+
+      // Field selection
+      if (req.query.fields) {
+         const fields = req.query.fields.split(',').join(' ')
+         queryCommand = queryCommand.select(fields)
+      }
+
+      // Pagination
+      // page: current page
+      // limit: number of results per page
+      // skip: number of results to skip before starting to return results
+
+      const page = parseInt(req.query.page, 10) || 1
+      const limit = parseInt(req.query.limit, 10) || parseInt(process.env.LIMIT, 10)
+      const skip = (page - 1) * limit
+
+      const counts = await User.find(queryCommand).countDocuments()
+      queryCommand = queryCommand.skip(skip).limit(limit)
+      // Execute query
+      try {
+         const users = await queryCommand
+
+         return res.status(200).json({
+            counts,
+            success: users.length > 0 ? true : false,
+            users: users.length > 0 ? users : 'No user found',
+         })
+      } catch (err) {
+         return res.status(400).json({
+            success: false,
+            message: 'Query failed',
+         })
+      }
    })
    deleteUser = asyncHandler(async (req, res) => {
       const { _id } = req.query
@@ -358,5 +415,13 @@ class UserController {
          return res.status(200).json({ success: true, Cart })
       }
    })
+   createUsers = asyncHandler(async (req, res) => {
+      const response = await User.create(users)
+      return res.status(200).json({
+         success: response ? true : false,
+         users: response ? response : 'Cannot create users',
+      })
+   })
+
 }
 module.exports = new UserController()
