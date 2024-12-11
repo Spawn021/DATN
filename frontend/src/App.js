@@ -1,5 +1,7 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Login, Home, PublicLayout, FAQ, Service, ProductDetail, Products, Blog, ActiveRegister, ForgetPassword } from './pages/public'
 import { AdminLayout, ManageOrders, ManageProducts, ManageUsers, CreateProduct, Dashboard } from './pages/admin'
 import { MemberLayout, Personal } from './pages/member'
@@ -13,6 +15,17 @@ function App() {
    return (
       <div className='min-h-screen relative'>
          {isShowModal && <Modal>{modalContent}</Modal>}
+         <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+         />
          <ScrollToTopHandler />
          <Routes>
             <Route path={path.ALL} element={<h1>404 Not Found</h1>} />

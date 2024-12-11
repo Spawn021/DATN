@@ -40,3 +40,32 @@ export const highlightText = (text, query) => {
       ) : part
    )
 }
+export const validateTinyMCE = (payload, setInvalidField) => {
+   let invalidCount = 0;
+   if (!payload.description || payload.description.trim() === '') {
+      setInvalidField(prev => ({
+         ...prev,
+         description: { message: 'Description is required' }
+      }));
+      invalidCount++;
+   } else {
+      setInvalidField(prev => ({
+         ...prev,
+         description: null
+      }));
+   }
+   return invalidCount;
+};
+
+export const fileToBase64 = (file) => {
+   return new Promise((resolve, reject) => {
+      if (!file) {
+         reject("No file provided");
+         return;
+      }
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+   })
+}

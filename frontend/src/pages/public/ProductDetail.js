@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Slider from 'react-slick'
+import DOMPurify from 'dompurify'
 import { apiProducts } from '../../redux/apis'
 import { Breadcrumb, Product } from '../../components'
 import { ImageMagnifier, SelectQuantity, ProductExtraInfo, ProductInformation } from '../../components'
@@ -83,7 +84,7 @@ const ProductDetail = () => {
          </div>
          <div className='w-main m-auto bg-white mt-5 flex px-[10px]'>
             <div className='w-[40%] flex flex-col gap-5'>
-               <div className='w-[458px] object-cover border-[2px]'>
+               <div className='w-[458px] h-[458px] border-[2px]'>
                   <ImageMagnifier width={'100%'} height={'100%'} src={product?.thumbnail} alt={product?.title} />
                </div>
                <div className='w-[458px] '>
@@ -112,13 +113,19 @@ const ProductDetail = () => {
                   </div>
                </div>
                <ul className='pl-4 mt-5 mb-[10px]'>
-                  {product?.description?.map((desc, index) => {
-                     return (
-                        <li key={index} className='text-[#505050] list-square mb-[5px] text-[14px] font-normal pl-1'>
-                           {desc}
-                        </li>
-                     )
-                  })}
+                  {product?.description?.length > 1 &&
+                     product?.description?.map((desc, index) => {
+                        return (
+                           <li key={index} className='text-[#505050] list-square mb-[5px] text-[14px] font-normal pl-1'>
+                              {desc}
+                           </li>
+                        )
+                     })
+                  }
+                  {product?.description?.length === 1 &&
+                     <div className='text-[#505050]' dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product?.description[0]) }}>
+                     </div>
+                  }
                </ul>
                <SelectQuantity
                   quantity={quantity}

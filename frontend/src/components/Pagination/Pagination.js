@@ -5,7 +5,6 @@ import { PagiItem } from '../../components'
 import useDebounce from '../../hooks/useDebounce'
 
 const Pagination = ({ totalCount, pageSize = 10 }) => {
-    console.log(pageSize)
     const [params, setParams] = useSearchParams()
     const [inputPage, setInputPage] = useState('')
     const currentPage = parseInt(params.get('page') || 1)
@@ -21,6 +20,9 @@ const Pagination = ({ totalCount, pageSize = 10 }) => {
 
     const handlePageChange = (newPage) => {
         setParams({ page: newPage })
+        setInputPage('')
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.activeElement.blur();
     };
     const debouncedInput = useDebounce(inputPage, 500)
     useEffect(() => {

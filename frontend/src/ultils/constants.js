@@ -160,7 +160,11 @@ export const adminSidebar = [
       icon: <FaFileInvoiceDollar />,
    },
 ]
-export const roles = {
-   user: 'User',
-   admin: 'Admin',
-};
+export const roles = [
+   { id: 'user', value: 'User' },
+   { id: 'admin', value: 'Admin' },
+]
+export const userStatus = [
+   { id: false, value: 'Active' },
+   { id: true, value: 'Blocked' },
+]

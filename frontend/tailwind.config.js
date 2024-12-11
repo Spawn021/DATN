@@ -55,12 +55,22 @@ module.exports = {
                '0%': { transform: 'translateX(-100%)', opacity: '0' },
                '100%': { transform: 'translateX(0)', opacity: '1' },
             },
+            'scale-up-center': {
+               '0%': {
+                  transform: 'scale(0.5)',
+
+               },
+               '100%': {
+                  transform: 'scale(1)',
+               },
+            }
          },
          animation: {
             'slide-top': 'slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both',
             'slide-top-sm': 'slide-top-sm 0.2s both',
             moveLeft: 'moveLeft 1s cubic-bezier(0.25, 1, 0.5, 1) forwards',
             moveRight: 'moveRight 1s cubic-bezier(0.25, 1, 0.5, 1) forwards',
+            'scale-up-center': 'scale-up-center 0.15s cubic-bezier(0.250, 0.460, 0.450, 0.940) both',
          },
       },
    },

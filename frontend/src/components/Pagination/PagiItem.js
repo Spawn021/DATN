@@ -22,8 +22,8 @@ const PagiItem = ({ children }) => {
             type='button'
             disabled={!Number(children)}
             onClick={handlePagination}
-            className={`w-10 h-10 flex items-center justify-center bg-white border-solid border-[1px] border-[#dee2e6]
-                ${params.get('page') === children.toString() || (!params.get('page') && children.toString() === '1') ? 'bg-[#3f6ad8] text-white' : 'text-[#007bff]'} 
+            className={`w-10 h-10 flex items-center justify-center border-solid border-[1px] border-[#dee2e6]
+                ${params.get('page') === children.toString() || (!params.get('page') && children.toString() === '1') ? 'bg-[#3f6ad8] text-white' : 'text-[#007bff] bg-white '} 
                 ${Number(children) ? 'hover:bg-gray-300 hover:text-[#0056b3]' : ''}`}
 
         >

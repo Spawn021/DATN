@@ -66,3 +66,16 @@ export const getAllUsers = (queries) => {
       params: queries,
    })
 }
+export const updateUser = (uid, data) => {
+   return axios({
+      url: `/user/${uid}`,
+      method: 'PUT',
+      data,
+   })
+}
+export const deleteUser = (uid) => {
+   return axios({
+      url: `/user/${uid}`,
+      method: 'DELETE',
+   })
+}

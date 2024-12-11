@@ -27,7 +27,7 @@ const AdminLayout = () => {
             <div className={`h-screen sticky top-0 transition-all duration-300 ${active ? 'w-[15%]' : 'w-0 overflow-hidden'}`}>
                 {active && <AdminSidebar />}
             </div>
-            <div className='flex-auto bg-[#f9fafb]  overflow-y-auto'>
+            <div className={`bg-[#f9fafb] overflow-y-auto transition-all duration-300 ${active ? 'w-[85%]' : 'w-[100%]'}`}>
                 <div className='h-[52px] bg-white flex items-center gap-2 px-4 shadow-md'>
                     <IoMenu onClick={() => setActive(!active)} className='text-3xl text-gray-500 cursor-pointer' />
                     <span className='text-xl font-semibold'>{currentRoute}</span>

@@ -6,7 +6,10 @@ const { default: path } = require('../../frontend/src/ultils/path')
 
 class ProductController {
    createProduct = asyncHandler(async (req, res) => {
-      if (Object.keys(req.body).length === 0) {
+      const { title, description, price, category, color, brand, } = req.body
+      const thumbnail = req?.files?.thumbnail[0]?.path
+      const images = req?.files?.images?.map((file) => file.path)
+      if (!title || !description || !price || !category || !color || !brand) {
          return res.status(400).json({
             success: false,
             message: 'Please fill in all fields',
@@ -19,6 +22,8 @@ class ProductController {
          })
       }
       if (req.body && req.body.title) req.body.slug = slugify(req.body.title)
+      if (thumbnail) req.body.thumbnail = thumbnail
+      if (images) req.body.images = images
       const product = await Product.create(req.body)
       return res.status(201).json({
          success: product ? true : false,

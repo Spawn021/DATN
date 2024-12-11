@@ -4,7 +4,7 @@ import { MdEmail, MdLockOutline, MdDelete } from 'react-icons/md'
 import { IoMenu } from 'react-icons/io5'
 import { TfiHeadphone } from 'react-icons/tfi'
 import { IoIosLaptop, IoIosArrowForward, IoMdArrowDropright, IoMdArrowDropdown } from 'react-icons/io'
-import { IoKeyOutline } from 'react-icons/io5'
+import { IoKeyOutline, IoReturnDownBackOutline } from 'react-icons/io5'
 import { CiCamera, CiEdit } from 'react-icons/ci'
 import { BsPrinter, BsSpeaker } from 'react-icons/bs'
 import { GiSmartphone, GiTablet, GiPositionMarker } from 'react-icons/gi'
@@ -49,6 +49,7 @@ import {
 } from 'react-icons/fa'
 
 const icons = {
+   IoReturnDownBackOutline,
    FaSearch,
    MdDelete,
    CiEdit,

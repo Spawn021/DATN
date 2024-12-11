@@ -333,14 +333,14 @@ class UserController {
       }
    })
    deleteUser = asyncHandler(async (req, res) => {
-      const { _id } = req.query
-      if (!_id) {
+      const { uid } = req.params
+      if (!uid) {
          return res.status(400).json({
             success: false,
             message: 'User id is required',
          })
       }
-      const user = await User.findByIdAndDelete(_id)
+      const user = await User.findByIdAndDelete(uid)
       return res.status(200).json({
          success: user ? true : false,
          deletedUser: user ? `User with email ${user.email} deleted ` : 'User not found',
@@ -362,14 +362,14 @@ class UserController {
       })
    })
    updateUserByAdmin = asyncHandler(async (req, res) => {
-      const { _id } = req.params
+      const { uid } = req.params
       if (Object.keys(req.body).length === 0) {
          return res.status(400).json({
             success: false,
             message: 'Missing inputs',
          })
       }
-      const user = await User.findByIdAndUpdate(_id, req.body, { new: true }).select('-password -refreshToken -role')
+      const user = await User.findByIdAndUpdate(uid, req.body, { new: true }).select('-password -refreshToken -role')
       return res.status(200).json({
          success: user ? true : false,
          updatedUser: user ? user : 'Something went wrong',

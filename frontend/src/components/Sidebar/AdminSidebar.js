@@ -1,5 +1,5 @@
 import React, { memo, Fragment, useState } from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink, useLocation, Link } from 'react-router-dom'
 import logo from '../../assets/logo.png'
 import { adminSidebar } from '../../ultils/constants'
 import icons from '../../ultils/icons'
@@ -21,9 +21,9 @@ const AdminSidebar = () => {
     }
     return (
         <div className='p-4 bg-white h-full'>
-            <div className='pb-4 w-full flex justify-center items-center border-b'>
+            <Link to={'/'} className='pb-4 w-full flex justify-center items-center border-b'>
                 <img src={logo} alt='logo' className='w-full object-contain' />
-            </div>
+            </Link>
             <div className='flex flex-col gap-2 mt-2'>
                 {adminSidebar.map((item, index) => {
                     return (

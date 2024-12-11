@@ -33,6 +33,9 @@ export { default as ProductInformation } from './Product/ProductInformation'
 
 export { default as InputSelect } from './Input/InputSelect'
 export { default as InputField } from './Input/InputField'
+export { default as InputForm } from './Input/InputForm'
+export { default as Select } from './Input/Select'
+export { default as Markdown } from './Input/Markdown'
 
 export { default as Votebar } from './Rating/Votebar'
 export { default as VoteOption } from './Rating/VoteOption'
