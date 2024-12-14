@@ -122,11 +122,11 @@ const ProductDetail = () => {
                         )
                      })
                   }
-                  {product?.description?.length === 1 &&
-                     <div className='text-[#505050]' dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product?.description[0]) }}>
-                     </div>
-                  }
                </ul>
+               {product?.description?.length === 1 &&
+                  <div className='text-[#505050] list-style' dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product?.description[0]) }}>
+                  </div>
+               }
                <SelectQuantity
                   quantity={quantity}
                   handleQuantity={handleQuantity}

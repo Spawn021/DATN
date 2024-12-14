@@ -19,7 +19,8 @@ const Pagination = ({ totalCount, pageSize = 10 }) => {
     };
 
     const handlePageChange = (newPage) => {
-        setParams({ page: newPage })
+        const queries = Object.fromEntries(params.entries())
+        setParams({ page: newPage, q: queries.q })
         setInputPage('')
         window.scrollTo({ top: 0, behavior: 'smooth' });
         document.activeElement.blur();

@@ -56,3 +56,6 @@ button.slick-prev::before {
    background-size: 0.7rem;
    background-position: right 0.7rem center;
 }
+.list-style ul {
+   list-style: inside;
+}

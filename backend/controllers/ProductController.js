@@ -6,10 +6,10 @@ const { default: path } = require('../../frontend/src/ultils/path')
 
 class ProductController {
    createProduct = asyncHandler(async (req, res) => {
-      const { title, description, price, category, color, brand, } = req.body
+      const { title, description, price, category, color } = req.body
       const thumbnail = req?.files?.thumbnail[0]?.path
       const images = req?.files?.images?.map((file) => file.path)
-      if (!title || !description || !price || !category || !color || !brand) {
+      if (!title || !description || !price || !category || !color) {
          return res.status(400).json({
             success: false,
             message: 'Please fill in all fields',
@@ -32,6 +32,9 @@ class ProductController {
    })
    updateProduct = asyncHandler(async (req, res) => {
       const { pid } = req.params
+      const files = req?.files
+      if (files.thumbnail) req.body.thumbnail = files.thumbnail[0].path
+      if (files.images) req.body.images = files.images.map((file) => file.path)
       if (req.body && req.body.discountPercentage > 100) {
          return res.status(400).json({
             success: false,
@@ -97,9 +100,19 @@ class ProductController {
          const colorQuery = colors.map((color) => ({ color: { $regex: color, $options: 'i' } }))
          colorQueryObject = { $or: colorQuery }
       }
-      const q = { ...colorQueryObject, ...formattedQuery }
+      let querySearch = {}
+      if (queries?.q) {
+         delete formattedQuery.q
+         querySearch.$or = [
+            { color: { $regex: queries.q, $options: 'i' } },
+            { title: { $regex: queries.q, $options: 'i' } },
+            { category: { $regex: queries.q, $options: 'i' } },
+            { brand: { $regex: queries.q, $options: 'i' } }
+         ]
+      }
+      const qr = { ...colorQueryObject, ...formattedQuery, ...querySearch }
       // console.log(formattedQuery)
-      let queryCommand = Product.find(q)
+      let queryCommand = Product.find(qr)
       // console.log(queryCommand)
       // Sort products
       if (req.query.sort) {
@@ -123,7 +136,7 @@ class ProductController {
       const page = parseInt(req.query.page, 10) || 1
       const limit = parseInt(req.query.limit, 10) || parseInt(process.env.LIMIT, 10)
       const skip = (page - 1) * limit
-      const counts = await Product.find(q).countDocuments()
+      const counts = await Product.find(qr).countDocuments()
       queryCommand = queryCommand.skip(skip).limit(limit)
 
       // Execute query

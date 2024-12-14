@@ -11,7 +11,7 @@ import { GiSmartphone, GiTablet, GiPositionMarker } from 'react-icons/gi'
 import { PiTelevisionThin } from 'react-icons/pi'
 import { SiAmericanexpress } from 'react-icons/si'
 import { RxDashboard } from "react-icons/rx";
-import { FaUserGroup } from "react-icons/fa6";
+import { FaUserGroup, FaPlus } from "react-icons/fa6";
 import {
    FaFileInvoiceDollar,
    FaProductHunt,
@@ -49,6 +49,7 @@ import {
 } from 'react-icons/fa'
 
 const icons = {
+   FaPlus,
    IoReturnDownBackOutline,
    FaSearch,
    MdDelete,

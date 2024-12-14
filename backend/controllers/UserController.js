@@ -273,7 +273,7 @@ class UserController {
       const queries = { ...req.query } // Copy queries
       // Split special fields from queries
       const removeFields = ['sort', 'fields', 'page', 'limit']
-      removeFields.forEach((field) => delete queries[field])
+      removeFields.forEach((field) => delete queries[field]) // Remove special fields from queries
       // Format queries for syntax of MongoDB operators correctly
       let queryStr = JSON.stringify(queries) // Convert queries to string
       queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (match) => `$${match}`) // Add $ to operators
