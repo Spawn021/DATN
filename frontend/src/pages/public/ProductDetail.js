@@ -25,7 +25,36 @@ const ProductDetail = () => {
    const [quantity, setQuantity] = useState(1)
    const [relativeProducts, setRelativeProducts] = useState()
    const [update, setUpdate] = useState(false)
-
+   const [variant, setVariant] = useState(null)
+   const [currentProduct, setCurrentProduct] = useState({
+      title: '',
+      thumbnail: '',
+      price: 0,
+      images: [],
+      color: '',
+   })
+   useEffect(() => {
+      if (variant) {
+         const selectedVariant = product?.variants?.find(item => item.sku === variant);
+         if (selectedVariant) {
+            setCurrentProduct({
+               title: selectedVariant?.title,
+               color: selectedVariant?.color,
+               price: selectedVariant?.price,
+               thumbnail: selectedVariant?.thumbnail,
+               images: selectedVariant?.images,
+            });
+         }
+      } else {
+         setCurrentProduct({
+            title: product?.title,
+            color: product?.color,
+            price: product?.price,
+            thumbnail: product?.thumbnail,
+            images: product?.images,
+         });
+      }
+   }, [variant, product]);
    const getProductData = useCallback(async () => {
       const response = await apiProducts.getProduct(pid)
       if (response.success) {
@@ -45,7 +74,7 @@ const ProductDetail = () => {
          getProductData()
          getProductsData()
       }
-   }, [pid, getProductData, getProductsData, update])
+   }, [pid, update])
    const rerender = useCallback(() => {
       setUpdate((prev) => !prev)
    }, [update])
@@ -75,24 +104,24 @@ const ProductDetail = () => {
    const handleDecrement = useCallback(() => {
       setQuantity((prev) => (prev > 1 ? prev - 1 : 1))
    }, [])
-
+   console.log(variant)
    return (
       <div className='w-full  '>
          <div className='flex flex-col justify-center items-center h-[80px] gap-2 bg-[#f7f7f7]'>
-            <div className='w-main px-[10px] font-semibold text-[18px]'>{title}</div>
-            <Breadcrumb title={title} category={category} />
+            <div className='w-main px-[10px] font-semibold text-[18px]'>{currentProduct?.title}</div>
+            <Breadcrumb title={currentProduct?.title} category={category} />
          </div>
          <div className='w-main m-auto bg-white mt-5 flex px-[10px]'>
             <div className='w-[40%] flex flex-col gap-5'>
                <div className='w-[458px] h-[458px] border-[2px]'>
-                  <ImageMagnifier width={'100%'} height={'100%'} src={product?.thumbnail} alt={product?.title} />
+                  <ImageMagnifier width={'100%'} height={'100%'} src={currentProduct?.thumbnail} alt={currentProduct?.title} />
                </div>
                <div className='w-[458px] '>
                   <Slider {...settings}>
-                     {product?.images?.map((image, index) => (
+                     {currentProduct.images?.map((image, index) => (
                         <div key={index} className='px-[1px] '>
                            <div className='w-[150px] h-[150px] border-[2px]'>
-                              <img src={image} alt={product?.title} className='w-full h-full object-contain' />
+                              <img src={image} alt={currentProduct?.title} className='w-full h-full object-contain' />
                            </div>
                         </div>
                      ))}
@@ -101,7 +130,7 @@ const ProductDetail = () => {
             </div>
             <div className='w-[40%] px-4'>
                <div className='flex items-center'>
-                  <div className='text-[30px] font-semibold '>{formatPrice(product?.price)} VND</div>
+                  <div className='text-[30px] font-semibold '>{formatPrice(currentProduct?.price)} VND</div>
                   <div className='text-[16px] text-[#505050] pl-10'> Sold: {product?.sold}</div>
                </div>
                <div className='flex items-center mt-1 gap-1'>
@@ -127,6 +156,29 @@ const ProductDetail = () => {
                   <div className='text-[#505050] list-style' dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product?.description[0]) }}>
                   </div>
                }
+               <div className='my-4 flex items-center gap-16'>
+                  <div className='text-[14px] font-semibold'>Color</div>
+                  <div className='flex flex-wrap gap-4 items-center'>
+                     <div
+                        onClick={() => setVariant(null)}
+                        className={`flex items-center justify-center gap-2 border cursor-pointer w-[100px] ${variant === null ? 'border-main' : ''}`}
+                     >
+                        <img src={product?.thumbnail} alt={product?.title} className='w-[30px] h-[30px] object-contain' />
+                        <span className='text-[#505050] text-[14px] font-normal'>{product?.color}</span>
+                     </div>
+                     {product?.variants?.map((item, index) => (
+                        <div
+                           key={index}
+                           onClick={() => setVariant(item.sku)}
+                           className={`flex items-center justify-center gap-2 border cursor-pointer w-[100px] ${variant === item.sku ? 'border-main' : ''}`}
+                        >
+                           <img src={item.thumbnail} alt={item.title} className='w-[30px] h-[30px] object-contain' />
+                           <span className='text-[#505050] text-[14px] font-normal'>{item.color}</span>
+                        </div>
+                     ))}
+                  </div>
+               </div>
+
                <SelectQuantity
                   quantity={quantity}
                   handleQuantity={handleQuantity}

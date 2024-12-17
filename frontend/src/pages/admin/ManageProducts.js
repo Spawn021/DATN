@@ -3,7 +3,7 @@ import { useSearchParams, createSearchParams, useNavigate, useLocation } from 'r
 import Swal from 'sweetalert2'
 import { toast } from 'react-toastify'
 import moment from 'moment'
-import { InputField, Pagination } from '../../components'
+import { CustomVariants, InputField, Pagination } from '../../components'
 import { UpdatedProduct } from '../admin'
 import icons from '../../ultils/icons'
 import { apiProducts } from '../../redux/apis'
@@ -11,12 +11,13 @@ import useDebounce from '../../hooks/useDebounce'
 import { highlightText, formatPrice, capitalizeFirstLetter } from '../../ultils/helpers'
 
 const ManageProducts = () => {
-    const { FaSearch, MdDelete, CiEdit } = icons
+    const { FaSearch, MdDelete, CiEdit, CgPlayListAdd } = icons
     const [query, setQuery] = useState('')
     const [counts, setCounts] = useState(0)
     const [pageSize, setPageSize] = useState(10);
     const [products, setProducts] = useState(null)
     const [update, setUpdate] = useState(false)
+    const [customVariants, setCustomVariants] = useState(null)
 
     const [editProduct, setEditProduct] = useState(null)
 
@@ -100,9 +101,10 @@ const ManageProducts = () => {
     return (
         <div className='p-4'>
             <div className='w-full h-full bg-white shadow rounded-lg p-4'>
-                {editProduct ? <UpdatedProduct editProduct={editProduct} setEditProduct={setEditProduct} render={render} /> :
+                {editProduct && <UpdatedProduct editProduct={editProduct} setEditProduct={setEditProduct} render={render} />}
+                {customVariants && <CustomVariants customVariants={customVariants} setCustomVariants={setCustomVariants} render={render} />}
+                {!editProduct && !customVariants && (
                     <div className='w-full'>
-
                         <div className='flex py-4 items-center w-full justify-between'>
                             <div className='flex text-base gap-2 items-center'>
                                 <span>Show</span>
@@ -131,63 +133,74 @@ const ManageProducts = () => {
                                 />
                             </div>
                         </div>
-                        <table className='w-full mb-[10px] border-collapse border-spacing-[2px] border-gray-300 '>
-                            <thead className='text-start'>
-                                <tr className='border-[1px] border-solid border-[#e9e9e9]'>
-                                    <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>#</th>
-                                    <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Thumb</th>
-                                    <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Title</th>
-                                    <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Brand</th>
-                                    <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Category</th>
-                                    <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Color</th>
-                                    <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Price</th>
-                                    <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Discount</th>
-                                    <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Quantity</th>
-                                    <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Sold</th>
-                                    <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Ratings</th>
-                                    <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>CreatedAt</th>
-                                    <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {products && products.map((el, index) => {
-                                    const productIndex = (Math.max(params.get('page'), 1) - 1) * pageSize + 1 + index
-                                    return (
-                                        <tr key={index} className={`border-[1px] text-sm border-solid border-[#e9e9e9] ${index % 2 !== 0 ? 'bg-white' : 'bg-gray-100'}`}>
-                                            <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{productIndex}</td>
-                                            <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>
-                                                <img src={el.thumbnail} alt={el.title} className='w-16 h-16 object-cover' />
-                                            </td>
-                                            <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{highlightText(el.title, query)}</td>
-                                            <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{highlightText(capitalizeFirstLetter(el.brand), query)}</td>
-                                            <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{highlightText(capitalizeFirstLetter(el.category), query)}</td>
-                                            <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{highlightText(el.color, query)}</td>
-                                            <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{formatPrice(el.price)}</td>
-                                            <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{el.discount}</td>
-                                            <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{el.quantity}</td>
-                                            <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{el.sold}</td>
-                                            <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{el.totalRating}</td>
-                                            <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{moment(el.createdAt).format('DD-MM-YYYY')}</td>
-                                            <td className='flex gap-2 items-center justify-center py-3 px-4 border-solid border-[#e9e9e9] mt-[18px]'>
-                                                <span onClick={() => setEditProduct(el)} className='text-blue-500 hover:text-blue-700 group relative cursor-pointer'>
-                                                    <CiEdit size={23} />
-                                                    <div className='pointer-events-none text-center p-2 text-[12px] absolute top-full bg-black text-white left-1/2 transform -translate-x-1/2 border rounded-md shadow-md opacity-0 transition-opacity duration-300 group-hover:opacity-100 before:absolute before:content-[""] before:w-2 before:h-2 before:bg-black before:rotate-45 before:-top-1 before:left-1/2 before:transform before:-translate-x-1/2'>
-                                                        Edit
-                                                    </div>
-                                                </span>
-                                                <span onClick={() => handleDeleteProduct(el._id)} className='text-red-500 hover:text-red-700 group relative cursor-pointer'>
-                                                    <MdDelete size={23} />
-                                                    <div className='pointer-events-none text-center p-2 text-[12px] absolute top-full bg-black text-white left-1/2 transform -translate-x-1/2 border rounded-md shadow-md opacity-0 transition-opacity duration-300 group-hover:opacity-100 before:absolute before:content-[""] before:w-2 before:h-2 before:bg-black before:rotate-45 before:-top-1 before:left-1/2 before:transform before:-translate-x-1/2'>
-                                                        Delete
-                                                    </div>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    )
-                                }
-                                )}
-                            </tbody>
-                        </table>
+                        <div className='w-full'>
+                            <table className='w-full mb-[10px] border-collapse border-spacing-[2px] border-gray-300'>
+                                <thead className='text-start'>
+                                    <tr className='border-[1px] border-solid border-[#e9e9e9] text-sm'>
+                                        <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>#</th>
+                                        <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Thumb</th>
+                                        <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Name</th>
+                                        <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Brand</th>
+                                        <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Category</th>
+                                        <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Color</th>
+                                        <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Price</th>
+                                        <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Discount</th>
+                                        <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Qty</th>
+                                        <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Sold</th>
+                                        <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Ratings</th>
+                                        <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Variant</th>
+                                        <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>CreatedAt</th>
+                                        <th className='border-b-[1px] border-t-[1px] border-solid border-[#dee2e6] py-3 px-4 text-start'>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {products && products.map((el, index) => {
+                                        const productIndex = (Math.max(params.get('page'), 1) - 1) * pageSize + 1 + index
+                                        return (
+                                            <tr key={index} className={`border-[1px] text-sm border-solid border-[#e9e9e9] ${index % 2 !== 0 ? 'bg-white' : 'bg-gray-100'}`}>
+                                                <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{productIndex}</td>
+                                                <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>
+                                                    <img src={el.thumbnail} alt={el.title} className='w-16 h-16 object-cover' />
+                                                </td>
+                                                <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{highlightText(el.title, query)}</td>
+                                                <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{highlightText(capitalizeFirstLetter(el.brand), query)}</td>
+                                                <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{highlightText(capitalizeFirstLetter(el.category), query)}</td>
+                                                <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{highlightText(el.color, query)}</td>
+                                                <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{formatPrice(el.price)}</td>
+                                                <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{el.discount}</td>
+                                                <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{el.quantity}</td>
+                                                <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{el.sold}</td>
+                                                <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{el.totalRating}</td>
+                                                <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{el.variants.length}</td>
+                                                <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{moment(el.createdAt).format('DD-MM-YYYY')}</td>
+                                                <td className='flex gap-2 items-center justify-center py-3 px-4 border-solid border-[#e9e9e9] mt-[18px]'>
+                                                    <span onClick={() => setEditProduct(el)} className='text-blue-500 hover:text-blue-700 group relative cursor-pointer'>
+                                                        <CiEdit size={23} />
+                                                        <div className='pointer-events-none text-center p-2 text-[12px] absolute top-full bg-black text-white left-1/2 transform -translate-x-1/2 border rounded-md shadow-md opacity-0 transition-opacity duration-300 group-hover:opacity-100 before:absolute before:content-[""] before:w-2 before:h-2 before:bg-black before:rotate-45 before:-top-1 before:left-1/2 before:transform before:-translate-x-1/2'>
+                                                            Edit
+                                                        </div>
+                                                    </span>
+                                                    <span onClick={() => handleDeleteProduct(el._id)} className='text-red-500 hover:text-red-700 group relative cursor-pointer'>
+                                                        <MdDelete size={23} />
+                                                        <div className='pointer-events-none text-center p-2 text-[12px] absolute top-full bg-black text-white left-1/2 transform -translate-x-1/2 border rounded-md shadow-md opacity-0 transition-opacity duration-300 group-hover:opacity-100 before:absolute before:content-[""] before:w-2 before:h-2 before:bg-black before:rotate-45 before:-top-1 before:left-1/2 before:transform before:-translate-x-1/2'>
+                                                            Delete
+                                                        </div>
+                                                    </span>
+                                                    <span onClick={() => setCustomVariants(el)} className='text-yellow-500 hover:text-yellow-700 group relative cursor-pointer'>
+                                                        <CgPlayListAdd size={23} />
+                                                        <div className='pointer-events-none text-center p-2 text-[12px] absolute top-full bg-black text-white left-1/2 transform -translate-x-1/2 border rounded-md shadow-md opacity-0 transition-opacity duration-300 group-hover:opacity-100 before:absolute before:content-[""] before:w-2 before:h-2 before:bg-black before:rotate-45 before:-top-1 before:left-1/2 before:transform before:-translate-x-1/2'>
+                                                            Variants
+                                                        </div>
+                                                    </span>
+                                                </td>
+
+                                            </tr>
+                                        )
+                                    }
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
                         {!products && (
                             <div className="text-center py-4 text-gray-500">
                                 No products found with the search title provided above ...
@@ -202,7 +215,8 @@ const ManageProducts = () => {
                         }
 
                     </div>
-                }
+                )}
+
             </div>
         </div>
     )

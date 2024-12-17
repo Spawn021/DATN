@@ -195,5 +195,26 @@ class ProductController {
          uploadImageProduct: response ? response : 'Cannot upload image product',
       })
    })
+   addVariants = asyncHandler(async (req, res) => {
+      const { pid } = req.params
+      const { title, price, color } = req.body
+      const thumbnail = req?.files?.thumbnail[0]?.path
+      const images = req?.files?.images?.map((file) => file.path)
+      if (!title || !price || !color) {
+         return res.status(400).json({
+            success: false,
+            message: 'Please fill in all fields',
+         })
+      }
+      const response = await Product.findByIdAndUpdate(pid, {
+         $push: {
+            variants: { title, price, color, thumbnail, images, sku: `${pid.slice(0, 4)}-${title.slice(0, 3)}-${color.slice(0, 2)}` },
+         }
+      }, { new: true })
+      return res.status(200).json({
+         success: response ? true : false,
+         addVariants: response ? response : 'Cannot add variants',
+      })
+   })
 }
 module.exports = new ProductController()

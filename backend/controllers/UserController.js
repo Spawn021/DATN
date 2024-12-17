@@ -1,6 +1,7 @@
 const User = require('../models/User')
 const cron = require('node-cron')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 const crypto = require('crypto')
 const asyncHandler = require('express-async-handler')
 const { generateAccessToken, generateRefreshtoken } = require('../middlewares/jwt')
@@ -14,8 +15,8 @@ class UserController {
       })
    }
    register = asyncHandler(async (req, res) => {
-      const { firstname, lastname, email, password } = req.body
-      if (!firstname || !lastname || !email || !password) {
+      const { firstname, lastname, email, password, mobile } = req.body
+      if (!firstname || !lastname || !email || !password || !mobile) {
          return res.status(400).json({
             success: false,
             message: 'Please fill in all fields',
@@ -269,6 +270,60 @@ class UserController {
          message: 'Password reset successful',
       })
    })
+   changePassword = asyncHandler(async (req, res) => {
+      const { _id } = req.payload
+      const { password, newPassword } = req.body
+      if (!password || !newPassword) {
+         return res.status(400).json({
+            success: false,
+            message: 'Password and new password are required',
+         })
+      }
+      const user = await User.findByIdAndUpdate(_id, { password: newPassword }, { new: true })
+      if (!user) {
+         return res.status(400).json({
+            success: false,
+            message: 'User not found',
+         })
+      }
+      return res.status(200).json({
+         success: true,
+         message: 'Password changed successfully',
+      })
+   })
+   changePassword = asyncHandler(async (req, res) => {
+      const { _id } = req.payload
+      const { password, newPassword } = req.body
+      if (!password || !newPassword) {
+         return res.status(400).json({
+            success: false,
+            message: 'Password and new password are required',
+         });
+      }
+
+      const user = await User.findById(_id)
+      if (!user) {
+         return res.status(404).json({
+            success: false,
+            message: 'User not found',
+         })
+      } else if (await user.comparePassword(password)) {
+         user.password = newPassword
+         await user.save()
+         return res.status(200).json({
+            success: true,
+            message: 'Password changed successfully',
+         })
+      } else {
+         return res.status(400).json({
+            success: false,
+            message: 'Invalid password',
+         })
+      }
+   })
+
+
+
    getAllUsers = asyncHandler(async (req, res) => {
       const queries = { ...req.query } // Copy queries
       // Split special fields from queries
@@ -348,6 +403,10 @@ class UserController {
    })
    updateUser = asyncHandler(async (req, res) => {
       const { _id } = req.payload
+      console.log(_id)
+      const { firstname, lastname, email, mobile } = req.body
+      const data = { firstname, lastname, email, mobile }
+      if (req.file) data.avatar = req.file.path
 
       if (!_id || Object.keys(req.body).length === 0) {
          return res.status(400).json({
@@ -355,7 +414,7 @@ class UserController {
             message: 'Missing inputs',
          })
       }
-      const user = await User.findByIdAndUpdate(_id, req.body, { new: true }).select('-password -refreshToken -role')
+      const user = await User.findByIdAndUpdate(_id, data, { new: true }).select('-password -refreshToken -role')
       return res.status(200).json({
          success: user ? true : false,
          updatedUser: user ? user : 'Something went wrong',

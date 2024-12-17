@@ -79,3 +79,17 @@ export const deleteUser = (uid) => {
       method: 'DELETE',
    })
 }
+export const updateCurrent = (data) => {
+   return axios({
+      url: `/user/update-user`,
+      method: 'PUT',
+      data,
+   })
+}
+export const changePassword = (data) => {
+   return axios({
+      url: `/user/change-password`,
+      method: 'PUT',
+      data,
+   })
+}

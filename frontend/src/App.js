@@ -4,7 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Login, Home, PublicLayout, FAQ, Service, ProductDetail, Products, Blog, ActiveRegister, ForgetPassword } from './pages/public'
 import { AdminLayout, ManageOrders, ManageProducts, ManageUsers, CreateProduct, Dashboard } from './pages/admin'
-import { MemberLayout, Personal } from './pages/member'
+import { MemberLayout, Personal, MyCart, MyWishlist, History, ChangePassword } from './pages/member'
 import path from './ultils/path'
 import { ScrollToTopHandler, Modal } from './components'
 import { useSelector } from 'react-redux'
@@ -48,6 +48,10 @@ function App() {
 
             <Route path={path.MEMBER} element={<MemberLayout />}>
                <Route path={path.PERSONAL} element={<Personal />} />
+               <Route path={path.MY_CART} element={<MyCart />} />
+               <Route path={path.MY_WISHLIST} element={<MyWishlist />} />
+               <Route path={path.HISTORY} element={<History />} />
+               <Route path={path.CHANGE_PASSWORD} element={<ChangePassword />} />
             </Route>
 
             <Route path={path.ACTIVE_REGISTER} element={<ActiveRegister />} />

@@ -72,6 +72,19 @@ var productSchema = new mongoose.Schema(
          type: Number,
          default: 0,
       },
+      variants: [
+         {
+            title: String,
+            color: String,
+            price: Number,
+            thumbnail: String,
+            images: Array,
+            sold: Number,
+            quantity: Number,
+            sku: String,
+
+         }
+      ]
    },
    { timestamps: true }, // createdAt, updatedAt fields are automatically added into the schema
 )

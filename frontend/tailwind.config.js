@@ -12,9 +12,13 @@ module.exports = {
       extend: {
          boxShadow: {
             variant: '0 0 5px #1a1b188c',
+            'custom': '0 2px 20px #00000017',
          },
          width: {
             main: '1220px',
+         },
+         height: {
+            'hp': 'calc(100vh - 84px)',
          },
          inset: {
             'calc-100-plus-4': 'calc(100% + 4px)',

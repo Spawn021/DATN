@@ -1,2 +1,6 @@
 export { default as MemberLayout } from './MemberLayout'
 export { default as Personal } from './Personal'
+export { default as History } from './History'
+export { default as MyCart } from './MyCart'
+export { default as MyWishlist } from './MyWishlist'
+export { default as ChangePassword } from './ChangePassword'

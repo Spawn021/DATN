@@ -40,6 +40,10 @@ export default function Login() {
    const validationSchemaRegister = Yup.object({
       firstname: Yup.string().required('First name is required'),
       lastname: Yup.string().required('Last name is required'),
+      mobile: Yup.string().
+         required('Phone number is required')
+         .matches(/^[0-9]+$/, 'Phone number must be a number')
+         .min(10, 'Phone number must be at least 10 characters'),
       email: Yup.string().email('Invalid email format. Ex: abc@gmail.com').required('Email is required'),
       password: Yup.string()
          .min(6, 'Password must be at least 6 characters')
@@ -73,6 +77,7 @@ export default function Login() {
       initialValues: {
          firstname: '',
          lastname: '',
+         mobile: '',
          email: '',
          password: '',
          confirmPassword: '',
@@ -80,6 +85,7 @@ export default function Login() {
       validationSchema: validationSchemaRegister,
       onSubmit: async (values) => {
          const { confirmPassword, ...data } = values
+         console.log(data)
          setIsLoading(true)
          const response = await apiUsers.register(data)
          setIsLoading(false)
@@ -104,11 +110,10 @@ export default function Login() {
    return (
       <div className='bg-[#c9d6ff] bg-gradient-to-r from-[#e2e2e2] to-[#c9d6ff] flex items-center justify-center min-h-screen'>
          {!isLoading ? (
-            <div className='bg-white rounded-[30px] shadow-lg w-[768px] max-w-full min-h-[480px] flex relative overflow-hidden'>
+            <div className='bg-white rounded-[30px] shadow-lg w-[768px] max-w-full min-h-[600px] flex relative overflow-hidden'>
                <div
-                  className={`w-1/2 px-10 flex flex-col items-center justify-center h-full absolute top-0 ${
-                     isRegistering ? 'right-0 animate-moveRight' : 'left-0 animate-moveLeft'
-                  }`}
+                  className={`w-1/2 px-10 flex flex-col items-center justify-center h-full absolute top-0 ${isRegistering ? 'right-0 animate-moveRight' : 'left-0 animate-moveLeft'
+                     }`}
                >
                   <form
                      onSubmit={formikRegister.handleSubmit}
@@ -136,6 +141,15 @@ export default function Login() {
                            className='outline-none w-full my-2 '
                         />
                      </div>
+                     <InputField
+                        nameKey='mobile'
+                        placeholder={'Phone Number'}
+                        label={'Phone Number'}
+                        value={formikRegister.values.mobile}
+                        handleChange={formikRegister.handleChange}
+                        error={formikRegister.touched.mobile && formikRegister.errors.mobile}
+                        className='outline-none w-full my-2 '
+                     />
                      <InputField
                         nameKey='email'
                         placeholder={'Email'}
@@ -229,11 +243,10 @@ export default function Login() {
                </div>
 
                <div
-                  className={`w-1/2 flex items-center justify-center flex-col bg-gradient-to-r from-[#c64545] to-main h-full transition-all duration-500 absolute top-0 ${
-                     isRegistering
-                        ? 'left-0 rounded-tr-[100px] rounded-br-[100px] animate-moveLeft'
-                        : 'right-0 rounded-bl-[100px] rounded-tl-[100px] animate-moveRight'
-                  }`}
+                  className={`w-1/2 flex items-center justify-center flex-col bg-gradient-to-r from-[#c64545] to-main h-full transition-all duration-500 absolute top-0 ${isRegistering
+                     ? 'left-0 rounded-tr-[100px] rounded-br-[100px] animate-moveLeft'
+                     : 'right-0 rounded-bl-[100px] rounded-tl-[100px] animate-moveRight'
+                     }`}
                >
                   <div className={`px-[30px] flex items-center justify-center flex-col ${isRegistering ? 'block' : 'hidden'}`}>
                      <h1 className='text-[32px] font-bold text-white'>Welcome Back!</h1>

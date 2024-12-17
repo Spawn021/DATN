@@ -1,6 +1,6 @@
 import path from './path'
 import icons from './icons'
-const { FaTty, FaReply, FaTruck, FaGift, FaShieldAlt, RxDashboard, FaUserGroup, FaProductHunt, FaFileInvoiceDollar } = icons
+const { FaTty, FaReply, FaTruck, FaGift, FaShieldAlt, RxDashboard, FaUserGroup, FaProductHunt, FaFileInvoiceDollar, BsFillPersonFill, FaShoppingCart, FaRegHeart, MdHistory, FaLock } = icons
 export const navigation = [
    {
       id: 1,
@@ -159,6 +159,45 @@ export const adminSidebar = [
       path: `/${path.ADMIN}/${path.MANAGE_ORDERS}`,
       icon: <FaFileInvoiceDollar />,
    },
+]
+
+export const memberSidebar = [
+   {
+      id: 1,
+      type: 'single',
+      value: 'Personal',
+      path: `/${path.MEMBER}/${path.PERSONAL}`,
+      icon: <BsFillPersonFill />,
+   },
+   {
+      id: 2,
+      type: 'single',
+      value: 'My cart',
+      path: `/${path.MEMBER}/${path.MY_CART}`,
+      icon: <FaShoppingCart />,
+   },
+   {
+      id: 3,
+      type: 'single',
+      value: 'History',
+      path: `/${path.MEMBER}/${path.HISTORY}`,
+      icon: <MdHistory />,
+   },
+   {
+      id: 4,
+      type: 'single',
+      value: 'Wishlist',
+      path: `/${path.MEMBER}/${path.MY_WISHLIST}`,
+      icon: <FaRegHeart />,
+   },
+   {
+      id: 5,
+      type: 'single',
+      value: 'Change Password',
+      path: `/${path.MEMBER}/${path.CHANGE_PASSWORD}`,
+      icon: <FaLock />,
+   }
+
 ]
 export const roles = [
    { id: 'user', value: 'User' },

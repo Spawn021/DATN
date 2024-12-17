@@ -18,23 +18,23 @@ const CreateProduct = () => {
         images: []
     })
     useEffect(() => {
-        const thumbnail = watch('thumbnail');
+        const thumbnail = watch('thumbnail')
         if (thumbnail && thumbnail.length > 0) {
-            const allowedTypes = ['image/png', 'image/jpeg'];
-            const file = thumbnail[0];
+            const allowedTypes = ['image/png', 'image/jpeg']
+            const file = thumbnail[0]
 
             if (allowedTypes.includes(file.type)) {
                 fileToBase64(file)
                     .then((result) => {
-                        setPreview((prev) => ({ ...prev, thumbnail: result }));
+                        setPreview((prev) => ({ ...prev, thumbnail: result }))
                     })
                     .catch((error) => {
-                    });
+                    })
             } else {
-                toast.error('File is not a valid PNG or JPG.');
+                toast.error('File is not a valid PNG or JPG.')
             }
         }
-    }, [watch('thumbnail')]);
+    }, [watch('thumbnail')])
 
     useEffect(() => {
         const images = watch('images');
@@ -98,9 +98,6 @@ const CreateProduct = () => {
             preview.images.forEach((img) => {
                 formData.append('images', img.file);
             })
-            for (let pair of formData.entries()) {
-                console.log(pair[0] + ', ' + pair[1]);
-            }
             setIsLoading(true)
             const response = await apiProducts.createProduct(formData)
             setIsLoading(false)
@@ -193,29 +190,26 @@ const CreateProduct = () => {
                                                 <div>
 
                                                     <div className='text-sm font-medium text-gray-700 mt-5'>Upload images</div>
-                                                    <div className='flex flex-wrap gap-2 mt-3'>
-                                                        {preview.images.length > 0 && <div className='flex flex-wrap gap-2'>
-                                                            {preview?.images?.map((img, index) => (
+                                                    <div className='grid grid-cols-4 gap-2 mt-3'>
+                                                        {preview.images.length > 0 &&
+                                                            preview.images.map((img, index) => (
                                                                 <div
+                                                                    key={index}
                                                                     onMouseEnter={() => setHoverElm(img.name)}
                                                                     onMouseLeave={() => setHoverElm(null)}
-                                                                    key={index}
-                                                                    className='relative'
+                                                                    className="relative w-40 h-40"
                                                                 >
-                                                                    <img src={img.path} alt='productImg' className='w-40 h-40' />
-                                                                    {hoverElm === img.name &&
+                                                                    <img src={img.path} alt="productImg" className="w-full h-full object-cover" />
+                                                                    {hoverElm === img.name && (
                                                                         <div
-                                                                            className='absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center animate-scale-up-center cursor-pointer'
+                                                                            className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center cursor-pointer"
                                                                             onClick={() => handleRemoveImage(img.name)}
                                                                         >
-                                                                            <MdDelete className='text-white text-3xl' />
+                                                                            <MdDelete className="text-white text-3xl" />
                                                                         </div>
-                                                                    }
-
+                                                                    )}
                                                                 </div>
                                                             ))}
-                                                        </div>
-                                                        }
                                                         <label htmlFor='productImgs' className='bg-white text-gray-500 font-semibold text-base rounded w-40 h-40 flex flex-col items-center justify-center cursor-pointer border-2 border-gray-300 border-dashed font-[sans-serif] relative overflow-hidden hover:bg-black hover:bg-opacity-30'>
                                                             <FaPlus className='text-4xl mb-2 fill-gray-500' />
                                                             <span className='text-center' >

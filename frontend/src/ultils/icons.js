@@ -1,18 +1,21 @@
-import { FaPhone } from 'react-icons/fa6'
 import { LuBadgeCheck } from 'react-icons/lu'
-import { MdEmail, MdLockOutline, MdDelete } from 'react-icons/md'
-import { IoMenu } from 'react-icons/io5'
+import { MdEmail, MdLockOutline, MdDelete, MdHistory } from 'react-icons/md'
 import { TfiHeadphone } from 'react-icons/tfi'
 import { IoIosLaptop, IoIosArrowForward, IoMdArrowDropright, IoMdArrowDropdown } from 'react-icons/io'
-import { IoKeyOutline, IoReturnDownBackOutline } from 'react-icons/io5'
+import { IoKeyOutline, IoReturnDownBackOutline, IoMenu } from 'react-icons/io5'
 import { CiCamera, CiEdit } from 'react-icons/ci'
-import { BsPrinter, BsSpeaker } from 'react-icons/bs'
+import { BsPrinter, BsSpeaker, BsFillPersonFill } from 'react-icons/bs'
 import { GiSmartphone, GiTablet, GiPositionMarker } from 'react-icons/gi'
 import { PiTelevisionThin } from 'react-icons/pi'
 import { SiAmericanexpress } from 'react-icons/si'
 import { RxDashboard } from "react-icons/rx";
-import { FaUserGroup, FaPlus } from "react-icons/fa6";
+import { FaPhone, FaUserGroup, FaPlus } from "react-icons/fa6";
+import { CgPlayListAdd } from "react-icons/cg";
+import { BiLogOutCircle } from "react-icons/bi";
+import { RiAdminLine } from "react-icons/ri";
+import { ImProfile } from "react-icons/im";
 import {
+   FaLock,
    FaFileInvoiceDollar,
    FaProductHunt,
    FaEye,
@@ -49,6 +52,13 @@ import {
 } from 'react-icons/fa'
 
 const icons = {
+   FaLock,
+   MdHistory,
+   BsFillPersonFill,
+   RiAdminLine,
+   ImProfile,
+   BiLogOutCircle,
+   CgPlayListAdd,
    FaPlus,
    IoReturnDownBackOutline,
    FaSearch,

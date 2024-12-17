@@ -23,6 +23,7 @@ export { default as Footer } from './Footer/Footer'
 
 export { default as Sidebar } from './Sidebar/Sidebar'
 export { default as AdminSidebar } from './Sidebar/AdminSidebar'
+export { default as MemberSidebar } from './Sidebar/MemberSidebar'
 
 export { default as Product } from './Product/Product'
 export { default as Options } from './Product/Options'
@@ -30,6 +31,7 @@ export { default as HotCollection } from './Product/HotCollection'
 export { default as SelectQuantity } from './Product/SelectQuantity'
 export { default as ProductExtraInfo } from './Product/ProductExtraInfo'
 export { default as ProductInformation } from './Product/ProductInformation'
+export { default as CustomVariants } from './Product/CustomVariants'
 
 export { default as InputSelect } from './Input/InputSelect'
 export { default as InputField } from './Input/InputField'

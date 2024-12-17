@@ -2,8 +2,7 @@ import React, { memo, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import Swal from 'sweetalert2'
-import { getUserCurrent, logout, clearMessage } from '../../redux/features/userSlice'
-import { apiUsers } from '../../redux/apis'
+import { getUserCurrent, clearMessage } from '../../redux/features/userSlice'
 import path from '../../ultils/path'
 
 
@@ -20,10 +19,6 @@ const TopHeader = () => {
       }
    }, [dispatch, isLoggedIn]);
 
-   const handleLogout = async () => {
-      await apiUsers.logout()
-      dispatch(logout())
-   }
    useEffect(() => {
       if (message) {
          Swal.fire('Oops!', message, 'info').then(() => {
@@ -39,9 +34,6 @@ const TopHeader = () => {
             {isLoggedIn && userData ? (
                <div className='flex gap-4'>
                   <div>{`Welcome, ${userData?.lastname} ${userData?.firstname}`} </div>
-                  <div className='hover:cursor-pointer hover:text-black' onClick={handleLogout}>
-                     Logout
-                  </div>
                </div>
             ) : (
                <Link to={`/${path.LOGIN}`} className='hover:text-black'>

@@ -20,7 +20,7 @@ const Pagination = ({ totalCount, pageSize = 10 }) => {
 
     const handlePageChange = (newPage) => {
         const queries = Object.fromEntries(params.entries())
-        setParams({ page: newPage, q: queries.q })
+        setParams({ page: newPage })
         setInputPage('')
         window.scrollTo({ top: 0, behavior: 'smooth' });
         document.activeElement.blur();
@@ -37,6 +37,7 @@ const Pagination = ({ totalCount, pageSize = 10 }) => {
         if (/^\d*$/.test(value)) {
             setInputPage(value)
         }
+
     }
     return (
         <div className="flex justify-between items-center">

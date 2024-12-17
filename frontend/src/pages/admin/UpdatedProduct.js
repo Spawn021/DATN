@@ -162,7 +162,8 @@ const UpdatedProduct = ({ editProduct, render, setEditProduct }) => {
         <>
             {!isLoading ?
                 <div>
-                    <div>
+                    <div className='flex items-center justify-between'>
+                        <div className='text-lg font-semibold text-gray-700'>Update Product</div>
                         <button onClick={() => setEditProduct(null)} className='bg-main text-white mb-4 p-2 rounded hover:bg-red-700 mt-5'>Back</button>
                     </div>
                     <form onSubmit={handleSubmit(handleUpdateProduct)}>
@@ -177,6 +178,7 @@ const UpdatedProduct = ({ editProduct, render, setEditProduct }) => {
                                         id={'title'}
                                         validate={{ required: 'This field is required' }}
                                         placeholder={'Enter name product'}
+
                                     />
                                     <Markdown
                                         label='Description'
@@ -191,7 +193,7 @@ const UpdatedProduct = ({ editProduct, render, setEditProduct }) => {
                                         register={register}
                                         errors={errors}
                                         id={'color'}
-
+                                        validate={{ required: 'This field is required' }}
                                         placeholder={'Enter color'}
                                         type='text'
                                     />
@@ -234,9 +236,9 @@ const UpdatedProduct = ({ editProduct, render, setEditProduct }) => {
                                         <div>
 
                                             <div className='text-sm font-medium text-gray-700 mt-5'>Upload images</div>
-                                            <div className='flex flex-wrap gap-2 mt-3'>
-                                                {preview.images.length > 0 && <div className='flex flex-wrap gap-2'>
-                                                    {preview?.images?.map((img, index) => (
+                                            <div className='grid grid-cols-4 gap-2 mt-3'>
+                                                {preview.images.length > 0 &&
+                                                    preview?.images?.map((img, index) => (
                                                         <div
                                                             onMouseEnter={() => setHoverElm(img.name)}
                                                             onMouseLeave={() => setHoverElm(null)}
@@ -254,8 +256,8 @@ const UpdatedProduct = ({ editProduct, render, setEditProduct }) => {
                                                             }
 
                                                         </div>
-                                                    ))}
-                                                </div>
+                                                    ))
+
                                                 }
                                                 <label htmlFor='productImgs' className='bg-white text-gray-500 font-semibold text-base rounded w-40 h-40 flex flex-col items-center justify-center cursor-pointer border-2 border-gray-300 border-dashed font-[sans-serif] relative overflow-hidden hover:bg-black hover:bg-opacity-30'>
                                                     <FaPlus className='text-4xl mb-2 fill-gray-500' />
