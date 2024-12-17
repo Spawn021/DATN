@@ -1,15 +1,19 @@
 import React, { useState, memo } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import Swal from 'sweetalert2'
 import { Options } from '../../components'
 import { formatPrice, capitalizeFirstLetter, renderStar } from '../../ultils/helpers'
 import newLabel from '../../assets/new.png'
 import trendingLabel from '../../assets/trending.png'
 import dealLabel from '../../assets/deal.png'
 import icons from '../../ultils/icons'
-
+import path from '../../ultils/path'
 const { FaRegEye, IoMenu, FaRegHeart } = icons
 
 const Product = ({ product }) => {
+   const navigate = useNavigate()
+   const { userData, isLoggedIn } = useSelector(state => state.user)
    const [isShowOptions, setIsShowOptions] = useState(false)
    const isNew = (new Date() - new Date(product.createdAt)) / (1000 * 60 * 60 * 24) <= 32
    const isTrending = product.sold >= 100 && product.numberViews >= 100
@@ -25,6 +29,25 @@ const Product = ({ product }) => {
    }
    let newPrice = product.price - (product.price * product.discountPercentage) / 100
    newPrice = Math.round(newPrice / 1000) * 1000
+
+   const handleClickMenu = (e) => {
+      e.preventDefault()
+      navigate(`/${product.category.toLowerCase()}/${product._id}/${product.title}`)
+   }
+   const handleWishlist = (e) => {
+      e.preventDefault()
+      if (!isLoggedIn || !userData) {
+         Swal.fire('Oops!', 'Please login to view your wishlist', 'info').then(() => {
+            navigate(`/${path.LOGIN}`)
+         })
+      } else {
+         console.log('Wishlist')
+      }
+   }
+   const handleQuickView = (e) => {
+      e.preventDefault()
+      console.log('Quick view')
+   }
    return (
       <div className='w-full px-[10px] mb-[20px] '>
          <Link
@@ -37,9 +60,9 @@ const Product = ({ product }) => {
          >
             {isShowOptions && (
                <div className='absolute bottom-[120px] left-0 right-0 flex justify-center gap-2 animate-slide-top'>
-                  <Options icon={<FaRegHeart />} content='Wishlist' />
-                  <Options icon={<IoMenu />} content='Menu' />
-                  <Options icon={<FaRegEye />} content='Quick view' />
+                  <span onClick={e => handleWishlist(e)}><Options icon={<FaRegHeart />} content='Wishlist' /></span>
+                  <span onClick={e => handleClickMenu(e)}><Options icon={<IoMenu />} content='Menu' /></span>
+                  <span onClick={e => handleQuickView(e)}><Options icon={<FaRegEye />} content='Quick view' /></span>
                </div>
             )}
             <img

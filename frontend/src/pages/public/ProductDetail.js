@@ -104,7 +104,6 @@ const ProductDetail = () => {
    const handleDecrement = useCallback(() => {
       setQuantity((prev) => (prev > 1 ? prev - 1 : 1))
    }, [])
-   console.log(variant)
    return (
       <div className='w-full  '>
          <div className='flex flex-col justify-center items-center h-[80px] gap-2 bg-[#f7f7f7]'>
