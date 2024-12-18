@@ -1,106 +1,55 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import Swal from 'sweetalert2'
-import { toast } from 'react-toastify'
 import { Link, useLocation } from 'react-router-dom'
-import { Breadcrumb, SelectQuantity } from '../../components'
+import { toast } from 'react-toastify'
+import { Breadcrumb, OrderItem } from '../../components'
 import { formatPrice } from '../../ultils/helpers'
 import { apiUsers } from '../../redux/apis'
 import { getUserCurrent } from '../../redux/features/userSlice'
+import path from '../../ultils/path'
 
 const DetailCart = () => {
-    const dispatch = useDispatch()
     const location = useLocation()
-    const { userData } = useSelector((state) => state.user)
-    const [quantities, setQuantities] = useState(
-        userData?.cart?.map((item) => item.quantity) || []
-    )
-    useEffect(() => {
-        setQuantities(userData?.cart?.map((item) => item.quantity) || []);
-    }, [userData?.cart]);
-    const handleQuantity = useCallback(
-        (index, number) => {
-            setQuantities((prev) => {
-                const updated = [...prev]
-
-                if (number === '') {
-                    // Người dùng đang xóa số, giữ giá trị là rỗng để cho phép nhập lại
-                    updated[index] = ''
-                } else {
-                    const value = parseInt(number, 10)
-                    if (!isNaN(value)) {
-                        updated[index] = Math.max(
-                            1,
-                            Math.min(value, userData?.cart?.[index]?.product?.quantity)
-                        )
-                    }
-                }
-
-                return updated
-            })
-        },
-        [userData?.cart]
-    )
-
-
-    const handleIncrement = useCallback(
-        (index) => {
-            const productId = userData.cart[index]
-            console.log(productId)
-            setQuantities((prev) => {
-                const updated = [...prev]
-                updated[index] = Math.min(
-                    (updated[index] || 1) + 1,
-                    userData?.cart?.[index]?.product?.quantity
-                )
-                return updated
-            })
-        },
-        [userData?.cart]
-    )
-
-    const handleDecrement = useCallback(
-        (index) => {
-            setQuantities((prev) => {
-                const updated = [...prev]
-                if ((updated[index] || 1) - 1 < 1) {
-                    const product = userData.cart[index]
-                    console.log(product)
-                    Swal.fire({
-                        title: 'Do you want to remove this item?',
-                        text: 'This item will be removed from your cart!',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, remove it!',
-                    }).then(async (result) => {
-                        if (result.isConfirmed) {
-                            const response = await apiUsers.removeCart(product.product._id, product.color)
-                            if (response.success) {
-                                dispatch(getUserCurrent())
-                            }
-                            else {
-                                toast.error('Remove from cart failed')
-                            }
-                        }
-                    })
-                } else {
-                    updated[index] = Math.max((updated[index] || 1) - 1, 1)
-                }
-                return updated
-            })
-        },
-        [userData?.cart]
-    )
-
-    if (!userData?.cart?.length) {
+    const dispatch = useDispatch()
+    const { currentCart } = useSelector((state) => state.user)
+    if (!currentCart.length) {
         return (
             <div className='w-full flex flex-col items-center justify-center h-[300px]'>
                 <p className='text-lg font-semibold'>Your cart is empty</p>
             </div>
         )
     }
+    const handleUpdateCart = () => {
+        updateCartHandler(currentCart)
+    }
+    const updateCartHandler = async (cartItems) => {
+        try {
+            const updatePromises = cartItems.map((item) =>
+                apiUsers.updateCart({
+                    pid: item.product._id,
+                    color: item.color,
+                    quantity: item.quantity,
+                    price: item.price,
+                    thumbnail: item.thumbnail,
+                    title: item.title
+                })
+            )
+            const responses = await Promise.all(updatePromises)
+
+            const hasError = responses.some((response) => !response.success)
+
+            if (hasError) {
+                toast.error('Some items failed to update')
+            } else {
+                toast.success('Update cart successfully')
+                dispatch(getUserCurrent())
+            }
+        } catch (error) {
+            toast.error('Update cart failed. Please try again!')
+            console.error(error)
+        }
+    }
+
 
     return (
         <div className='w-full flex flex-col'>
@@ -115,47 +64,8 @@ const DetailCart = () => {
                         <div className='col-span-2 text-center uppercase'>Quantity</div>
                         <div className='col-span-3 text-center uppercase'>Price</div>
                     </div>
-                    {userData.cart.map((item, index) => (
-                        <div
-                            key={index}
-                            className='font-bold grid grid-cols-10 border py-3 border-t-0'
-                        >
-                            <div className='col-span-5 text-center uppercase flex gap-2 justify-center'>
-                                <img
-                                    src={item.thumbnail}
-                                    alt={item.product.title}
-                                    className='w-[200px] h-[200px] object-cover'
-                                />
-                                <div className='flex flex-col gap-1 my-4'>
-                                    <Link
-                                        to={`/${item.product.category.toLowerCase()}/${item.product._id}/${item.product.title}`}
-                                    >
-                                        <span className='text-base font-semibold text-main'>
-                                            {item.product.title}
-                                        </span>
-                                    </Link>
-                                    <div className='text-sm text-start font-normal'>
-                                        {item.color}
-                                    </div>
-                                </div>
-                            </div>
-                            <div className='col-span-2 text-center uppercase'>
-                                <div className='flex items-center justify-center mt-4 gap-2'>
-                                    <SelectQuantity
-                                        quantity={quantities[index]}
-                                        handleQuantity={(number) =>
-                                            handleQuantity(index, number)
-                                        }
-                                        handleDecrement={() => handleDecrement(index)}
-                                        handleIncrement={() => handleIncrement(index)}
-                                    />
-                                    <div className='text-xs text-[#151515]'>{`In stock: ${item?.product?.quantity}`}</div>
-                                </div>
-                            </div>
-                            <div className='col-span-3 text-center uppercase my-3'>
-                                {`${formatPrice(item.price * (quantities[index] || 1))} VND`}
-                            </div>
-                        </div>
+                    {currentCart.map((item, index) => (
+                        <OrderItem key={index} item={item} defaultQuantity={item.quantity} />
                     ))}
                     <div className='border border-t-0'>
                         <div className='flex justify-end items-center gap-5 py-3 pr-20'>
@@ -163,13 +73,12 @@ const DetailCart = () => {
                                 <div className='flex gap-10 justify-end'>
                                     <div className='text-lg font-semibold'>Subtotal:</div>
                                     <div className='text-lg font-semibold text-main'>
-                                        {`${formatPrice(
-                                            userData.cart.reduce(
-                                                (total, item, index) =>
-                                                    total + item.price * (quantities[index] || 1),
-                                                0
-                                            )
-                                        )} VND`}
+                                        {formatPrice(
+                                            currentCart.reduce(
+                                                (total, item) => total + item.price * item.quantity,
+                                                0,
+                                            ),
+                                        )}
                                     </div>
                                 </div>
                                 <div className='text-sm text-[#151515] italic'>
@@ -177,9 +86,14 @@ const DetailCart = () => {
                                 </div>
                                 <div className='flex justify-end'>
                                     <div className='flex gap-5'>
-                                        <button className='bg-main text-white py-2 px-5 rounded hover:bg-[#333]'>
-                                            Checkout
+                                        <button onClick={handleUpdateCart} className='bg-[#333] text-white py-2 px-5 rounded hover:bg-main'>
+                                            Update Cart
                                         </button>
+                                        <Link target='_blank' to={`/${path.CHECKOUT}`}>
+                                            <button className='bg-main text-white py-2 px-5 rounded hover:bg-[#333]'>
+                                                Checkout
+                                            </button>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>

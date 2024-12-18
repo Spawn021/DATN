@@ -15,6 +15,7 @@ import { BiLogOutCircle } from "react-icons/bi";
 import { RiAdminLine } from "react-icons/ri";
 import { ImProfile } from "react-icons/im";
 import {
+   FaHome,
    FaLock,
    FaFileInvoiceDollar,
    FaProductHunt,
@@ -53,6 +54,7 @@ import {
 } from 'react-icons/fa'
 
 const icons = {
+   FaHome,
    FaLongArrowAltRight,
    IoMdClose,
    BsCartCheckFill,

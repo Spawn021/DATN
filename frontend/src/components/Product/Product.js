@@ -1,5 +1,5 @@
 import React, { useState, memo, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { createSearchParams, Link, useLocation, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import Swal from 'sweetalert2'
@@ -19,6 +19,7 @@ const Product = ({ product }) => {
    const { FaRegEye, FaRegHeart, FaShoppingCart, BsCartCheckFill } = icons
    const navigate = useNavigate()
    const dispatch = useDispatch()
+   const location = useLocation()
    const { userData, isLoggedIn } = useSelector(state => state.user)
    const [isShowOptions, setIsShowOptions] = useState(false)
    const isNew = (new Date() - new Date(product.createdAt)) / (1000 * 60 * 60 * 24) <= 32
@@ -37,11 +38,25 @@ const Product = ({ product }) => {
    newPrice = Math.round(newPrice / 1000) * 1000
 
    const handleClickMenu = async (e) => {
-      console.log(product)
       e.preventDefault()
       if (!isLoggedIn || !userData) {
-         Swal.fire('Oops!', 'Please login to add to cart', 'info').then(() => {
-            navigate(`/${path.LOGIN}`)
+         Swal.fire({
+            title: 'Oops!',
+            text: 'Please login to add to cart',
+            icon: 'info',
+            cancelButtonText: 'Cancel',
+            confirmButtonText: 'Login',
+            showCancelButton: true,
+         }).then((result) => {
+            if (result.isConfirmed) {
+               navigate(
+                  {
+                     pathname: `/${path.LOGIN}`,
+                     search: createSearchParams({ redirect: location.pathname }).toString()
+                  }
+               )
+            }
+
          })
       } else {
          const response = await apiUsers.updateCart({ pid: product._id, color: product.color, quantity: 1, price: product.price, thumbnail: product.thumbnail, title: product.title })
@@ -57,9 +72,25 @@ const Product = ({ product }) => {
    const handleWishlist = (e) => {
       e.preventDefault()
       if (!isLoggedIn || !userData) {
-         Swal.fire('Oops!', 'Please login to view your wishlist', 'info').then(() => {
-            navigate(`/${path.LOGIN}`)
+         Swal.fire({
+            title: 'Oops!',
+            text: 'Please login to view your wishlist',
+            icon: 'info',
+            cancelButtonText: 'Cancel',
+            confirmButtonText: 'Login',
+            showCancelButton: true,
+         }).then((result) => {
+            if (result.isConfirmed) {
+               navigate(
+                  {
+                     pathname: `/${path.LOGIN}`,
+                     search: createSearchParams({ redirect: location.pathname }).toString()
+                  }
+               )
+            }
+
          })
+
       } else {
          // console.log('Wishlist')
       }

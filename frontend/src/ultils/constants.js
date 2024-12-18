@@ -1,6 +1,6 @@
 import path from './path'
 import icons from './icons'
-const { FaTty, FaReply, FaTruck, FaGift, FaShieldAlt, RxDashboard, FaUserGroup, FaProductHunt, FaFileInvoiceDollar, BsFillPersonFill, FaShoppingCart, FaRegHeart, MdHistory, FaLock } = icons
+const { FaHome, FaTty, FaReply, FaTruck, FaGift, FaShieldAlt, RxDashboard, FaUserGroup, FaProductHunt, FaFileInvoiceDollar, BsFillPersonFill, FaShoppingCart, FaRegHeart, MdHistory, FaLock } = icons
 export const navigation = [
    {
       id: 1,
@@ -196,6 +196,13 @@ export const memberSidebar = [
       value: 'Change Password',
       path: `/${path.MEMBER}/${path.CHANGE_PASSWORD}`,
       icon: <FaLock />,
+   },
+   {
+      id: 6,
+      type: 'single',
+      value: 'Go Home',
+      path: `/${path.HOME}`,
+      icon: <FaHome />,
    }
 
 ]

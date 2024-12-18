@@ -12,6 +12,7 @@ const path = {
    ACTIVE_REGISTER: 'active-account/:status',
    FORGET_PASSWORD: 'forget-password',
    DETAIL_CART: 'cart-detail',
+   CHECKOUT: 'checkout',
 
    // Admin
    ADMIN: 'admin',

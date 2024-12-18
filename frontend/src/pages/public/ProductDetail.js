@@ -145,7 +145,11 @@ const ProductDetail = ({ isQuickView, data }) => {
 
          })
       } else {
-         const response = await apiUsers.updateCart({ pid: pid, color: currentProduct.color, quantity, price: currentProduct.price, thumbnail: currentProduct.thumbnail, title: currentProduct.title })
+         const productInCart = userData?.cart?.find(item => item?.product._id === pid && item?.color === currentProduct.color)
+         console.log(productInCart)
+         const updatedQuantity = productInCart ? productInCart.quantity + quantity : quantity
+         console.log(updatedQuantity)
+         const response = await apiUsers.updateCart({ pid: pid, color: currentProduct.color, quantity: updatedQuantity, price: currentProduct.price, thumbnail: currentProduct.thumbnail, title: currentProduct.title })
          if (response.success) {
             toast.success('Add to cart successfully')
             dispatch(getUserCurrent())

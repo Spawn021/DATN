@@ -487,22 +487,46 @@ class UserController {
       const { _id } = req.payload
       const { pid, color } = req.params
       const Cart = await User.findById(_id).select('cart')
-      const productInCart = Cart.cart.find((item) => item.product.toString() === pid && item.color === color)
-      if (!productInCart) {
-         return res.status(404).json({
-            success: false,
-            message: 'Product not found in cart',
+      if (color) {
+         const productInCart = Cart.cart.find(
+            (item) => item.product.toString() === pid && item.color === color
+         )
+         if (!productInCart) {
+            return res.status(404).json({
+               success: false,
+               message: 'Product with specified color not found in cart',
+            })
+         }
+         const index = Cart.cart.indexOf(productInCart);
+         Cart.cart.splice(index, 1);
+         await Cart.save();
+         return res.status(200).json({
+            success: true,
+            message: 'Product removed from cart',
+            Cart,
+         })
+      } else {
+         const productInCart = Cart.cart.find(
+            (item) => item.product.toString() === pid && !item.color
+         )
+         if (!productInCart) {
+            return res.status(404).json({
+               success: false,
+               message: 'Product without color not found in cart',
+            })
+         }
+         const index = Cart.cart.indexOf(productInCart)
+         Cart.cart.splice(index, 1)
+         await Cart.save()
+         return res.status(200).json({
+            success: true,
+            message: 'Product removed from cart',
+            Cart,
          })
       }
-      const index = Cart.cart.indexOf(productInCart)
-      Cart.cart.splice(index, 1)
-      await Cart.save()
-      return res.status(200).json({
-         success: true,
-         message: 'Product removed from cart',
-         Cart,
-      })
    })
+
+
 
    createUsers = asyncHandler(async (req, res) => {
       const response = await User.create(users)

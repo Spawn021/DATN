@@ -33,6 +33,7 @@ export { default as ProductExtraInfo } from './Product/ProductExtraInfo'
 export { default as ProductInformation } from './Product/ProductInformation'
 export { default as CustomVariants } from './Product/CustomVariants'
 export { default as Cart } from './Product/Cart'
+export { default as OrderItem } from './Product/OrderItem'
 
 export { default as InputSelect } from './Input/InputSelect'
 export { default as InputField } from './Input/InputField'

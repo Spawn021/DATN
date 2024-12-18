@@ -1,8 +1,8 @@
 import React, { memo, useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { createSearchParams, Link, useNavigate, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { apiUsers } from '../../redux/apis'
-import { logout } from '../../redux/features/userSlice'
+import { logout, getUserCurrent } from '../../redux/features/userSlice'
 import { showCart } from '../../redux/features/modalSlice'
 import Swal from 'sweetalert2'
 import logo from '../../assets/logo.png'
@@ -13,21 +13,52 @@ import path from '../../ultils/path'
 const Header = () => {
    const navigate = useNavigate()
    const dispatch = useDispatch()
+   const location = useLocation()
    const { FaPhone, MdEmail, FaRegHeart, FaShoppingCart, FaUserCircle, RiAdminLine, ImProfile, BiLogOutCircle, } = icons
-   const { userData, isLoggedIn } = useSelector(state => state.user)
+   const { userData, isLoggedIn, currentCart } = useSelector(state => state.user)
    const [isShowOption, setIsShowOption] = useState(false)
 
    const handleWishlist = () => {
       if (!isLoggedIn || !userData) {
-         Swal.fire('Oops!', 'Please login to view your wishlist', 'info').then(() => {
-            navigate(`/${path.LOGIN}`)
+         Swal.fire({
+            title: 'Oops!',
+            text: 'Please login to view your wishlist',
+            icon: 'info',
+            cancelButtonText: 'Cancel',
+            confirmButtonText: 'Login',
+            showCancelButton: true,
+         }).then((result) => {
+            if (result.isConfirmed) {
+               navigate(
+                  {
+                     pathname: `/${path.LOGIN}`,
+                     search: createSearchParams({ redirect: location.pathname }).toString()
+                  }
+               )
+            }
+
          })
       }
    }
    const handleCart = () => {
       if (!isLoggedIn || !userData) {
-         Swal.fire('Oops!', 'Please login to view your cart', 'info').then(() => {
-            navigate(`/${path.LOGIN}`)
+         Swal.fire({
+            title: 'Oops!',
+            text: 'Please login to view your cart',
+            icon: 'info',
+            cancelButtonText: 'Cancel',
+            confirmButtonText: 'Login',
+            showCancelButton: true,
+         }).then((result) => {
+            if (result.isConfirmed) {
+               navigate(
+                  {
+                     pathname: `/${path.LOGIN}`,
+                     search: createSearchParams({ redirect: location.pathname }).toString()
+                  }
+               )
+            }
+
          })
 
       } else dispatch(showCart())
@@ -92,10 +123,10 @@ const Header = () => {
                </div>
                <div onClick={handleCart} className='flex items-center gap-2 pl-5 border-l relative z-0'>
                   <FaShoppingCart className='fill-main text-[20px] hover:cursor-pointer' />
-                  {userData?.cart?.length > 0 &&
+                  {currentCart?.length > 0 &&
                      <span className='absolute top-1 -right-2 border rounded-full bg-red-500 w-4 h-4 flex items-center justify-center'>
                         <span className='text-xs text-white'>
-                           {userData?.cart?.reduce((sum, item) => sum + item.quantity, 0)}
+                           {currentCart?.reduce((sum, item) => sum + item.quantity, 0)}
                         </span>
                      </span>
                   }

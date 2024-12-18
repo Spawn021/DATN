@@ -100,9 +100,9 @@ export const updateCart = (data) => {
       data,
    })
 }
-export const removeCart = (pid, color) => {
+export const removeCart = (url) => {
    return axios({
-      url: `/user/remove-cart/${pid}/${color}`,
+      url: url,
       method: 'DELETE',
    })
 }
