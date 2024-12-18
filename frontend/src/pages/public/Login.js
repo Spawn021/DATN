@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Swal from 'sweetalert2'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
 import { LoadSpinner } from '../../components'
@@ -19,7 +19,7 @@ export default function Login() {
 
    const { FaFacebook, FaGoogle, FaEye, FaEyeSlash } = icons
    const [isLoading, setIsLoading] = useState(false)
-
+   const [searchParams] = useSearchParams()
    const [isRegistering, setIsRegistering] = useState(false)
    const handleRegisterClick = () => {
       setIsRegistering(true)
@@ -66,7 +66,7 @@ export default function Login() {
          const response = await apiUsers.login(values)
          if (response.success) {
             dispatch(login({ isLoggedIn: true, userData: response.userData, token: response.accessToken })) // save user data to redux
-            navigate(`/${path.HOME}`)
+            searchParams.get('redirect') ? navigate(searchParams.get('redirect')) : navigate(`/${path.HOME}`)
          } else {
             Swal.fire('Error!', response.message, 'error')
          }

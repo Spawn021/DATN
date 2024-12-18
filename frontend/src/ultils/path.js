@@ -3,13 +3,15 @@ const path = {
    HOME: '',
    ALL: '*',
    LOGIN: 'login',
-   PRODUCTS: ':category',
+   PRODUCTS__CATEGORY: ':category',
+   PRODUCTS: 'products',
    BLOGS: 'blogs',
    OUR_SERVICES: 'our-services',
    FAQS: 'faqs',
    DETAIL_PRODUCT__CATEGORY__PID__TITLE: ':category/:pid/:title',
    ACTIVE_REGISTER: 'active-account/:status',
    FORGET_PASSWORD: 'forget-password',
+   DETAIL_CART: 'cart-detail',
 
    // Admin
    ADMIN: 'admin',

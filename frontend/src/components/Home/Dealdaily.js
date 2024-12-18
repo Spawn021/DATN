@@ -1,4 +1,5 @@
 import React, { useState, useEffect, memo } from 'react'
+import { Link } from 'react-router-dom'
 import { apiProducts } from '../../redux/apis'
 import icons from '../../ultils/icons'
 import { formatPrice, capitalizeFirstLetter, renderStar } from '../../ultils/helpers'
@@ -11,7 +12,7 @@ const Dealdaily = () => {
    const [dealDaily, setDealDaily] = useState([])
 
    const getDealDaily = async () => {
-      const response = await apiProducts.getProducts({ limit: 1, page: Math.floor(Math.random() * 5), totalRating: 5 })
+      const response = await apiProducts.getProducts({ limit: 1, page: Math.floor(Math.random() * 1), totalRating: 5 })
 
       if (response.success) setDealDaily(response.products[0])
    }
@@ -119,13 +120,15 @@ const Dealdaily = () => {
                </div>
             </div>
             <div className='mt-2'>
-               <button
-                  type='button'
-                  className='font-normal w-[250px] py-[11px] px-[15px] flex items-center justify-center gap-4 bg-main text-white hover:bg-[#333333]'
-               >
-                  <IoMenu className=' text-[20px]' />
-                  <span>OPTIONS</span>
-               </button>
+               <Link to={`/${dealDaily?.category}/${dealDaily?._id}/${dealDaily?.title}`}>
+                  <button
+                     type='button'
+                     className='font-normal w-[250px] py-[11px] px-[15px] flex items-center justify-center gap-4 bg-main text-white hover:bg-[#333333]'
+                  >
+                     <IoMenu className=' text-[20px]' />
+                     <span>OPTIONS</span>
+                  </button>
+               </Link>
             </div>
          </div>
       </div>

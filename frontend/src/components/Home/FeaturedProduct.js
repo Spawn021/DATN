@@ -2,7 +2,6 @@ import React, { useState, useEffect, memo } from 'react'
 import { Link } from 'react-router-dom'
 import { apiProducts } from '../../redux/apis'
 import { formatPrice, capitalizeFirstLetter, renderStar } from '../../ultils/helpers'
-import path from '../../ultils/path'
 
 const FeaturedProduct = () => {
    const [products, setProducts] = useState([])
@@ -20,14 +19,13 @@ const FeaturedProduct = () => {
    useEffect(() => {
       getProduct()
    }, [])
-
    return (
       <div>
          <h2 className=' text-xl font-semibold text-[#151515] pb-4 border-main border-b-[2px] '>FEATURED PRODUCTS</h2>
          <div className='grid grid-cols-3 gap-5 mt-5'>
             {products?.map((product, index) => (
                <Link
-                  to={`/${path.DETAIL_PRODUCT}/${product._id}/${product.title}`}
+                  to={`/${product.category}/${product._id}/${product.title}`}
                   key={index}
                   className='group border flex w-full p-4 hover:cursor-pointer '
                >

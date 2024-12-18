@@ -93,3 +93,16 @@ export const changePassword = (data) => {
       data,
    })
 }
+export const updateCart = (data) => {
+   return axios({
+      url: `/user/cart`,
+      method: 'PUT',
+      data,
+   })
+}
+export const removeCart = (pid, color) => {
+   return axios({
+      url: `/user/remove-cart/${pid}/${color}`,
+      method: 'DELETE',
+   })
+}

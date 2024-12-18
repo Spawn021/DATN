@@ -1,24 +1,37 @@
 import React, { useState, useEffect, memo } from 'react'
 import icons from '../../ultils/icons'
 
-const ScrollToTopButton = () => {
+const ScrollToTopButton = ({ scrollContainerRef }) => {
    const { FaCaretUp } = icons
    const [isVisible, setIsVisible] = useState(false)
 
    useEffect(() => {
       const toggleVisibility = () => {
-         setIsVisible(window.scrollY > window.innerHeight)
+         if (scrollContainerRef) {
+            setIsVisible(scrollContainerRef.current.scrollTop > window.innerHeight)
+         } else {
+            setIsVisible(window.scrollY > window.innerHeight)
+         }
       }
 
-      window.addEventListener('scroll', toggleVisibility)
-      return () => window.removeEventListener('scroll', toggleVisibility)
-   }, [])
+      const target = scrollContainerRef ? scrollContainerRef.current : window
+      target.addEventListener('scroll', toggleVisibility)
+
+      return () => target.removeEventListener('scroll', toggleVisibility)
+   }, [scrollContainerRef])
 
    const scrollToTop = () => {
-      window.scrollTo({
-         top: 0,
-         behavior: 'smooth',
-      })
+      if (scrollContainerRef) {
+         scrollContainerRef.current.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+         })
+      } else {
+         window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+         })
+      }
    }
 
    return (

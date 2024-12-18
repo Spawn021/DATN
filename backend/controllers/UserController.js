@@ -107,7 +107,13 @@ class UserController {
    getCurrent = asyncHandler(async (req, res) => {
       // console.log(req.payload)
       const { _id } = req.payload
-      const user = await User.findById(_id).select('-password -refreshToken')
+      const user = await User.findById(_id).select('-password -refreshToken').populate({
+         path: 'cart',
+         populate: {
+            path: 'product',
+            select: 'title price thumbnail discountPercentage category quantity',
+         }
+      })
       if (!user) {
          return res.status(404).json({
             success: false,
@@ -452,28 +458,52 @@ class UserController {
    })
    updateCart = asyncHandler(async (req, res) => {
       const { _id } = req.payload
-      const { pid, quantity, color } = req.body
-      if (!pid || !quantity || !color) {
-         return res.status(400).json({
-            success: false,
-            message: 'Missing inputs',
-         })
-      }
+      const { pid, quantity = 1, color, price, thumbnail, title } = req.body
+      // if (!pid || !quantity || !color) {
+      //    return res.status(400).json({
+      //       success: false,
+      //       message: 'Missing inputs',
+      //    })
+      // }
       const Cart = await User.findById(_id)
       const productInCart = Cart.cart.find((item) => item.product.toString() === pid && item.color === color)
 
       if (productInCart) {
          // Nếu sản phẩm cùng màu đã có, ghi đè số lượng
          productInCart.quantity = quantity // Ghi đè số lượng
+         productInCart.price = price
+         productInCart.thumbnail = thumbnail
+         productInCart.title = title
          await Cart.save()
          return res.status(200).json({ success: true, Cart })
       } else {
          // Nếu sản phẩm chưa có trong giỏ hàng, thêm mới
-         Cart.cart.push({ product: pid, quantity, color })
+         Cart.cart.push({ product: pid, quantity, color, price, thumbnail, title })
          await Cart.save()
          return res.status(200).json({ success: true, Cart })
       }
    })
+   removeProductIncart = asyncHandler(async (req, res) => {
+      const { _id } = req.payload
+      const { pid, color } = req.params
+      const Cart = await User.findById(_id).select('cart')
+      const productInCart = Cart.cart.find((item) => item.product.toString() === pid && item.color === color)
+      if (!productInCart) {
+         return res.status(404).json({
+            success: false,
+            message: 'Product not found in cart',
+         })
+      }
+      const index = Cart.cart.indexOf(productInCart)
+      Cart.cart.splice(index, 1)
+      await Cart.save()
+      return res.status(200).json({
+         success: true,
+         message: 'Product removed from cart',
+         Cart,
+      })
+   })
+
    createUsers = asyncHandler(async (req, res) => {
       const response = await User.create(users)
       return res.status(200).json({

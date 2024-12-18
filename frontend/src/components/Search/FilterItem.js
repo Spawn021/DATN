@@ -41,17 +41,25 @@ const FilterItem = ({ name, active, handleActiveFilter, type = 'checkbox' }) => 
       })
    }, [selected, navigate, category])
    const getBestPriceProduct = async () => {
-      // const response = await apiProducts.getProducts({ sort: '-price', limit: 1, category: category })
-      const response = await apiProducts.getProducts({ sort: '-price', limit: 1 })
+      let response
+      if (category === 'products') {
+         response = await apiProducts.getProducts({ sort: '-price', limit: 1, color: params.get('color') })
+      }
+      else {
+         response = await apiProducts.getProducts({ sort: '-price', limit: 1, category: category, color: params.get('color') })
+      }
       if (response.success) {
          setBestPrice(response.products[0].price)
+      } else {
+         setBestPrice(null)
       }
    }
    useEffect(() => {
+
       if (type === 'input') {
          getBestPriceProduct()
       }
-   }, [type])
+   }, [type, category, params])
    const debouncePriceFrom = useDebounce(price.from, 500)
    const debouncePriceTo = useDebounce(price.to, 500)
    useEffect(() => {
@@ -133,7 +141,7 @@ const FilterItem = ({ name, active, handleActiveFilter, type = 'checkbox' }) => 
                   <div>
                      <div className='py-[30px] px-5 cursor-default border-b-[1px] border-solid border-[#1a1b1833]'>
                         <div className='flex justify-between text-[14px]'>
-                           <span className='text-[#505050]'>{`The highest price is ${formatPrice(bestPrice)} VND`}</span>
+                           <span className='text-[#505050]'>{`The highest price is ${formatPrice(bestPrice) || 0} VND`}</span>
                            <span
                               onClick={() => {
                                  setPrice({ from: '', to: '' })

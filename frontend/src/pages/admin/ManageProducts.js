@@ -157,17 +157,17 @@ const ManageProducts = () => {
                                     {products && products.map((el, index) => {
                                         const productIndex = (Math.max(params.get('page'), 1) - 1) * pageSize + 1 + index
                                         return (
-                                            <tr key={index} className={`border-[1px] text-sm border-solid border-[#e9e9e9] ${index % 2 !== 0 ? 'bg-white' : 'bg-gray-100'}`}>
+                                            <tr key={index} className={`border-[1px] text-xs border-solid border-[#e9e9e9] ${index % 2 !== 0 ? 'bg-white' : 'bg-gray-100'}`}>
                                                 <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{productIndex}</td>
                                                 <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>
                                                     <img src={el.thumbnail} alt={el.title} className='w-16 h-16 object-cover' />
                                                 </td>
-                                                <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{highlightText(el.title, query)}</td>
+                                                <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{highlightText(capitalizeFirstLetter(el.title, query))}</td>
                                                 <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{highlightText(capitalizeFirstLetter(el.brand), query)}</td>
                                                 <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{highlightText(capitalizeFirstLetter(el.category), query)}</td>
                                                 <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{highlightText(el.color, query)}</td>
                                                 <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{formatPrice(el.price)}</td>
-                                                <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{el.discount}</td>
+                                                <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{el.discountPercentage}</td>
                                                 <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{el.quantity}</td>
                                                 <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{el.sold}</td>
                                                 <td className='py-3 px-4 border-y-[1px] border-solid border-[#e9e9e9]'>{el.totalRating}</td>

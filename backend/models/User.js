@@ -36,6 +36,9 @@ var userSchema = new mongoose.Schema(
             product: { type: mongoose.Types.ObjectId, ref: 'Product' },
             quantity: { type: Number, default: 1 },
             color: { type: String },
+            price: { type: Number },
+            thumbnail: { type: String },
+            title: { type: String },
          },
       ],
       address: {

@@ -1,14 +1,23 @@
 import React, { useEffect, useCallback, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate, useLocation, createSearchParams } from 'react-router-dom'
 import Slider from 'react-slick'
 import DOMPurify from 'dompurify'
-import { apiProducts } from '../../redux/apis'
+import Swal from 'sweetalert2'
+import { toast } from 'react-toastify'
+import { useSelector, useDispatch } from 'react-redux'
+import { getUserCurrent } from '../../redux/features/userSlice'
+import path from '../../ultils/path'
+import { apiProducts, apiUsers } from '../../redux/apis'
 import { Breadcrumb, Product } from '../../components'
 import { ImageMagnifier, SelectQuantity, ProductExtraInfo, ProductInformation } from '../../components'
 import { formatPrice, renderStar } from '../../ultils/helpers'
 import { ProductExtraInfoData } from '../../ultils/constants'
 
-const ProductDetail = () => {
+const ProductDetail = ({ isQuickView, data }) => {
+   const { isLoggedIn, userData } = useSelector(state => state.user)
+   const navigate = useNavigate()
+   const dispatch = useDispatch()
+   const location = useLocation()
    const settings = {
       dots: false,
       infinite: true,
@@ -19,13 +28,15 @@ const ProductDetail = () => {
       slidesToScroll: 1,
    }
 
-   const { pid, title, category } = useParams()
+   const params = useParams()
    // console.log(pid, title, category)
    const [product, setProduct] = useState(null)
    const [quantity, setQuantity] = useState(1)
    const [relativeProducts, setRelativeProducts] = useState()
    const [update, setUpdate] = useState(false)
    const [variant, setVariant] = useState(null)
+   const [pid, setPid] = useState(null)
+   const [category, setCategory] = useState(null)
    const [currentProduct, setCurrentProduct] = useState({
       title: '',
       thumbnail: '',
@@ -33,6 +44,15 @@ const ProductDetail = () => {
       images: [],
       color: '',
    })
+   useEffect(() => {
+      if (data) {
+         setPid(data.pid)
+         setCategory(data.category)
+      } else if (params && params.pid) {
+         setPid(params.pid)
+         setCategory(params.category)
+      }
+   }, [data, params])
    useEffect(() => {
       if (variant) {
          const selectedVariant = product?.variants?.find(item => item.sku === variant);
@@ -104,14 +124,47 @@ const ProductDetail = () => {
    const handleDecrement = useCallback(() => {
       setQuantity((prev) => (prev > 1 ? prev - 1 : 1))
    }, [])
+   const handleAddToCart = async () => {
+      if (!isLoggedIn || !userData) {
+         Swal.fire({
+            title: 'Oops!',
+            text: 'Please login to add to cart',
+            icon: 'info',
+            cancelButtonText: 'Cancel',
+            confirmButtonText: 'Login',
+            showCancelButton: true,
+         }).then((result) => {
+            if (result.isConfirmed) {
+               navigate(
+                  {
+                     pathname: `/${path.LOGIN}`,
+                     search: createSearchParams({ redirect: location.pathname }).toString()
+                  }
+               )
+            }
+
+         })
+      } else {
+         const response = await apiUsers.updateCart({ pid: pid, color: currentProduct.color, quantity, price: currentProduct.price, thumbnail: currentProduct.thumbnail, title: currentProduct.title })
+         if (response.success) {
+            toast.success('Add to cart successfully')
+            dispatch(getUserCurrent())
+
+         }
+         else toast.error('Add to cart failed')
+      }
+
+   }
    return (
-      <div className='w-full  '>
-         <div className='flex flex-col justify-center items-center h-[80px] gap-2 bg-[#f7f7f7]'>
-            <div className='w-main px-[10px] font-semibold text-[18px]'>{currentProduct?.title}</div>
-            <Breadcrumb title={currentProduct?.title} category={category} />
-         </div>
-         <div className='w-main m-auto bg-white mt-5 flex px-[10px]'>
-            <div className='w-[40%] flex flex-col gap-5'>
+      <div className='w-full'>
+         {!isQuickView &&
+            <div className='flex flex-col justify-center items-center h-[80px] gap-2 bg-[#f7f7f7]'>
+               <div className='w-main px-[10px] font-semibold text-[18px]'>{currentProduct?.title}</div>
+               <Breadcrumb title={currentProduct?.title} category={category} />
+            </div>
+         }
+         <div onClick={(e) => e.stopPropagation()} className={`m-auto bg-white flex ${isQuickView ? 'w-[950px] rounded max-h-[95vh] overflow-y-auto ' : 'w-main mt-5 px-[10px]'}`}>
+            <div className={`flex flex-col gap-5 ${isQuickView ? 'w-[50%] p-3' : 'w-[40%]'}`}>
                <div className='w-[458px] h-[458px] border-[2px]'>
                   <ImageMagnifier width={'100%'} height={'100%'} src={currentProduct?.thumbnail} alt={currentProduct?.title} />
                </div>
@@ -127,9 +180,10 @@ const ProductDetail = () => {
                   </Slider>
                </div>
             </div>
-            <div className='w-[40%] px-4'>
+            <div className={`px-4 ${isQuickView ? 'w-[50%] pt-2' : 'w-[40%]'}`}>
+               {isQuickView && <h1 className='text-[24px] font-semibold pb-3'>{currentProduct?.title}</h1>}
                <div className='flex items-center'>
-                  <div className='text-[30px] font-semibold '>{formatPrice(currentProduct?.price)} VND</div>
+                  <div className={`font-semibold ${isQuickView ? 'text-[20px]' : 'text-[30px]'} `}>{formatPrice(currentProduct?.price)} VND</div>
                   <div className='text-[16px] text-[#505050] pl-10'> Sold: {product?.sold}</div>
                </div>
                <div className='flex items-center mt-1 gap-1'>
@@ -177,35 +231,43 @@ const ProductDetail = () => {
                      ))}
                   </div>
                </div>
+               <div className='flex items-center gap-10'>
+                  <div className='text-[14px] text-[#151515] font-semibold'>Quantity</div>
+                  <SelectQuantity
+                     quantity={quantity}
+                     handleQuantity={handleQuantity}
+                     handleDecrement={handleDecrement}
+                     handleIncrement={handleIncrement}
+                  />
+                  <div className='text-xs text-[#151515]'>{`In stock: ${product?.quantity}`}</div>
+               </div>
 
-               <SelectQuantity
-                  quantity={quantity}
-                  handleQuantity={handleQuantity}
-                  inStock={product?.quantity}
-                  handleDecrement={handleDecrement}
-                  handleIncrement={handleIncrement}
-               />
-               <button className='w-full py-2 bg-main text-white text-[16px] font-semibold hover:bg-black'>Add to cart</button>
+               <button onClick={handleAddToCart} className='w-full py-2 mt-5 bg-main text-white text-[16px] font-semibold hover:bg-black'>Add to cart</button>
             </div>
-            <div className='w-[20%]'>
-               {ProductExtraInfoData.map((item, index) => {
-                  return <ProductExtraInfo key={index} title={item.title} content={item.content} icon={item.icon} />
-               })}
-            </div>
-         </div>
-         <div className='w-main m-auto bg-white mt-10 px-[10px] '>
-            <ProductInformation totalRating={product?.totalRating} ratings={product?.ratings} nameProduct={product?.title} pid={product?._id} rerender={rerender} />
-         </div>
-         <div className='w-main m-auto bg-white mt-10 px-[10px] '>
-            <h2 className=' text-xl font-semibold text-[#151515] pb-4 border-main border-b-[2px] uppercase'>Other Customers also buy</h2>
-            <div className='my-10 mx-[-10px]'>
-               <Slider {...settings}>
-                  {relativeProducts?.map((product, index) => {
-                     return <Product key={index} product={product} />
+            {!isQuickView &&
+               <div className='w-[20%]'>
+                  {ProductExtraInfoData.map((item, index) => {
+                     return <ProductExtraInfo key={index} title={item.title} content={item.content} icon={item.icon} />
                   })}
-               </Slider>
-            </div>
+               </div>
+            }
          </div>
+         {!isQuickView &&
+            <div className='w-main m-auto bg-white mt-10 px-[10px] '>
+               <ProductInformation totalRating={product?.totalRating} ratings={product?.ratings} nameProduct={product?.title} pid={product?._id} rerender={rerender} />
+            </div>
+         }
+         {!isQuickView &&
+            <div className='w-main m-auto bg-white mt-10 px-[10px] '>
+               <h2 className=' text-xl font-semibold text-[#151515] pb-4 border-main border-b-[2px] uppercase'>Other Customers also buy</h2>
+               <div className='my-10 mx-[-10px]'>
+                  <Slider {...settings}>
+                     {relativeProducts?.map((product, index) => {
+                        return <Product key={index} product={product} />
+                     })}
+                  </Slider>
+               </div>
+            </div>}
       </div>
    )
 }

@@ -1,18 +1,24 @@
-import React, { useState, memo } from 'react'
+import React, { useState, memo, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
 import Swal from 'sweetalert2'
+import { getUserCurrent } from '../../redux/features/userSlice'
+import { showModal, showCart } from '../../redux/features/modalSlice'
 import { Options } from '../../components'
+import { ProductDetail } from '../../pages/public'
 import { formatPrice, capitalizeFirstLetter, renderStar } from '../../ultils/helpers'
 import newLabel from '../../assets/new.png'
 import trendingLabel from '../../assets/trending.png'
 import dealLabel from '../../assets/deal.png'
 import icons from '../../ultils/icons'
 import path from '../../ultils/path'
-const { FaRegEye, IoMenu, FaRegHeart } = icons
+import { apiUsers } from '../../redux/apis'
 
 const Product = ({ product }) => {
+   const { FaRegEye, FaRegHeart, FaShoppingCart, BsCartCheckFill } = icons
    const navigate = useNavigate()
+   const dispatch = useDispatch()
    const { userData, isLoggedIn } = useSelector(state => state.user)
    const [isShowOptions, setIsShowOptions] = useState(false)
    const isNew = (new Date() - new Date(product.createdAt)) / (1000 * 60 * 60 * 24) <= 32
@@ -30,9 +36,23 @@ const Product = ({ product }) => {
    let newPrice = product.price - (product.price * product.discountPercentage) / 100
    newPrice = Math.round(newPrice / 1000) * 1000
 
-   const handleClickMenu = (e) => {
+   const handleClickMenu = async (e) => {
+      console.log(product)
       e.preventDefault()
-      navigate(`/${product.category.toLowerCase()}/${product._id}/${product.title}`)
+      if (!isLoggedIn || !userData) {
+         Swal.fire('Oops!', 'Please login to add to cart', 'info').then(() => {
+            navigate(`/${path.LOGIN}`)
+         })
+      } else {
+         const response = await apiUsers.updateCart({ pid: product._id, color: product.color, quantity: 1, price: product.price, thumbnail: product.thumbnail, title: product.title })
+         if (response.success) {
+            toast.success('Add to cart successfully')
+            dispatch(getUserCurrent())
+
+         }
+         else toast.error('Add to cart failed')
+      }
+
    }
    const handleWishlist = (e) => {
       e.preventDefault()
@@ -41,12 +61,17 @@ const Product = ({ product }) => {
             navigate(`/${path.LOGIN}`)
          })
       } else {
-         console.log('Wishlist')
+         // console.log('Wishlist')
       }
    }
    const handleQuickView = (e) => {
       e.preventDefault()
-      console.log('Quick view')
+      dispatch(showModal({ isShowModal: true, modalContent: <ProductDetail data={{ pid: product._id, category: product.category }} isQuickView={true} /> }))
+
+   }
+   const viewCart = (e) => {
+      e.preventDefault()
+      dispatch(showCart())
    }
    return (
       <div className='w-full px-[10px] mb-[20px] '>
@@ -60,9 +85,20 @@ const Product = ({ product }) => {
          >
             {isShowOptions && (
                <div className='absolute bottom-[120px] left-0 right-0 flex justify-center gap-2 animate-slide-top'>
-                  <span onClick={e => handleWishlist(e)}><Options icon={<FaRegHeart />} content='Wishlist' /></span>
-                  <span onClick={e => handleClickMenu(e)}><Options icon={<IoMenu />} content='Menu' /></span>
-                  <span onClick={e => handleQuickView(e)}><Options icon={<FaRegEye />} content='Quick view' /></span>
+                  <span onClick={e => handleWishlist(e)}>
+                     <Options icon={<FaRegHeart />} content='Wishlist' />
+                  </span>
+                  {userData?.cart?.some(item => item?.product._id === product?._id.toString()) ?
+                     <span onClick={e => viewCart(e)}>
+                        <Options icon={<BsCartCheckFill />} content='View cart' />
+                     </span> :
+                     <span onClick={e => handleClickMenu(e)}>
+                        <Options icon={<FaShoppingCart />} content='Add cart' />
+                     </span>
+                  }
+                  <span onClick={e => handleQuickView(e)}>
+                     <Options icon={<FaRegEye />} content='Quick view' />
+                  </span>
                </div>
             )}
             <img

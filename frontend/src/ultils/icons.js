@@ -1,10 +1,10 @@
 import { LuBadgeCheck } from 'react-icons/lu'
 import { MdEmail, MdLockOutline, MdDelete, MdHistory } from 'react-icons/md'
 import { TfiHeadphone } from 'react-icons/tfi'
-import { IoIosLaptop, IoIosArrowForward, IoMdArrowDropright, IoMdArrowDropdown } from 'react-icons/io'
+import { IoIosLaptop, IoIosArrowForward, IoMdArrowDropright, IoMdArrowDropdown, IoMdClose } from 'react-icons/io'
 import { IoKeyOutline, IoReturnDownBackOutline, IoMenu } from 'react-icons/io5'
 import { CiCamera, CiEdit } from 'react-icons/ci'
-import { BsPrinter, BsSpeaker, BsFillPersonFill } from 'react-icons/bs'
+import { BsPrinter, BsSpeaker, BsFillPersonFill, BsCartCheckFill } from 'react-icons/bs'
 import { GiSmartphone, GiTablet, GiPositionMarker } from 'react-icons/gi'
 import { PiTelevisionThin } from 'react-icons/pi'
 import { SiAmericanexpress } from 'react-icons/si'
@@ -49,9 +49,13 @@ import {
    FaCaretUp,
    FaChevronDown,
    FaSearch,
+   FaLongArrowAltRight,
 } from 'react-icons/fa'
 
 const icons = {
+   FaLongArrowAltRight,
+   IoMdClose,
+   BsCartCheckFill,
    FaLock,
    MdHistory,
    BsFillPersonFill,

@@ -19,7 +19,6 @@ const Products = () => {
    const [activeFilter, setActiveFilter] = useState(null)
    const [sort, setSort] = useState(null)
    const { category } = useParams()
-
    const getProductsByCategory = async (queries) => {
       const response = await apiProducts.getProducts(queries)
       if (response.success) {
@@ -40,9 +39,12 @@ const Products = () => {
          delete queries.to
       }
       // console.log(queries)
-
-      // getProductsByCategory({ category: category, ...queries })
-      getProductsByCategory({ ...queries })
+      if (category && category !== 'products') {
+         getProductsByCategory({ category: category, ...queries })
+      } else {
+         getProductsByCategory({ ...queries })
+      }
+      // getProductsByCategory({ ...queries })
       window.scrollTo(0, 0)
    }, [params, category])
    const handleActiveFilter = useCallback(

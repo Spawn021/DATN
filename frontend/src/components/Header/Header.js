@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { apiUsers } from '../../redux/apis'
 import { logout } from '../../redux/features/userSlice'
+import { showCart } from '../../redux/features/modalSlice'
 import Swal from 'sweetalert2'
 import logo from '../../assets/logo.png'
 import icons from '../../ultils/icons'
@@ -29,7 +30,7 @@ const Header = () => {
             navigate(`/${path.LOGIN}`)
          })
 
-      }
+      } else dispatch(showCart())
    }
    const handleLogout = async () => {
       Swal.fire({
@@ -86,14 +87,20 @@ const Header = () => {
                   </span>
                   <span className='text-[11.9px] text-[#505050] text-center'>Online Support 24/7</span>
                </div>
-               <div onClick={handleWishlist} className='flex items-center  pl-5 border-l'>
+               <div onClick={handleWishlist} className='flex items-center pl-5 border-l'>
                   <FaRegHeart className='fill-main text-[20px] hover:cursor-pointer' />
                </div>
-               <div onClick={handleCart} className='flex items-center gap-2 pl-5 border-l'>
+               <div onClick={handleCart} className='flex items-center gap-2 pl-5 border-l relative z-0'>
                   <FaShoppingCart className='fill-main text-[20px] hover:cursor-pointer' />
-                  <span>0 item</span>
+                  {userData?.cart?.length > 0 &&
+                     <span className='absolute top-1 -right-2 border rounded-full bg-red-500 w-4 h-4 flex items-center justify-center'>
+                        <span className='text-xs text-white'>
+                           {userData?.cart?.reduce((sum, item) => sum + item.quantity, 0)}
+                        </span>
+                     </span>
+                  }
                </div>
-               <div onClick={handleProfileClick} id='profile' className='flex items-center pl-5 border-l relative'>
+               <div onClick={handleProfileClick} id='profile' className='flex items-center pl-5 border-l relative z-0'>
                   <FaUserCircle className='fill-main text-[20px] hover:cursor-pointer' />
                   {isShowOption && (
                      <div className='absolute top-full left-[-100%] bg-white shadow-custom min-w-[150px] p-3 flex flex-col gap-2 rounded'>
