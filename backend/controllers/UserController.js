@@ -1,4 +1,5 @@
 const User = require('../models/User')
+const UserAddress = require('../models/Address')
 const cron = require('node-cron')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
@@ -440,20 +441,82 @@ class UserController {
          updatedUser: user ? user : 'Something went wrong',
       })
    })
-   updateUserAddress = asyncHandler(async (req, res) => {
+   addAddress = asyncHandler(async (req, res) => {
+      const { name, phone, addressLine1, addressLine2, city, state, postalCode, country, isDefault } = req.body
       const { _id } = req.payload
-      if (!req.body.address) {
+      if (!name || !phone || !addressLine1 || !city || !postalCode) {
          return res.status(400).json({
             success: false,
             message: 'Missing inputs',
          })
       }
-      const user = await User.findByIdAndUpdate(_id, { $push: { address: req.body.address } }, { new: true }).select(
-         '-password -refreshToken -role',
-      )
+      const address = await UserAddress.create({
+         userId: _id,
+         name,
+         phone,
+         addressLine1,
+         addressLine2,
+         city,
+         state,
+         postalCode,
+         country,
+         isDefault,
+      })
       return res.status(200).json({
-         success: user ? true : false,
-         updateUserAddress: user ? user : 'Something went wrong',
+         success: address ? true : false,
+         address: address ? address : 'Cannot add address',
+      })
+   })
+   getAddresses = asyncHandler(async (req, res) => {
+      const { _id } = req.payload
+      const addresses = await UserAddress.find({ userId: _id })
+      return res.status(200).json({
+         success: addresses.length > 0 ? true : false,
+         addresses: addresses.length > 0 ? addresses : 'No address found',
+      })
+   })
+   updateAddress = asyncHandler(async (req, res) => {
+      const { aid } = req.params
+      if (!aid || Object.keys(req.body).length === 0) {
+         return res.status(400).json({
+            success: false,
+            message: 'Missing inputs',
+         })
+      }
+      const address = await UserAddress.findByIdAndUpdate(aid, req.body, { new: true })
+      return res.status(200).json({
+         success: address ? true : false,
+         updatedAddress: address ? address : 'Something went wrong',
+      })
+   })
+   deleteAddress = asyncHandler(async (req, res) => {
+      const { aid } = req.params
+      if (!aid) {
+         return res.status(400).json({
+            success: false,
+            message: 'Address id is required',
+         })
+      }
+      const address = await UserAddress.findByIdAndDelete(aid)
+      return res.status(200).json({
+         success: address ? true : false,
+         deletedAddress: address ? address : 'Address not found',
+      })
+   })
+   setDefaultAddress = asyncHandler(async (req, res) => {
+      const { aid } = req.params
+      const { _id } = req.payload
+      if (!aid) {
+         return res.status(400).json({
+            success: false,
+            message: 'Address id is required',
+         })
+      }
+      await UserAddress.updateMany({ userId: _id }, { isDefault: false })
+      const address = await UserAddress.findByIdAndUpdate(aid, { isDefault: true }, { new: true })
+      return res.status(200).json({
+         success: address ? true : false,
+         updatedAddress: address ? address : 'Address not found',
       })
    })
    updateCart = asyncHandler(async (req, res) => {

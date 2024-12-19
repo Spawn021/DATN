@@ -18,10 +18,14 @@ router.put('/change-password', verifyAccessToken, UserController.changePassword)
 router.get('/', verifyAccessToken, isAdmin, UserController.getAllUsers)
 router.delete('/:uid', verifyAccessToken, isAdmin, UserController.deleteUser)
 router.put('/update-user', verifyAccessToken, uploader.single('avatar'), UserController.updateUser)
-router.put('/address', verifyAccessToken, UserController.updateUserAddress)
 router.put('/cart', verifyAccessToken, UserController.updateCart)
 router.delete('/remove-cart/:pid/:color?', verifyAccessToken, UserController.removeProductIncart)
 router.put('/:uid', verifyAccessToken, isAdmin, UserController.updateUserByAdmin)
+router.post('/add-address', verifyAccessToken, UserController.addAddress)
+router.get('/get-addresses', verifyAccessToken, UserController.getAddresses)
+router.delete('/delete-address/:aid', verifyAccessToken, UserController.deleteAddress)
+router.put('/update-address/:aid', verifyAccessToken, UserController.updateAddress)
+router.patch('/set-default-address/:aid', verifyAccessToken, UserController.setDefaultAddress)
 
 module.exports = router
 

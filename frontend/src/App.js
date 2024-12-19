@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import 'react-toastify/dist/ReactToastify.css';
 import { Login, Home, PublicLayout, FAQ, Service, ProductDetail, Products, Blog, ActiveRegister, ForgetPassword, DetailCart } from './pages/public'
 import { AdminLayout, ManageOrders, ManageProducts, ManageUsers, CreateProduct, Dashboard } from './pages/admin'
-import { MemberLayout, Personal, MyCart, MyWishlist, History, ChangePassword, Checkout } from './pages/member'
+import { MemberLayout, Personal, MyCart, MyWishlist, History, ChangePassword, Checkout, Payment } from './pages/member'
 import path from './ultils/path'
 import { ScrollToTopHandler, Modal, ScrollToTopButton, Cart } from './components'
 import { showCart } from './redux/features/modalSlice';
@@ -35,8 +35,9 @@ function App() {
          <ScrollToTopHandler />
          <ScrollToTopButton />
          <Routes>
-            <Route path={path.CHECKOUT} element={<Checkout />} />
             <Route path={path.ALL} element={<h1>404 Not Found</h1>} />
+            <Route path={path.CHECKOUT} element={<Checkout />} />
+            <Route path={path.PAYMENT} element={<Payment />} />
             <Route path={path.PUBLIC} element={<PublicLayout />}>
                <Route path={path.HOME} element={<Home />} />
                <Route path={path.BLOGS} element={<Blog />} />

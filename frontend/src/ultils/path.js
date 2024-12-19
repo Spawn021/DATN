@@ -13,6 +13,7 @@ const path = {
    FORGET_PASSWORD: 'forget-password',
    DETAIL_CART: 'cart-detail',
    CHECKOUT: 'checkout',
+   PAYMENT: 'payment',
 
    // Admin
    ADMIN: 'admin',

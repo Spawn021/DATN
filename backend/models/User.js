@@ -41,10 +41,12 @@ var userSchema = new mongoose.Schema(
             title: { type: String },
          },
       ],
-      address: {
-         type: Array,
-         default: [],
-      },
+      addresses: [
+         {
+            type: mongoose.Types.ObjectId,
+            ref: 'UserAddress',
+         },
+      ],
       wishlist: [
          {
             type: mongoose.Types.ObjectId,

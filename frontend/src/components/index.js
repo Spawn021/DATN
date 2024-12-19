@@ -8,6 +8,7 @@ export { default as ImageMagnifier } from './Common/ImageMagnifier'
 export { default as ScrollToTopHandler } from './Common/ScrollToTopHandler'
 export { default as ScrollToTopButton } from './Common/ScrollToTopButton'
 export { default as Modal } from './Common/Modal'
+export { default as Paypal } from './Common/Paypal'
 
 export { default as Banner } from './Home/Banner'
 export { default as NewArrival } from './Home/NewArrival'

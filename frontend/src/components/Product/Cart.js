@@ -54,7 +54,7 @@ const Cart = () => {
                                                 <Link to={`/${item.product?.category.toLowerCase()}/${item.product?._id}/${item.product?.title}`}
                                                     onClick={() => dispatch(showCart())}
                                                 >
-                                                    <span className='text-sm font-semibold text-main'>{item.title}</span>
+                                                    <span className='text-sm font-semibold text-main hover:text-red-700'>{item.title}</span>
                                                 </Link>
                                                 <div className='text-xs'>{`x${item.quantity}`}</div>
                                             </div>

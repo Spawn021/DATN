@@ -12,7 +12,7 @@ const commonPersistConfig = {
 
 const userPersistConfig = {
    ...commonPersistConfig,
-   whitelist: ['isLoggedIn', 'token', 'userData'], // only save in storage
+   whitelist: ['isLoggedIn', 'token', 'userData', 'currentCart'], // only save in storage
 }
 export const store = configureStore({
    reducer: {
