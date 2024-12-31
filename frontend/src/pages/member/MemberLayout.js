@@ -13,8 +13,7 @@ const MemberLayout = () => {
 
     const routeNames = {
         [`/${path.MEMBER}/${path.PERSONAL}`]: 'Personal Information',
-        [`/${path.MEMBER}/${path.MY_CART}`]: 'My Cart',
-        [`/${path.MEMBER}/${path.MY_WISHLIST}`]: 'My Wishlist',
+        [`/${path.MEMBER}/${path.MY_ADDRESS}`]: 'My Address',
         [`/${path.MEMBER}/${path.HISTORY}`]: 'Purchase History',
         [`/${path.MEMBER}/${path.CHANGE_PASSWORD}`]: 'Change Password',
 

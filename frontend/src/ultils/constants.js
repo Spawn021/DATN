@@ -1,6 +1,6 @@
 import path from './path'
 import icons from './icons'
-const { FaHome, FaTty, FaReply, FaTruck, FaGift, FaShieldAlt, RxDashboard, FaUserGroup, FaProductHunt, FaFileInvoiceDollar, BsFillPersonFill, FaShoppingCart, FaRegHeart, MdHistory, FaLock } = icons
+const { FaHome, FaTty, FaReply, FaTruck, FaGift, FaShieldAlt, RxDashboard, FaUserGroup, FaProductHunt, FaFileInvoiceDollar, BsFillPersonFill, GiPositionMarker, MdHistory, FaLock } = icons
 export const navigation = [
    {
       id: 1,
@@ -172,33 +172,26 @@ export const memberSidebar = [
    {
       id: 2,
       type: 'single',
-      value: 'My cart',
-      path: `/${path.MEMBER}/${path.MY_CART}`,
-      icon: <FaShoppingCart />,
+      value: 'My Address',
+      path: `/${path.MEMBER}/${path.MY_ADDRESS}`,
+      icon: <GiPositionMarker />,
    },
    {
       id: 3,
-      type: 'single',
-      value: 'History',
-      path: `/${path.MEMBER}/${path.HISTORY}`,
-      icon: <MdHistory />,
-   },
-   {
-      id: 4,
-      type: 'single',
-      value: 'Wishlist',
-      path: `/${path.MEMBER}/${path.MY_WISHLIST}`,
-      icon: <FaRegHeart />,
-   },
-   {
-      id: 5,
       type: 'single',
       value: 'Change Password',
       path: `/${path.MEMBER}/${path.CHANGE_PASSWORD}`,
       icon: <FaLock />,
    },
    {
-      id: 6,
+      id: 4,
+      type: 'single',
+      value: 'History',
+      path: `/${path.MEMBER}/${path.HISTORY}`,
+      icon: <MdHistory />,
+   },
+   {
+      id: 5,
       type: 'single',
       value: 'Go Home',
       path: `/${path.HOME}`,

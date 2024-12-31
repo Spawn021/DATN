@@ -1,17 +1,17 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
-import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css'
 import { Login, Home, PublicLayout, FAQ, Service, ProductDetail, Products, Blog, ActiveRegister, ForgetPassword, DetailCart } from './pages/public'
 import { AdminLayout, ManageOrders, ManageProducts, ManageUsers, CreateProduct, Dashboard } from './pages/admin'
-import { MemberLayout, Personal, MyCart, MyWishlist, History, ChangePassword, Checkout, Payment } from './pages/member'
+import { MemberLayout, Personal, History, ChangePassword, Checkout, Payment, MyAddress } from './pages/member'
 import path from './ultils/path'
-import { ScrollToTopHandler, Modal, ScrollToTopButton, Cart } from './components'
-import { showCart } from './redux/features/modalSlice';
+import { ScrollToTopHandler, Modal, ScrollToTopButton, Cart, ModalChangeAddress } from './components'
+import { showCart } from './redux/features/modalSlice'
 
 function App() {
-   const { isShowModal, modalContent, isShowCart } = useSelector((state) => state.modal)
+   const { isShowModal, modalContent, isShowCart, isShowChangeAddressModal, changeAddressModalContent } = useSelector((state) => state.modal)
    const dispatch = useDispatch()
    return (
       <div className='h-screen relative'>
@@ -21,6 +21,7 @@ function App() {
             </div>
          }
          {isShowModal && <Modal>{modalContent}</Modal>}
+         {isShowChangeAddressModal && <ModalChangeAddress>{changeAddressModalContent}</ModalChangeAddress>}
          <ToastContainer
             position="top-right"
             autoClose={5000}
@@ -58,10 +59,9 @@ function App() {
 
             <Route path={path.MEMBER} element={<MemberLayout />}>
                <Route path={path.PERSONAL} element={<Personal />} />
-               <Route path={path.MY_CART} element={<MyCart />} />
-               <Route path={path.MY_WISHLIST} element={<MyWishlist />} />
                <Route path={path.HISTORY} element={<History />} />
                <Route path={path.CHANGE_PASSWORD} element={<ChangePassword />} />
+               <Route path={path.MY_ADDRESS} element={<MyAddress />} />
             </Route>
 
             <Route path={path.ACTIVE_REGISTER} element={<ActiveRegister />} />

@@ -106,3 +106,35 @@ export const removeCart = (url) => {
       method: 'DELETE',
    })
 }
+export const getAddresses = () => {
+   return axios({
+      url: '/user/get-addresses',
+      method: 'GET',
+   })
+}
+export const deleteAddress = (aid) => {
+   return axios({
+      url: `/user/delete-address/${aid}`,
+      method: 'DELETE',
+   })
+}
+export const addAddress = (data) => {
+   return axios({
+      url: '/user/add-address',
+      method: 'POST',
+      data,
+   })
+}
+export const updateAddress = (aid, data) => {
+   return axios({
+      url: `/user/update-address/${aid}`,
+      method: 'PUT',
+      data,
+   })
+}
+export const setDefaultAddress = (aid) => {
+   return axios({
+      url: `/user/set-default-address/${aid}`,
+      method: 'PATCH',
+   })
+}

@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect } from 'react'
 import { useSearchParams, useNavigate, createSearchParams, useLocation } from 'react-router-dom'
 
 const PagiItem = ({ children }) => {
@@ -14,10 +14,18 @@ const PagiItem = ({ children }) => {
             pathname: location.pathname,
             search: createSearchParams(queries).toString(),
         })
-
     }
-
+    useEffect(() => {
+        const scrollableContainer = document.getElementsByClassName('w-full h-screen overflow-y-auto')[0]
+        if (scrollableContainer) {
+            scrollableContainer.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+        }
+    }, [params]);
     return (
+
         <button
             type='button'
             disabled={!Number(children)}

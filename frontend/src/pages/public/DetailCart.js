@@ -78,7 +78,7 @@ const DetailCart = () => {
                                                 (total, item) => total + item.price * item.quantity,
                                                 0,
                                             ),
-                                        )}
+                                        )} VND
                                     </div>
                                 </div>
                                 <div className='text-sm text-[#151515] italic'>

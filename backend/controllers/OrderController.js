@@ -6,33 +6,15 @@ const asyncHandler = require('express-async-handler')
 class OrderController {
     createOrder = asyncHandler(async (req, res) => {
         const { _id } = req.payload
-        const { coupon } = req.body
-        const Cart = await User.findById(_id).select('cart').populate({ path: 'cart.product', select: 'price title' })
-        if (!Cart || !Cart.cart || Cart.cart.length === 0) {
+        const { coupon, products, total, address } = req.body
+        if (!products || !total || !address) {
             return res.status(400).json({
                 success: false,
-                message: 'No products in cart',
+                message: 'Products, total and address are required',
             })
         }
-        const products = Cart.cart.map((item) => ({
-            product: item.product._id,
-            price: item.product.price,
-            quantity: item.quantity,
-            color: item.color,
-        }))
-        let total = Cart?.cart?.reduce((acc, item) => acc + item.quantity * item.product.price, 0)
-        if (coupon) {
-            const validCoupon = await Coupon.findById(coupon)
-            if (validCoupon) {
-                total = total - (total * validCoupon.discount) / 100
-            } else {
-                return res.status(400).json({
-                    success: false,
-                    message: 'Invalid coupon',
-                })
-            }
-        }
-        const order = await Order.create({ products, total, orderedBy: _id, coupon })
+        await User.findByIdAndUpdate(_id, { cart: [] })
+        const order = await Order.create({ products, total, orderedBy: _id, coupon, address })
         return res.json({
             success: order ? true : false,
             order: order ? order : 'Order not created',

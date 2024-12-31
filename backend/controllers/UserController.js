@@ -442,7 +442,7 @@ class UserController {
       })
    })
    addAddress = asyncHandler(async (req, res) => {
-      const { name, phone, addressLine1, addressLine2, city, state, postalCode, country, isDefault } = req.body
+      const { name, phone, addressLine1, city, state, postalCode, country, isDefault } = req.body
       const { _id } = req.payload
       if (!name || !phone || !addressLine1 || !city || !postalCode) {
          return res.status(400).json({
@@ -450,21 +450,13 @@ class UserController {
             message: 'Missing inputs',
          })
       }
-      const address = await UserAddress.create({
-         userId: _id,
-         name,
-         phone,
-         addressLine1,
-         addressLine2,
-         city,
-         state,
-         postalCode,
-         country,
-         isDefault,
-      })
+      if (isDefault) {
+         await UserAddress.updateMany({ userId: _id }, { isDefault: false })
+      }
+      const address = await UserAddress.create({ userId: _id, name, phone, addressLine1, city, state, postalCode, country, isDefault })
       return res.status(200).json({
-         success: address ? true : false,
-         address: address ? address : 'Cannot add address',
+         success: true,
+         address,
       })
    })
    getAddresses = asyncHandler(async (req, res) => {
@@ -477,16 +469,20 @@ class UserController {
    })
    updateAddress = asyncHandler(async (req, res) => {
       const { aid } = req.params
+      const { isDefault } = req.body
       if (!aid || Object.keys(req.body).length === 0) {
          return res.status(400).json({
             success: false,
             message: 'Missing inputs',
          })
       }
+      if (isDefault) {
+         await UserAddress.updateMany({ userId: req.payload._id }, { isDefault: false })
+      }
       const address = await UserAddress.findByIdAndUpdate(aid, req.body, { new: true })
       return res.status(200).json({
          success: address ? true : false,
-         updatedAddress: address ? address : 'Something went wrong',
+         updatedAddress: address ? address : 'Address not found',
       })
    })
    deleteAddress = asyncHandler(async (req, res) => {

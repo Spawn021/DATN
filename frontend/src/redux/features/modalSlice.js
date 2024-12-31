@@ -6,6 +6,8 @@ const modalSlice = createSlice({
         isShowModal: false,
         modalContent: null,
         isShowCart: false,
+        isShowChangeAddressModal: false,
+        changeAddressModalContent: null,
     },
     reducers: {
         showModal: (state, action) => {
@@ -15,10 +17,14 @@ const modalSlice = createSlice({
         },
         showCart: (state) => {
             state.isShowCart = state.isShowCart ? false : true
+        },
+        showChangeAddressModal: (state, action) => {
+            state.isShowChangeAddressModal = action.payload.isShowChangeAddressModal
+            state.changeAddressModalContent = action.payload.changeAddressModalContent
         }
     },
 
 })
 
-export const { showModal, showCart } = modalSlice.actions
+export const { showModal, showCart, showChangeAddressModal } = modalSlice.actions
 export default modalSlice.reducer

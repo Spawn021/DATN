@@ -24,8 +24,8 @@ export const store = configureStore({
       getDefaultMiddleware({
          serializableCheck: {
             ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
-            ignoredPaths: ['modal.modalContent'],
-            ignoredActionPaths: ['payload.modalContent'],
+            ignoredPaths: ['modal.modalContent', 'modal.changeAddressModalContent'],
+            ignoredActionPaths: ['payload.modalContent', 'payload.changeAddressModalContent'],
          },
       }),
 })

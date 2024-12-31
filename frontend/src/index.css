@@ -59,3 +59,6 @@ button.slick-prev::before {
 .list-style ul {
    list-style: inside;
 }
+input[type='checkbox']:disabled {
+   cursor: not-allowed;
+}

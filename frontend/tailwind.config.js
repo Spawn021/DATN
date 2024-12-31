@@ -17,7 +17,7 @@ module.exports = {
          width: {
             main: '1220px',
          },
-         height: {
+         minHeight: {
             'hp': 'calc(100vh - 84px)',
          },
          inset: {

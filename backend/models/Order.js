@@ -14,10 +14,17 @@ var orderSchema = new mongoose.Schema({
             },
             color: {
                 type: String,
-                required: true,
             },
             price: {
                 type: Number,
+                required: true,
+            },
+            thumbnail: {
+                type: String,
+                required: true,
+            },
+            title: {
+                type: String,
                 required: true,
             },
         },
@@ -36,6 +43,10 @@ var orderSchema = new mongoose.Schema({
     coupon: {
         type: mongoose.Types.ObjectId,
         ref: 'Coupon',
+    },
+    address: {
+        type: mongoose.Types.ObjectId,
+        ref: 'Address',
     },
 })
 
