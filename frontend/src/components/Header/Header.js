@@ -38,6 +38,8 @@ const Header = () => {
             }
 
          })
+      } else {
+         navigate(`/${path.WISHLIST}`)
       }
    }
    const handleCart = () => {

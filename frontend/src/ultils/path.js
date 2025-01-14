@@ -12,6 +12,7 @@ const path = {
    ACTIVE_REGISTER: 'active-account/:status',
    FORGET_PASSWORD: 'forget-password',
    DETAIL_CART: 'cart-detail',
+   WISHLIST: 'wishlist',
    CHECKOUT: 'checkout',
    PAYMENT: 'payment',
 
@@ -22,6 +23,8 @@ const path = {
    MANAGE_PRODUCTS: 'manage-products',
    MANAGE_ORDERS: 'manage-orders',
    CREATE_PRODUCT: 'create-product',
+   MANAGE_COUPONS: 'manage-coupons',
+   CREATE_COUPON: 'create-coupon',
 
    //Member
    MEMBER: 'member',

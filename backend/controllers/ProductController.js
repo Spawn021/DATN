@@ -93,7 +93,9 @@ class ProductController {
       if (queries?.category) {
          formattedQuery.category = { $regex: queries.category, $options: 'i' }
       }
-
+      if (queries?.brand) {
+         formattedQuery.brand = { $regex: queries.brand, $options: 'i' }
+      }
       if (queries?.color) {
          delete formattedQuery.color
          const colors = queries.color.split(',')
@@ -110,6 +112,7 @@ class ProductController {
             { brand: { $regex: queries.q, $options: 'i' } }
          ]
       }
+
       const qr = { ...colorQueryObject, ...formattedQuery, ...querySearch }
       // console.log(formattedQuery)
       let queryCommand = Product.find(qr)

@@ -138,3 +138,9 @@ export const setDefaultAddress = (aid) => {
       method: 'PATCH',
    })
 }
+export const updateWishlist = (pid) => {
+   return axios({
+      url: '/user/wishlist/' + pid,
+      method: 'PUT',
+   })
+}

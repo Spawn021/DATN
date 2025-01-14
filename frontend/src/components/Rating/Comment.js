@@ -3,6 +3,7 @@ import moment from 'moment'
 import avatar from '../../assets/avatar-default.png'
 import { renderStar } from '../../ultils/helpers'
 const Comment = ({ image = avatar, name = 'Anonymous', updatedAt, star, comment }) => {
+    console.log(updatedAt)
 
     return (
         <div className='flex gap-5'>

@@ -1,11 +1,13 @@
 import React, { useEffect, useState, memo } from 'react'
 import Slider from 'react-slick'
+import { useNavigate } from 'react-router-dom'
 import { apiProducts } from '../../redux/apis'
 import { Product } from '../../components'
 import banner1 from '../../assets/banner1.png'
 import banner2 from '../../assets/banner2.png'
 
 const TabProduct = () => {
+   const navigate = useNavigate()
    const settings = {
       dots: false,
       infinite: true,
@@ -60,13 +62,19 @@ const TabProduct = () => {
             </Slider>
          </div>
          <div className='flex items-center justify-between'>
-            <div className='relative group w-[435px] h-[140px]'>
+            <div
+               className='relative group w-[435px] h-[140px]'
+               onClick={() => navigate('laptop/674f26b95a36890b2d4788ff/DELL%20INSPIRON%207460')}
+            >
                <img src={banner1} alt='banner' className='w-full h-full object-cover' />
                <div className='group-hover:cursor-pointer absolute top-0 left-0 w-0 h-0  group-hover:w-full group-hover:h-full group-hover:bg-[#0000001a] transition-all duration-500'></div>
                <div className='group-hover:cursor-pointer absolute bottom-0 right-0 w-0 h-0  group-hover:w-full group-hover:h-full group-hover:bg-[#0000001a] transition-all duration-500'></div>
             </div>
 
-            <div className='relative group w-[435px] h-[140px]'>
+            <div
+               className='relative group w-[435px] h-[140px]'
+               onClick={() => navigate('Laptop/674f26b95a36890b2d478901/APPLE%20MACBOOK%20PRO%2013%22')}
+            >
                <img src={banner2} alt='banner' className='w-full h-full object-cover ' />
                <div className='group-hover:cursor-pointer absolute top-0 left-0 w-0 h-0  group-hover:w-full group-hover:h-full group-hover:bg-[#0000001a] transition-all duration-500'></div>
                <div className='group-hover:cursor-pointer absolute bottom-0 right-0 w-0 h-0  group-hover:w-full group-hover:h-full group-hover:bg-[#0000001a] transition-all duration-500'></div>

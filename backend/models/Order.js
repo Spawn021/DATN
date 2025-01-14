@@ -2,6 +2,17 @@ const mongoose = require('mongoose') // Erase if already required
 
 // Declare the Schema of the Mongo model
 var orderSchema = new mongoose.Schema({
+    orderID: {
+        type: String,
+        required: true,
+    },
+    paymentId: {
+        type: String,
+    },
+    refunded: {
+        type: Boolean,
+        default: false,
+    },
     products: [
         {
             product: {
@@ -27,13 +38,16 @@ var orderSchema = new mongoose.Schema({
                 type: String,
                 required: true,
             },
+            category: {
+                type: String,
+            },
         },
     ],
     status: {
         // stripe
         type: String,
-        default: 'Processing',
-        enum: ['Processing', 'Successed', 'Cancelled'],
+        default: 'Pending',
+        enum: ['Pending', 'Processing', 'Successed', 'Cancelled'],
     },
     total: Number,
     orderedBy: {
@@ -46,9 +60,12 @@ var orderSchema = new mongoose.Schema({
     },
     address: {
         type: mongoose.Types.ObjectId,
-        ref: 'Address',
+        ref: 'UserAddress',
     },
-})
+    code: {
+        type: String,
+    },
+}, { timestamps: true })
 
 //Export the model
 module.exports = mongoose.model('Order', orderSchema)

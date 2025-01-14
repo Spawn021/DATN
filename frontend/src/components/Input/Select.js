@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-const Select = ({ label, options = [], register, errors, id, validate }) => {
+const Select = ({ label, options = [], register, errors, id, validate, disabled = false }) => {
     return (
         <div className='flex flex-col gap-2'>
             {label && <label htmlFor={id} className='block text-sm font-medium text-gray-700'>{label}</label>}
@@ -9,6 +9,7 @@ const Select = ({ label, options = [], register, errors, id, validate }) => {
                 {...register(id, validate)}
                 className={`my-auto mt-1 block w-full px-1 py-2 border ${errors[id] ? 'border-red-500' : 'border-gray-300'}
                 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+                disabled={disabled}
             >
                 <option value=''>Choose</option>
                 {options?.map((option, index) => (

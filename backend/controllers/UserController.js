@@ -84,9 +84,9 @@ class UserController {
             await User.findByIdAndUpdate(user._id, { refreshToken }, { new: true }) //new: true returns the updated document
             // Save refreshToken to cookie
             res.cookie('refreshToken', refreshToken, {
-               httpOnly: true,
+               httpOnly: true, // don't allow JS to access this cookie
                maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
-               secure: true, // Bắt buộc nếu dùng SameSite: 'None'
+               secure: true, // Bắt buộc nếu dùng SameSite: 'None' //only send cookie over https
                sameSite: 'None',
             })
 
@@ -114,7 +114,7 @@ class UserController {
             path: 'product',
             select: 'title price thumbnail discountPercentage category quantity',
          }
-      })
+      }).populate('wishlist')
       if (!user) {
          return res.status(404).json({
             success: false,
@@ -593,6 +593,30 @@ class UserController {
          success: response ? true : false,
          users: response ? response : 'Cannot create users',
       })
+   })
+
+   updateWishlist = asyncHandler(async (req, res) => {
+      const { _id } = req.payload
+      const { pid } = req.params
+      const user = await User.findById(_id)
+      const productInWishlist = user.wishlist.find((item) => item.toString() === pid)
+      if (productInWishlist) {
+         user.wishlist.pull(pid)
+         await user.save()
+         return res.status(200).json({
+            success: true,
+            message: 'Product removed from wishlist',
+            user,
+         })
+      } else {
+         user.wishlist.push(pid)
+         await user.save()
+         return res.status(200).json({
+            success: true,
+            message: 'Product added to wishlist',
+            user,
+         })
+      }
    })
 
 }

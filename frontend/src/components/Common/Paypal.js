@@ -24,8 +24,8 @@ const ButtonWrapper = ({ currency, showSpinner, amount, payload, setIsSuccess })
             }
         });
     }, [currency, showSpinner]);
-    const handleSaveOrder = async () => {
-        const response = await apiOrders.createOrder(payload)
+    const handleSaveOrder = async (paymentId) => {
+        const response = await apiOrders.createOrder({ ...payload, paymentId })
         if (response.success) {
             setIsSuccess(true)
             setTimeout(() => {
@@ -47,7 +47,7 @@ const ButtonWrapper = ({ currency, showSpinner, amount, payload, setIsSuccess })
                 style={style}
                 disabled={false}
                 forceReRender={[style, currency, amount]}
-                fundingSource={undefined}
+                fundingSource="paypal"
                 createOrder={(data, actions) => actions.order.create({
                     purchase_units: [
                         {
@@ -55,13 +55,18 @@ const ButtonWrapper = ({ currency, showSpinner, amount, payload, setIsSuccess })
                                 value: amount,
                                 currency_code: currency,
                             },
+                            payee: {
+                                email_address: "sb-bipfc36109163@business.example.com"
+                            }
                         },
                     ],
                 }).then((orderId) => orderId)
                 }
                 onApprove={(data, actions) => actions.order.capture().then(async (response) => {
+                    console.log(response)
                     if (response.status === 'COMPLETED') {
-                        handleSaveOrder()
+                        const paymentId = response.purchase_units[0].payments.captures[0].id
+                        handleSaveOrder(paymentId)
                     }
                 })}
             />
@@ -72,7 +77,7 @@ const ButtonWrapper = ({ currency, showSpinner, amount, payload, setIsSuccess })
 export default function Paypal({ amount, payload, setIsSuccess }) {
     return (
         <div style={{ width: "100%", minHeight: "10px", zIndex: 10, position: "relative" }}>
-            <PayPalScriptProvider options={{ clientId: "test", components: "buttons", currency: "USD" }}>
+            <PayPalScriptProvider options={{ clientId: "AY3D81gsgLAqScqTIZ67UOLYb-IftE1CIQfPgbpRF8eS0imFcdSdwRmHL5G0lK1cS0S9aZ4LS5uXghQr", components: "buttons", currency: "USD" }}>
                 <ButtonWrapper setIsSuccess={setIsSuccess} payload={payload} currency={'USD'} amount={amount} showSpinner={false} />
             </PayPalScriptProvider>
         </div>

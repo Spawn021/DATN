@@ -1,7 +1,13 @@
 import React from 'react'
+import { Breadcrumb } from '../../components'
 
 const Blog = () => {
-   return <div>Blog</div>
+   return <div className='w-full'>
+      <div className='flex flex-col justify-center items-center h-[80px] gap-2 bg-[#f7f7f7]'>
+         <div className='w-main px-[10px] font-semibold text-[18px] uppercase'>BlogS</div>
+         <Breadcrumb />
+      </div>
+   </div>
 }
 
 export default Blog

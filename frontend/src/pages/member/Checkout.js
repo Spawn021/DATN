@@ -228,7 +228,7 @@ const Checkout = () => {
                         </div>
                         {address &&
                             <div className='mt-4 p-4'>
-                                <div className='w-1/2 flex m-auto'>
+                                <div className='w-full flex m-auto'>
                                     <Paypal
                                         amount={total}
                                         payload={{

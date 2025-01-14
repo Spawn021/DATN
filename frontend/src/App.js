@@ -3,8 +3,8 @@ import { Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
 import 'react-toastify/dist/ReactToastify.css'
-import { Login, Home, PublicLayout, FAQ, Service, ProductDetail, Products, Blog, ActiveRegister, ForgetPassword, DetailCart } from './pages/public'
-import { AdminLayout, ManageOrders, ManageProducts, ManageUsers, CreateProduct, Dashboard } from './pages/admin'
+import { Login, Home, PublicLayout, FAQ, Service, ProductDetail, Products, Blog, ActiveRegister, ForgetPassword, DetailCart, Wishlist } from './pages/public'
+import { AdminLayout, ManageOrders, ManageProducts, ManageUsers, CreateProduct, Dashboard, ManageCoupon, CreateCoupon } from './pages/admin'
 import { MemberLayout, Personal, History, ChangePassword, Checkout, Payment, MyAddress } from './pages/member'
 import path from './ultils/path'
 import { ScrollToTopHandler, Modal, ScrollToTopButton, Cart, ModalChangeAddress } from './components'
@@ -47,6 +47,7 @@ function App() {
                <Route path={path.FAQS} element={<FAQ />} />
                <Route path={path.DETAIL_PRODUCT__CATEGORY__PID__TITLE} element={<ProductDetail />} />
                <Route path={path.DETAIL_CART} element={<DetailCart />} />
+               <Route path={path.WISHLIST} element={<Wishlist />} />
             </Route>
 
             <Route path={path.ADMIN} element={<AdminLayout />}>
@@ -55,6 +56,8 @@ function App() {
                <Route path={path.MANAGE_ORDERS} element={<ManageOrders />} />
                <Route path={path.MANAGE_USERS} element={<ManageUsers />} />
                <Route path={path.CREATE_PRODUCT} element={<CreateProduct />} />
+               <Route path={path.MANAGE_COUPONS} element={<ManageCoupon />} />
+               <Route path={path.CREATE_COUPON} element={<CreateCoupon />} />
             </Route>
 
             <Route path={path.MEMBER} element={<MemberLayout />}>

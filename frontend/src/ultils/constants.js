@@ -159,6 +159,22 @@ export const adminSidebar = [
       path: `/${path.ADMIN}/${path.MANAGE_ORDERS}`,
       icon: <FaFileInvoiceDollar />,
    },
+   {
+      id: 5,
+      type: 'parent',
+      value: 'Counpons',
+      icon: <FaGift />,
+      children: [
+         {
+            value: 'Manage Coupons',
+            path: `/${path.ADMIN}/${path.MANAGE_COUPONS}`,
+         },
+         {
+            value: 'Create Coupon',
+            path: `/${path.ADMIN}/${path.CREATE_COUPON}`,
+         }
+      ],
+   },
 ]
 
 export const memberSidebar = [
@@ -206,4 +222,24 @@ export const roles = [
 export const userStatus = [
    { id: false, value: 'Active' },
    { id: true, value: 'Blocked' },
+]
+export const orderStatus = [
+   { label: 'Pending', value: 'Pending' },
+   { label: 'Processing', value: 'Processing' },
+   { label: 'Completed', value: 'Completed' },
+   { label: 'Cancelled', value: 'Cancelled' },
+]
+export const orderStatusAdmin = [
+   { id: 'Pending', value: 'Pending' },
+   { id: 'Processing', value: 'Processing' },
+   { id: 'Completed', value: 'Completed' },
+   { id: 'Cancelled', value: 'Cancelled' },
+]
+export const couponStatus = [
+   { id: true, value: 'Active' },
+   { id: false, value: 'Inactive' },
+]
+export const couponType = [
+   { id: 'fixed', value: 'Fixed' },
+   { id: 'percentage', value: 'Percentage' },
 ]

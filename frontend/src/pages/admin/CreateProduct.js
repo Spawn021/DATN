@@ -9,6 +9,7 @@ import icons from '../../ultils/icons'
 const CreateProduct = () => {
 
     const categories = useSelector((state) => state.prodCategory.categories)
+
     const [isLoading, setIsLoading] = useState(false)
     const { MdDelete, FaPlus } = icons
     const { register, handleSubmit, formState: { errors }, reset, watch } = useForm()

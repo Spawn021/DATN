@@ -14,7 +14,9 @@ import { CgPlayListAdd } from "react-icons/cg";
 import { BiLogOutCircle } from "react-icons/bi";
 import { RiAdminLine } from "react-icons/ri";
 import { ImProfile } from "react-icons/im";
+import { TbHeartCheck } from "react-icons/tb";
 import {
+
    FaHome,
    FaLock,
    FaFileInvoiceDollar,
@@ -54,6 +56,7 @@ import {
 } from 'react-icons/fa'
 
 const icons = {
+   TbHeartCheck,
    FaHome,
    FaLongArrowAltRight,
    IoMdClose,

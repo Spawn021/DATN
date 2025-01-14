@@ -1,8 +1,10 @@
 import React, { useEffect, memo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { createSearchParams, useNavigate } from 'react-router-dom'
 import { getProdCategories } from '../../redux/features/prodCategorySlice'
 
 const HotCollection = () => {
+   const navigate = useNavigate()
    const dispatch = useDispatch()
    const categories = useSelector((state) => state.prodCategory.categories)
 
@@ -24,7 +26,14 @@ const HotCollection = () => {
                            <ul className='flex flex-col'>
                               {item.brand.map((el, index) => {
                                  return (
-                                    <li key={index} className='flex text-[#808080] text-[14px] font-normal hover:text-main group mb-[5px]'>
+                                    <li
+                                       key={index}
+                                       className='flex text-[#808080] text-[14px] font-normal hover:text-main group mb-[5px]'
+                                       onClick={() => navigate({
+                                          pathname: `/${item.title}`,
+                                          search: createSearchParams({ brand: el }).toString()
+                                       })}
+                                    >
                                        <div className='pr-2 group-hover:cursor-pointer group-hover:text-main '>{'>'}</div>
                                        <div className='group-hover:cursor-pointer group-hover:text-main'>{el}</div>
                                     </li>

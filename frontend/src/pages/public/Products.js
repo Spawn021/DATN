@@ -38,6 +38,9 @@ const Products = () => {
          queries.price = { ...queries.price, lte: queries.to }
          delete queries.to
       }
+      if (queries.brand) {
+         queries.brand = queries.brand;
+      }
       // console.log(queries)
       if (category && category !== 'products') {
          getProductsByCategory({ category: category, ...queries })
@@ -65,15 +68,15 @@ const Products = () => {
       if (sort !== null) {
          navigate({
             pathname: `/${category}`,
-            search: createSearchParams({ sort: sort }).toString(),
-         })
+            search: createSearchParams({ ...Object.fromEntries(params.entries()), sort: sort }).toString(),
+         });
       } else {
          navigate({
             pathname: `/${category}`,
-            search: '', // Không có tham số sort
-         })
+            search: createSearchParams(Object.fromEntries(params.entries())).toString(),
+         });
       }
-   }, [sort])
+   }, [sort]);
    return (
       <div className='w-full'>
          <div className='flex flex-col justify-center items-center h-[80px] gap-2 bg-[#f7f7f7]'>

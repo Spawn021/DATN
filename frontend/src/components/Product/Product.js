@@ -1,4 +1,4 @@
-import React, { useState, memo, useEffect } from 'react'
+import React, { useState, memo } from 'react'
 import { createSearchParams, Link, useLocation, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
@@ -15,8 +15,8 @@ import icons from '../../ultils/icons'
 import path from '../../ultils/path'
 import { apiUsers } from '../../redux/apis'
 
-const Product = ({ product }) => {
-   const { FaRegEye, FaRegHeart, FaShoppingCart, BsCartCheckFill } = icons
+const Product = ({ product, delWishlist }) => {
+   const { FaRegEye, FaRegHeart, FaShoppingCart, BsCartCheckFill, TbHeartCheck, IoMdClose } = icons
    const navigate = useNavigate()
    const dispatch = useDispatch()
    const location = useLocation()
@@ -69,7 +69,7 @@ const Product = ({ product }) => {
       }
 
    }
-   const handleWishlist = (e) => {
+   const handleWishlist = async (e) => {
       e.preventDefault()
       if (!isLoggedIn || !userData) {
          Swal.fire({
@@ -92,7 +92,14 @@ const Product = ({ product }) => {
          })
 
       } else {
-         // console.log('Wishlist')
+
+         const response = await apiUsers.updateWishlist(product._id)
+         if (response.success) {
+            toast.success(response.message)
+            dispatch(getUserCurrent())
+         } else {
+            toast.error('Something went wrong')
+         }
       }
    }
    const handleQuickView = (e) => {
@@ -103,6 +110,10 @@ const Product = ({ product }) => {
    const viewCart = (e) => {
       e.preventDefault()
       dispatch(showCart())
+   }
+   const viewWishlist = (e) => {
+      e.preventDefault()
+      navigate(`/${path.WISHLIST}`)
    }
    return (
       <div className='w-full px-[10px] mb-[20px] '>
@@ -115,22 +126,37 @@ const Product = ({ product }) => {
             className='w-full border flex flex-col items-center relative hover:cursor-pointer focus:outline-none'
          >
             {isShowOptions && (
-               <div className='absolute bottom-[120px] left-0 right-0 flex justify-center gap-2 animate-slide-top'>
-                  <span onClick={e => handleWishlist(e)}>
-                     <Options icon={<FaRegHeart />} content='Wishlist' />
-                  </span>
-                  {userData?.cart?.some(item => item?.product._id === product?._id.toString()) ?
-                     <span onClick={e => viewCart(e)}>
-                        <Options icon={<BsCartCheckFill />} content='View cart' />
-                     </span> :
-                     <span onClick={e => handleClickMenu(e)}>
-                        <Options icon={<FaShoppingCart />} content='Add cart' />
+               <>
+                  {delWishlist && (
+                     <div className='absolute top-0 left-0 flex justify-center gap-2 animate-slide-top'>
+                        <span onClick={e => handleWishlist(e)}>
+                           <Options icon={<IoMdClose />} content='Delete' />
+                        </span>
+                     </div>
+                  )}
+                  <div className='absolute bottom-[120px] left-0 right-0 flex justify-center gap-2 animate-slide-top'>
+                     {userData?.wishlist?.some(item => item._id === product?._id.toString()) ? (
+                        <span onClick={e => viewWishlist(e)}>
+                           <Options icon={<TbHeartCheck />} content='View wishlist' />
+                        </span>
+                     ) : (
+                        <span onClick={e => handleWishlist(e)}>
+                           <Options icon={<FaRegHeart />} content='Add wishlist' />
+                        </span>
+                     )}
+                     {userData?.cart?.some(item => item?.product._id === product?._id.toString()) ?
+                        <span onClick={e => viewCart(e)}>
+                           <Options icon={<BsCartCheckFill />} content='View cart' />
+                        </span> :
+                        <span onClick={e => handleClickMenu(e)}>
+                           <Options icon={<FaShoppingCart />} content='Add cart' />
+                        </span>
+                     }
+                     <span onClick={e => handleQuickView(e)}>
+                        <Options icon={<FaRegEye />} content='Quick view' />
                      </span>
-                  }
-                  <span onClick={e => handleQuickView(e)}>
-                     <Options icon={<FaRegEye />} content='Quick view' />
-                  </span>
-               </div>
+                  </div>
+               </>
             )}
             <img
                src={product.thumbnail || 'https://niteair.co.uk/wp-content/uploads/2023/08/default-product-image.png'}

@@ -11,6 +11,7 @@ import path from '../../ultils/path'
 
 
 const ProductInformation = ({ totalRating, ratings, nameProduct, pid, rerender }) => {
+   console.log(ratings)
 
    const { isLoggedIn } = useSelector(state => state.user)
    const [activeTab, setActiveTab] = useState(1)
