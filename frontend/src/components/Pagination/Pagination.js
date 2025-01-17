@@ -1,10 +1,12 @@
 import React, { memo, useState, useEffect } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, createSearchParams, useNavigate, useLocation } from 'react-router-dom'
 import usePagination from '../../hooks/usePagination'
 import { PagiItem } from '../../components'
 import useDebounce from '../../hooks/useDebounce'
 
 const Pagination = ({ totalCount, pageSize = 10 }) => {
+    const navigate = useNavigate()
+    const location = useLocation()
     const [params, setParams] = useSearchParams()
     const [inputPage, setInputPage] = useState('')
     const currentPage = parseInt(params.get('page') || 1)
@@ -20,8 +22,12 @@ const Pagination = ({ totalCount, pageSize = 10 }) => {
 
     const handlePageChange = (newPage) => {
         const queries = Object.fromEntries(params.entries())
-        setParams({ page: newPage })
+        queries.page = newPage
         setInputPage('')
+        navigate({
+            pathname: location.pathname,
+            search: createSearchParams({ ...queries }).toString(),
+        })
         window.scrollTo({ top: 0, behavior: 'smooth' });
         document.activeElement.blur();
     };

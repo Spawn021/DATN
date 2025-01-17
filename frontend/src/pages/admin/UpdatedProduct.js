@@ -350,7 +350,7 @@ const UpdatedProduct = ({ editProduct, render, setEditProduct }) => {
                                 </div>
                             </div>
                         </div>
-                        <button type='submit' className='bg-green-600 text-white mb-4 p-2 rounded hover:bg-green-500 mt-5'>Create</button>
+                        <button type='submit' className='bg-green-600 text-white mb-4 p-2 rounded hover:bg-green-500 mt-5'>Update</button>
 
                     </form>
                 </div>

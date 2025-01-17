@@ -9,7 +9,7 @@ const Markdown = ({ label, value, changeValue, name, invalidField, setInvalidFie
                 apiKey={process.env.REACT_APP_MCETINY}
                 initialValue={value}
                 init={{
-                    height: 400,
+                    height: 600,
                     menubar: true,
                     plugins: [
                         'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'print', 'preview', 'anchor',

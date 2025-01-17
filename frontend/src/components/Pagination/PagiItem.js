@@ -12,7 +12,7 @@ const PagiItem = ({ children }) => {
         }
         navigate({
             pathname: location.pathname,
-            search: createSearchParams(queries).toString(),
+            search: createSearchParams({ ...queries }).toString(),
         })
     }
     useEffect(() => {

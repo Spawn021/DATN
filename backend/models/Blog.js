@@ -7,6 +7,11 @@ var blogSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        slug: {
+            type: String,
+            unique: true,
+            lowercase: true,
+        },
         description: {
             type: String,
             required: true,
@@ -31,7 +36,7 @@ var blogSchema = new mongoose.Schema(
                 ref: 'User',
             },
         ],
-        image: {
+        thumbnail: {
             type: String,
             default: 'https://c0.wallpaperflare.com/preview/639/306/330/aerial-background-blog-cafe.jpg',
         },
@@ -40,11 +45,7 @@ var blogSchema = new mongoose.Schema(
             default: 'Admin',
         },
     },
-    {
-        timestamps: true,
-        toJSON: { virtuals: true },
-        toObject: { virtuals: true },
-    },
+    { timestamps: true },
 )
 
 //Export the model

@@ -1,8 +1,7 @@
-const { query } = require('express')
+
 const Product = require('../models/Product')
 const asyncHandler = require('express-async-handler')
 const slugify = require('slugify')
-const { default: path } = require('../../frontend/src/ultils/path')
 
 class ProductController {
    createProduct = asyncHandler(async (req, res) => {

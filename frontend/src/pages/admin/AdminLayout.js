@@ -18,7 +18,9 @@ const AdminLayout = () => {
         [`/${path.ADMIN}/${path.MANAGE_ORDERS}`]: 'Manage Orders',
         [`/${path.ADMIN}/${path.CREATE_PRODUCT}`]: 'Create Product',
         [`/${path.ADMIN}/${path.MANAGE_COUPONS}`]: 'Manage Coupons',
-        [`/${path.ADMIN}/${path.CREATE_COUPON}`]: 'Create Coupon',
+        [`/${path.ADMIN}/${path.MANAGE_BLOGS}`]: 'Manage Blogs',
+        [`/${path.ADMIN}/${path.CREATE_BLOG}`]: 'Create Blog',
+        [`/${path.ADMIN}/${path.MANAGE_BLOG_CATEGORIES}`]: 'Manage Blog Categories',
     };
 
     const currentRoute = routeNames[location.pathname]

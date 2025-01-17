@@ -5,10 +5,11 @@ const path = {
    LOGIN: 'login',
    PRODUCTS__CATEGORY: ':category',
    PRODUCTS: 'products',
-   BLOGS: 'blogs',
+   BLOGS: 'blog',
    OUR_SERVICES: 'our-services',
    FAQS: 'faqs',
    DETAIL_PRODUCT__CATEGORY__PID__TITLE: ':category/:pid/:title',
+   DETAIL_BLOG__CATEGORY__BID__TITLE: 'blog/:bid/:title',
    ACTIVE_REGISTER: 'active-account/:status',
    FORGET_PASSWORD: 'forget-password',
    DETAIL_CART: 'cart-detail',
@@ -24,7 +25,9 @@ const path = {
    MANAGE_ORDERS: 'manage-orders',
    CREATE_PRODUCT: 'create-product',
    MANAGE_COUPONS: 'manage-coupons',
-   CREATE_COUPON: 'create-coupon',
+   MANAGE_BLOGS: 'manage-blogs',
+   CREATE_BLOG: 'create-blog',
+   MANAGE_BLOG_CATEGORIES: 'manage-blog-categories',
 
    //Member
    MEMBER: 'member',

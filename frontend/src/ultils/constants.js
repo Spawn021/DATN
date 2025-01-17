@@ -1,6 +1,21 @@
 import path from './path'
 import icons from './icons'
-const { FaHome, FaTty, FaReply, FaTruck, FaGift, FaShieldAlt, RxDashboard, FaUserGroup, FaProductHunt, FaFileInvoiceDollar, BsFillPersonFill, GiPositionMarker, MdHistory, FaLock } = icons
+const {
+   FaHome,
+   FaTty,
+   FaReply,
+   FaTruck,
+   FaGift,
+   FaShieldAlt,
+   RxDashboard,
+   FaUserGroup,
+   FaProductHunt,
+   FaFileInvoiceDollar,
+   BsFillPersonFill,
+   GiPositionMarker,
+   MdHistory,
+   FaLock,
+   FaBlogger } = icons
 export const navigation = [
    {
       id: 1,
@@ -161,17 +176,28 @@ export const adminSidebar = [
    },
    {
       id: 5,
-      type: 'parent',
+      type: 'single',
       value: 'Counpons',
+      path: `/${path.ADMIN}/${path.MANAGE_COUPONS}`,
       icon: <FaGift />,
+   },
+   {
+      id: 6,
+      type: 'parent',
+      value: 'Blogs',
+      icon: <FaBlogger />,
       children: [
          {
-            value: 'Manage Coupons',
-            path: `/${path.ADMIN}/${path.MANAGE_COUPONS}`,
+            value: 'Manage Blogs',
+            path: `/${path.ADMIN}/${path.MANAGE_BLOGS}`,
          },
          {
-            value: 'Create Coupon',
-            path: `/${path.ADMIN}/${path.CREATE_COUPON}`,
+            value: 'Create Blog',
+            path: `/${path.ADMIN}/${path.CREATE_BLOG}`,
+         },
+         {
+            value: 'Blog Categories',
+            path: `/${path.ADMIN}/${path.MANAGE_BLOG_CATEGORIES}`,
          }
       ],
    },

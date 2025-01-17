@@ -1,18 +1,56 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
 import 'react-toastify/dist/ReactToastify.css'
-import { Login, Home, PublicLayout, FAQ, Service, ProductDetail, Products, Blog, ActiveRegister, ForgetPassword, DetailCart, Wishlist } from './pages/public'
-import { AdminLayout, ManageOrders, ManageProducts, ManageUsers, CreateProduct, Dashboard, ManageCoupon, CreateCoupon } from './pages/admin'
-import { MemberLayout, Personal, History, ChangePassword, Checkout, Payment, MyAddress } from './pages/member'
+import {
+   Login,
+   Home,
+   PublicLayout,
+   FAQ, Service,
+   ProductDetail,
+   Products,
+   Blog,
+   ActiveRegister,
+   ForgetPassword,
+   DetailCart,
+   Wishlist,
+   BlogDetail
+} from './pages/public'
+import {
+   AdminLayout,
+   ManageOrders,
+   ManageProducts,
+   ManageUsers,
+   CreateProduct,
+   Dashboard,
+   ManageCoupon,
+   ManageBlogCategories,
+   ManageBlogs,
+   CreateBlog
+} from './pages/admin'
+import {
+   MemberLayout,
+   Personal,
+   History,
+   ChangePassword,
+   Checkout,
+   Payment,
+   MyAddress
+} from './pages/member'
 import path from './ultils/path'
 import { ScrollToTopHandler, Modal, ScrollToTopButton, Cart, ModalChangeAddress } from './components'
 import { showCart } from './redux/features/modalSlice'
+import { getAllBlogCategory } from './redux/features/blogCategorySlice'
+import { getProdCategories } from './redux/features/prodCategorySlice'
 
 function App() {
    const { isShowModal, modalContent, isShowCart, isShowChangeAddressModal, changeAddressModalContent } = useSelector((state) => state.modal)
    const dispatch = useDispatch()
+   useEffect(() => {
+      dispatch(getAllBlogCategory());
+      dispatch(getProdCategories());
+   }, [dispatch]);
    return (
       <div className='h-screen relative'>
          {isShowCart &&
@@ -46,6 +84,7 @@ function App() {
                <Route path={path.OUR_SERVICES} element={<Service />} />
                <Route path={path.FAQS} element={<FAQ />} />
                <Route path={path.DETAIL_PRODUCT__CATEGORY__PID__TITLE} element={<ProductDetail />} />
+               <Route path={path.DETAIL_BLOG__CATEGORY__BID__TITLE} element={<BlogDetail />} />
                <Route path={path.DETAIL_CART} element={<DetailCart />} />
                <Route path={path.WISHLIST} element={<Wishlist />} />
             </Route>
@@ -57,7 +96,9 @@ function App() {
                <Route path={path.MANAGE_USERS} element={<ManageUsers />} />
                <Route path={path.CREATE_PRODUCT} element={<CreateProduct />} />
                <Route path={path.MANAGE_COUPONS} element={<ManageCoupon />} />
-               <Route path={path.CREATE_COUPON} element={<CreateCoupon />} />
+               <Route path={path.MANAGE_BLOGS} element={<ManageBlogs />} />
+               <Route path={path.CREATE_BLOG} element={<CreateBlog />} />
+               <Route path={path.MANAGE_BLOG_CATEGORIES} element={<ManageBlogCategories />} />
             </Route>
 
             <Route path={path.MEMBER} element={<MemberLayout />}>

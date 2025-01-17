@@ -410,7 +410,6 @@ class UserController {
    })
    updateUser = asyncHandler(async (req, res) => {
       const { _id } = req.payload
-      console.log(_id)
       const { firstname, lastname, email, mobile } = req.body
       const data = { firstname, lastname, email, mobile }
       if (req.file) data.avatar = req.file.path

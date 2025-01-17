@@ -9,14 +9,13 @@ import { GiSmartphone, GiTablet, GiPositionMarker } from 'react-icons/gi'
 import { PiTelevisionThin } from 'react-icons/pi'
 import { SiAmericanexpress } from 'react-icons/si'
 import { RxDashboard } from "react-icons/rx";
-import { FaPhone, FaUserGroup, FaPlus } from "react-icons/fa6";
+import { FaPhone, FaUserGroup, FaPlus, FaArrowRightLong } from "react-icons/fa6";
 import { CgPlayListAdd } from "react-icons/cg";
 import { BiLogOutCircle } from "react-icons/bi";
 import { RiAdminLine } from "react-icons/ri";
 import { ImProfile } from "react-icons/im";
 import { TbHeartCheck } from "react-icons/tb";
 import {
-
    FaHome,
    FaLock,
    FaFileInvoiceDollar,
@@ -47,6 +46,7 @@ import {
    FaShieldAlt,
    FaTruck,
    FaGift,
+   FaBlogger,
    FaReply,
    FaTty,
    FaCaretUp,
@@ -56,6 +56,8 @@ import {
 } from 'react-icons/fa'
 
 const icons = {
+   FaArrowRightLong,
+   FaBlogger,
    TbHeartCheck,
    FaHome,
    FaLongArrowAltRight,

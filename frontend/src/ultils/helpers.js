@@ -69,3 +69,13 @@ export const fileToBase64 = (file) => {
       reader.onerror = (error) => reject(error);
    })
 }
+export const limitText = (html, maxLength) => {
+   const tempElement = document.createElement('div');
+   tempElement.innerHTML = html;
+   const plainText = tempElement.textContent || tempElement.innerText;
+
+   if (plainText.length > maxLength) {
+      return plainText.substring(0, maxLength) + '...';
+   }
+   return plainText;
+};

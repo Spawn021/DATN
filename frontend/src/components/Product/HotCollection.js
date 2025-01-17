@@ -1,16 +1,11 @@
-import React, { useEffect, memo } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { memo } from 'react'
+import { useSelector } from 'react-redux'
 import { createSearchParams, useNavigate } from 'react-router-dom'
-import { getProdCategories } from '../../redux/features/prodCategorySlice'
 
 const HotCollection = () => {
    const navigate = useNavigate()
-   const dispatch = useDispatch()
    const categories = useSelector((state) => state.prodCategory.categories)
 
-   useEffect(() => {
-      dispatch(getProdCategories())
-   }, [dispatch])
    return (
       <>
          <h2 className='text-xl font-semibold text-[#151515] border-main border-b-[2px] pb-4 mb-4 '>HOT COLLECTIONS</h2>

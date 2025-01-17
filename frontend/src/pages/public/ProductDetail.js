@@ -158,7 +158,7 @@ const ProductDetail = ({ isQuickView, data }) => {
       }
 
    }
-   console.log(product)
+
    return (
       <div className='w-full'>
          {!isQuickView &&
