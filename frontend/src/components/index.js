@@ -1,7 +1,7 @@
 export { default as Button } from './Button/Button'
 
-
 export { default as FilterItem } from './Search/FilterItem'
+export { default as Search } from './Search/Search'
 
 export { default as Address } from './Address/Address'
 export { default as SelectAddress } from './Address/SelectAddress'

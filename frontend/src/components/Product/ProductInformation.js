@@ -84,6 +84,20 @@ const ProductInformation = ({ totalRating, ratings, nameProduct, pid, rerender }
                )
             })}
             <span
+               className={`py-[9px] px-5 border-[1px] border-solid border-b-0 cursor-pointer hover:bg-white ${activeTab === 3 ? 'bg-white border-b-transparent ' : 'bg-[#f1f1f1]'
+                  }`}
+               onClick={() => setActiveTab(3)}
+            >
+               DELIVERY
+            </span>
+            <span
+               className={`py-[9px] px-5 border-[1px] border-solid border-b-0 cursor-pointer hover:bg-white ${activeTab === 4 ? 'bg-white border-b-transparent ' : 'bg-[#f1f1f1]'
+                  }`}
+               onClick={() => setActiveTab(4)}
+            >
+               PAYMENT
+            </span>
+            <span
                className={`py-[9px] px-5 border-[1px] border-solid border-b-0 cursor-pointer hover:bg-white ${activeTab === 5 ? 'bg-white border-b-transparent ' : 'bg-[#f1f1f1]'
                   }`}
                onClick={() => setActiveTab(5)}
@@ -95,6 +109,27 @@ const ProductInformation = ({ totalRating, ratings, nameProduct, pid, rerender }
             <div className='p-3'>
                {productDescriptionTabs.some((tab) => tab.id === activeTab) &&
                   productDescriptionTabs.find((tab) => tab.id === activeTab)?.content}
+               {activeTab === 3 && (
+                  <div>
+                     <div className='text-lg font-semibold mb-2'>Delivery & Return </div>
+                     <ul className='flex gap-2 flex-col pl-6'>
+                        <li className='text-sm list-square pl-1'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sint irure occaecat sit pariatur voluptate occaecat sit sit tempor occaecat.</li>
+                        <li className='text-sm list-square pl-1'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna sunt cupidatat consectetur aliqua eu deserunt. Dolor anim occaecat commodo aliquip do.</li>
+                        <li className='text-sm list-square pl-1'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisi veniam occaecat enim dolore id ipsum proident sunt.</li>
+                        <li className='text-sm list-square pl-1'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Enim officia mollit nostrud ipsum incididunt proident id adipisicing esse est fugiat excepteur dolore do. Ipsum commodo labore duis ad voluptate duis proident proident aute dolore proident nulla. Eiusmod cillum velit excepteur pariatur incididunt elit id excepteur consequat excepteur et. Magna cupidatat nostrud ea est ad culpa veniam id ut nisi est eu.</li>
+                     </ul>
+                  </div>
+               )}
+               {activeTab === 4 && (
+                  <div>
+                     <div className='text-lg font-semibold mb-2'>Payment</div>
+                     <div className='flex gap-2 flex-col'>
+                        <div className='text-sm'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Reprehenderit do irure laboris tempor laborum Lorem do. Sunt cillum deserunt dolor veniam sunt mollit. Commodo sunt cupidatat id incididunt reprehenderit irure esse irure magna deserunt irure veniam voluptate. Mollit ullamco anim non ipsum incididunt qui ea exercitation. Pariatur quis laborum commodo duis in cupidatat officia sint duis cillum sint est.</div>
+                        <div className='text-sm'>Officia fugiat commodo veniam aliquip labore est ut aliqua eiusmod. Sit irure nostrud consequat excepteur sit reprehenderit mollit laboris deserunt velit pariatur quis Lorem. Magna tempor culpa sunt amet occaecat exercitation dolor. Ad dolore eiusmod incididunt incididunt. Excepteur quis Lorem sit occaecat.</div>
+                        <div className='text-sm'>Eiusmod officia laboris culpa magna. Lorem nisi consequat tempor laboris minim do nulla amet Lorem nisi laborum incididunt. Qui ad mollit incididunt ut Lorem dolore. Proident aliqua amet enim nostrud exercitation laborum veniam proident laboris fugiat occaecat do enim excepteur. Ullamco velit velit officia occaecat esse proident ad veniam laboris et exercitation. Mollit nulla proident aute mollit ea esse ex duis.</div>
+                     </div>
+                  </div>
+               )}
                {activeTab === 5 && (
                   <div>
                      <div className='flex justify-between border-b pb-5 pt-3'>

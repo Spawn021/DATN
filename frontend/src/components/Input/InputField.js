@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-const InputField = ({ value, handleChange, handleBlur, error, nameKey, type, className, placeholder, label, icon }) => {
+const InputField = ({ value, handleChange, handleBlur, error, nameKey, type, className, placeholder, label, icon, onKeyDown }) => {
    return (
       <div className='w-full relative'>
          {value && value?.trim() !== '' && (
@@ -16,6 +16,7 @@ const InputField = ({ value, handleChange, handleBlur, error, nameKey, type, cla
             value={value}
             name={nameKey}
             onChange={handleChange}
+            onKeyDown={onKeyDown}
             className={`rounded-[8px] py-[10px] px-[15px] text-[13px] border ${className} `}
          // autoComplete={type === 'password' ? 'new-password' : 'off'}
          />

@@ -7,7 +7,6 @@ import { Breadcrumb, Pagination } from '../../components'
 import { apiBlogs } from '../../redux/apis'
 import { limitText } from '../../ultils/helpers'
 import icons from '../../ultils/icons'
-import path from '../../ultils/path'
 
 const Blog = () => {
    const { FaArrowRightLong } = icons

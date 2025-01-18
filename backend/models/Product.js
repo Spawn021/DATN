@@ -29,6 +29,14 @@ var productSchema = new mongoose.Schema(
          type: Number,
          default: 0,
       },
+      warranty: {
+         type: String,
+         required: true,
+      },
+      detailDescription: {
+         type: Array,
+         required: true,
+      },
       category: {
          type: String,
          required: true,

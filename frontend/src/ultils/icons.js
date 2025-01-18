@@ -53,9 +53,11 @@ import {
    FaChevronDown,
    FaSearch,
    FaLongArrowAltRight,
+   FaCalendarAlt,
 } from 'react-icons/fa'
 
 const icons = {
+   FaCalendarAlt,
    FaArrowRightLong,
    FaBlogger,
    TbHeartCheck,

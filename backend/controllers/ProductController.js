@@ -5,10 +5,10 @@ const slugify = require('slugify')
 
 class ProductController {
    createProduct = asyncHandler(async (req, res) => {
-      const { title, description, price, category, color } = req.body
+      const { title, description, price, category, color, warranty, detailDescription } = req.body
       const thumbnail = req?.files?.thumbnail[0]?.path
       const images = req?.files?.images?.map((file) => file.path)
-      if (!title || !description || !price || !category || !color) {
+      if (!title || !description || !price || !category || !color || !warranty || !detailDescription) {
          return res.status(400).json({
             success: false,
             message: 'Please fill in all fields',

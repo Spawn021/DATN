@@ -2,7 +2,7 @@ import React, { memo, useState, useEffect } from 'react'
 import { createSearchParams, Link, useNavigate, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { apiUsers } from '../../redux/apis'
-import { logout, getUserCurrent } from '../../redux/features/userSlice'
+import { logout } from '../../redux/features/userSlice'
 import { showCart } from '../../redux/features/modalSlice'
 import Swal from 'sweetalert2'
 import logo from '../../assets/logo.png'
@@ -133,7 +133,7 @@ const Header = () => {
                      </span>
                   }
                </div>
-               <div onClick={handleProfileClick} id='profile' className='flex items-center pl-5 border-l relative z-0'>
+               <div onClick={handleProfileClick} id='profile' className='flex items-center pl-5 border-l relative z-10'>
                   <FaUserCircle className='fill-main text-[20px] hover:cursor-pointer' />
                   {isShowOption && (
                      <div className='absolute top-full left-[-100%] bg-white shadow-custom min-w-[150px] p-3 flex flex-col gap-2 rounded'>
